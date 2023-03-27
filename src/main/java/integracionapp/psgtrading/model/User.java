@@ -1,10 +1,19 @@
 package integracionapp.psgtrading.model;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import java.util.Set;
 
 @Entity
+@Getter
+@Setter
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "`User`")
+//todo: preguntar si es necesario esto
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -25,42 +34,9 @@ public class User {
     @OneToMany(mappedBy="user")
     private Set<Balance> balances;
 
-    public User() {
-
-    }
-
     public User(String firstName, String lastName, long externalIdentifier) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.externalIdentifier = externalIdentifier;
     }
-
-    public long getId() {
-        return id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
-    public long getExternalIdentifier() {
-        return externalIdentifier;
-    }
-
-    public void setExternalIdentifier(long externalIdentifier) {
-        this.externalIdentifier = externalIdentifier;
-    }
-
 }
