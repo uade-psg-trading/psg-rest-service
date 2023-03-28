@@ -60,7 +60,23 @@ docker-compose up -d
 docker-compose down
 ```
 This command will stop and remove the containers, networks, and volumes defined in the Docker Compose YAML file.
+use pg admin to display the data, for this you need to open PgAdmin at url [localhost:80](localhost:80)
+add manually the server following the steps:
+1. Open pgAdmin and connect to a PostgreSQL instance.
+2. Log with User : admin@admin.com and password: admin
+3. In the left-hand pane, right-click on "Servers" and select "Register" > "Server". 
+4. In the "General" tab, enter a name for the server in the "Name" field. 
+5. In the "Connection" tab, enter the following information:
+Host name/address: the IP address or hostname of the PostgreSQL server you want to connect to for instance postgres.
+Port: the port number used by the PostgreSQL server. The default port is 5432.
+Maintenance database: the name of the database you want to use for managing the server.
+Username: the username you want to use to connect to the server.
+Password: the password for the username you entered above.
+In the "Advanced" tab, you can configure additional server settings, such as SSL mode, timeout settings, and others. These settings are optional and can be left at their default values.
 
+Once you have entered all the required information, click "Save" to create the server.
+
+You should now see the newly created server listed under "Servers" in the left-hand pane. To connect to the server, right-click on it and select "Connect Server". If the connection is successful, you should see a new node for the server appear in the left-hand pane.
 ## Run Test ⚙️
 ```console
 mvn test
