@@ -13,7 +13,6 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "`User`")
-//todo: preguntar si es necesario esto
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
