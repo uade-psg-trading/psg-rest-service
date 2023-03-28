@@ -17,7 +17,7 @@ Development of a trading API solution aimed at sharing market prices as up-to-da
 
 ```
 JDK 11 o superior
-Spring boot Framework version '3.0.4'
+Spring boot Framework 
 Maven 
 IntelliJ 2021.3 
 Docker and Docker Compose  
