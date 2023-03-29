@@ -1,6 +1,7 @@
 package integracionapp.psgtrading.service;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
 
 import integracionapp.psgtrading.dto.*;
 import org.junit.jupiter.api.DisplayName;
@@ -19,7 +20,8 @@ class NewStockServiceTest {
   @DisplayName("When the stock price is requested the response is a Double")
   void getStockPrice() {
 
-    Mockito.when(newStockService.getStockPrice()).thenReturn(getCoinResponse());
+    when(newStockService.getStockPrice()).thenReturn(getCoinResponse());
+    
     CoinResponseDto coinResponseDto = newStockService.getStockPrice();
     Double price = coinResponseDto.getData().getPSG().getQuote().getUSD().getPrice();
     assertTrue(price instanceof Double);
