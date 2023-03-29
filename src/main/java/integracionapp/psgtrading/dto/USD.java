@@ -1,8 +1,10 @@
 package integracionapp.psgtrading.dto;
 
+import lombok.Builder;
 import lombok.Data;
 
 @Data
+@Builder
 public class USD {
     private Double percent_change_30d;
     private Double fully_diluted_market_cap;
