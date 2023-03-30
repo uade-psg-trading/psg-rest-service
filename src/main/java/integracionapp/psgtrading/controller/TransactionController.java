@@ -16,23 +16,26 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/transaction")
 public class TransactionController {
 
-    @Autowired
-    TransactionRepository transactionRepository;
-    @Autowired
-    UserRepository userRepository;
+    private final TransactionRepository transactionRepository;
+    private final UserRepository userRepository;
 
+    @Autowired
+    public TransactionController(TransactionRepository transactionRepository, UserRepository userRepository) {
+        this.transactionRepository = transactionRepository;
+        this.userRepository = userRepository;
+    }
 
-    @GetMapping("/transaction")
+    @GetMapping()
     public ResponseEntity<List<Transaction>> getAllTransactions() {
         List<Transaction> transactions = new ArrayList<>(transactionRepository.findAll());
         return new ResponseEntity<>(transactions, HttpStatus.OK);
 
     }
 
-    @GetMapping("/transaction/{external_identifier}")
+    @GetMapping("/{external_identifier}")
     public ResponseEntity<List<Transaction>> getUserTransactions(@PathVariable("external_identifier") long externalIdentifier) {
         try {
             User user = userRepository.findByExternalIdentifier(externalIdentifier).orElseThrow(EntityNotFoundException::new);
@@ -43,7 +46,7 @@ public class TransactionController {
         }
     }
 
-    @PostMapping("/transaction/{external_identifier}")
+    @PostMapping("/{external_identifier}")
     public ResponseEntity<Transaction> createTransaction(@RequestBody Transaction transaction,
                                                          @PathVariable("external_identifier") long externalIdentifier) {
         try {

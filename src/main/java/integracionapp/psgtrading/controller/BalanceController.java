@@ -16,16 +16,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/balance")
 public class BalanceController {
+    private final BalanceRepository balanceRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    BalanceRepository balanceRepository;
-    @Autowired
-    UserRepository userRepository;
+    public BalanceController(BalanceRepository balanceRepository, UserRepository userRepository) {
+        this.balanceRepository = balanceRepository;
+        this.userRepository = userRepository;
+    }
 
 
-    @GetMapping("/balance")
+    @GetMapping()
     public ResponseEntity<List<Balance>> getTokenBalances(@RequestParam(required = false) String token,
                                                           @RequestParam(required = false) Long externalIdentifier) {
         List<Balance> balances;
@@ -50,7 +53,7 @@ public class BalanceController {
         }
     }
 
-    @PostMapping("/balance/{external_identifier}")
+    @PostMapping("/{external_identifier}")
     public ResponseEntity<Balance> createBalance(@RequestBody Balance balance,
                                                  @PathVariable("external_identifier") long externalIdentifier) {
         try {
