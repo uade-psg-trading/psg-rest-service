@@ -13,27 +13,29 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/user")
 public class UserController {
 
+    private final UserRepository userRepository;
+
     @Autowired
-    UserRepository userRepository;
+    public UserController(UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
-
-    @GetMapping("/user")
+    @GetMapping()
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = new ArrayList<>(userRepository.findAll());
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    @PostMapping("/user")
+    @PostMapping()
     public ResponseEntity<User> createUser(@RequestBody User user) {
-        try{
+        try {
             User _user = userRepository
                     .save(new User(user.getFirstName(), user.getLastName(), user.getExternalIdentifier()));
             return new ResponseEntity<>(_user, HttpStatus.CREATED);
-        }
-        catch (DataIntegrityViolationException exc){
+        } catch (DataIntegrityViolationException exc) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User already exists.", exc);
         }
 

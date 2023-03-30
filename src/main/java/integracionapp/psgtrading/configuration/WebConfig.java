@@ -1,4 +1,4 @@
-package integracionapp.psgtrading.controller;
+package integracionapp.psgtrading.configuration;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
