@@ -17,12 +17,17 @@ import java.time.LocalDateTime;
         uniqueConstraints = { @UniqueConstraint(columnNames = { "user_id", "token" }) })
 public class Balance {
     @Id
+    @Column(name = "token")
     private String token;
+
+    @Column(name = "balance")
     private Double balance;
 
     @ManyToOne
     @JoinColumn(name ="user_id", nullable=false)
     private User user;
+
+    @Column(name = "update_time")
     private LocalDateTime updateTime;
 
 }

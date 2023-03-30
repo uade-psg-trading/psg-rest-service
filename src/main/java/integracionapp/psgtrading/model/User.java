@@ -1,4 +1,5 @@
 package integracionapp.psgtrading.model;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -27,9 +28,11 @@ public class User {
     @Column(name = "external_identifier", unique = true)
     private long externalIdentifier;
 
+    @JsonIgnore
     @OneToMany(mappedBy="user")
     private Set<Transaction> transactions;
 
+    @JsonIgnore
     @OneToMany(mappedBy="user")
     private Set<Balance> balances;
 

@@ -16,7 +16,7 @@ Development of a trading API solution aimed at sharing market prices as up-to-da
 ### Pre-requisitos 📋
 
 ```
-JDK 11 o superior
+JDK 17 o superior
 Spring boot Framework 
 Maven 
 IntelliJ 2021.3 
