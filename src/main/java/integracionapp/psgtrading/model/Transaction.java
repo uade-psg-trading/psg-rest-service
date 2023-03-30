@@ -1,5 +1,6 @@
 package integracionapp.psgtrading.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -31,6 +32,7 @@ public class Transaction {
     @Column(name = "transaction_time")
     private LocalDateTime transactionTime;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name ="user_id", nullable=false)
     private User user;
