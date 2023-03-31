@@ -1,43 +1,36 @@
 package integracionapp.psgtrading.controller;
 
+import integracionapp.psgtrading.dto.NewUser;
 import integracionapp.psgtrading.model.User;
-import integracionapp.psgtrading.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
+import integracionapp.psgtrading.service.UserService;
+import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-@RequestMapping("/user")
+@AllArgsConstructor
+@RequestMapping("/users")
 public class UserController {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
-    @Autowired
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    @GetMapping
+    public Page<User> getAllUsers() {
+        return null;
     }
 
-    @GetMapping()
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = new ArrayList<>(userRepository.findAll());
-        return new ResponseEntity<>(users, HttpStatus.OK);
+    @PostMapping
+    public User createUser(@RequestBody NewUser user) {
+        return userService.saveUser(user.getEmail(), user.getName(),
+                user.getLastName(), user.getDni(), user.getLocation(), user.getPassword());
     }
 
-    @PostMapping()
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        try {
-            User _user = userRepository
-                    .save(new User(user.getFirstName(), user.getLastName(), user.getExternalIdentifier()));
-            return new ResponseEntity<>(_user, HttpStatus.CREATED);
-        } catch (DataIntegrityViolationException exc) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User already exists.", exc);
-        }
+    @GetMapping("/{id}")
+    public User getUserById(@PathVariable long id){ return null;}
 
-    }
 }
