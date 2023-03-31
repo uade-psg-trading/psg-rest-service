@@ -85,4 +85,17 @@ mvn test
 ## Documentation 📖
 [Click link](http://localhost:8080/swagger-ui/index.html#/)
 
+## How to setup SonarLint with IntelliJ IDEA
+1. Go to File > Settings > Plugins and select Marketplace. Now enter “SonarLint” and click install.
+2. Now, go to File > Settings > Tools > SonarLint and click on the ‘+’ sign under SonarQube / SonarCloud connections.
+3. Enter a connection name, then select sonarqube and enter SonarQube server URL and then click next.
+4. Now choose Token or Login / Password and enter the value then click Next and the Finish.
+5. For mapping your local project with the project on SonarQube. Go to “File > Settings > Tools > SonarLint >Project Settings” and check the option Bind project to SonarQube / SonarCloud and select the configured server from dropdown
+6. Click on the search list and select the corresponding project from the list and click apply and ok.
+
+## How to Anaalyze your code with SonarLint?
+
+1. Go to “Analyze” and select “Analyze all files with SonarLint” or Click on SonarLint tab and play
+2. Happy coding!
+
 
