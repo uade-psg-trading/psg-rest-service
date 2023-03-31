@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class NewUser {
     @NotBlank
     @Schema(example = "John")
-    private String name;
+    private String firstName;
 
     @NotBlank
     @Schema(example = "Doe")

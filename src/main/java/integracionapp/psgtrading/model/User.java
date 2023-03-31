@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -17,7 +18,8 @@ import java.util.Set;
 @Table(name = "`User`")
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq_user")
+    @SequenceGenerator(name = "seq_user", sequenceName = "seq_user", allocationSize = 1)
     private long id;
 
     @Schema(example = "John")
@@ -41,8 +43,7 @@ public class User {
     @Embedded
     private Location location;
 
-    @Column(name = "external_identifier", unique = true)
-    private long externalIdentifier;
+    private String externalIdentifier = UUID.randomUUID().toString();
 
     @JsonIgnore
     @OneToMany(mappedBy="user")
