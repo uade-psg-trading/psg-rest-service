@@ -33,4 +33,9 @@ public class UserService {
         User user = new User(name, lastName, email, password, dni, location);
         return userRepository.save(user);
     }
+
+    public User findById(long id){
+        return userRepository.findById(id)
+                .orElseThrow();
+    }
 }

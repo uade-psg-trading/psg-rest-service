@@ -231,35 +231,6 @@
 			]
 		},
 		{
-			"name": "create user Copy",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"firstName\":\"ema\",\r\n    \"lastName\":\"brea\",\r\n    \"email\":\"ebrea@uade.edu.ar\",\r\n    \"dni\":94477311,\r\n    \"password\": \"123\",\r\n    \"location\": {}\r\n\r\n\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "http://localhost:8080/api/users",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"users"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "http://localhost:8080/api/balance",
 			"request": {
 				"method": "GET",
@@ -375,6 +346,27 @@
 						"api",
 						"transaction",
 						"40127028"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findById",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/users/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"users",
+						"1"
 					]
 				}
 			},
