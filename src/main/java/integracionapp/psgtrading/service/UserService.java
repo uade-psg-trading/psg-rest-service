@@ -1,5 +1,7 @@
 package integracionapp.psgtrading.service;
 
+import integracionapp.psgtrading.exception.CustomRuntimeException;
+import integracionapp.psgtrading.exception.ErrorCode;
 import integracionapp.psgtrading.model.Location;
 import integracionapp.psgtrading.model.User;
 import integracionapp.psgtrading.repository.UserRepository;
@@ -9,7 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+
 import java.util.Optional;
 
 @Service
@@ -26,7 +28,7 @@ public class UserService {
     public User saveUser(String email, String name, String lastName, Integer dni, Location location, String password) {
         Optional<User> opt = userRepository.findByEmailIgnoreCase(email);
         if (opt.isPresent()) {
-            throw new IllegalArgumentException("Email in use");
+            throw new CustomRuntimeException(ErrorCode.INVALID_STATE, "Email in use");
         }
         password = passwordEncoder.encode(password);
         email = email.toLowerCase();
@@ -37,5 +39,23 @@ public class UserService {
     public User findById(long id){
         return userRepository.findById(id)
                 .orElseThrow();
+    }
+
+    public User updateUser(String email, String password, String name, String lastName, int dni) {
+        email = email.toLowerCase();
+        User user = userRepository.findByEmailIgnoreCase(email).orElseThrow();
+        if (null != password) {
+            user.setPassword(passwordEncoder.encode(password));
+        }
+        if (null != name) {
+            user.setFirstName(name);
+        }
+        if (null != lastName) {
+            user.setLastName(lastName);
+        }
+        if ( 0 != dni) {
+            user.setDni(dni);
+        }
+        return userRepository.save(user);
     }
 }

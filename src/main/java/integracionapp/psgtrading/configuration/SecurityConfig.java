@@ -30,6 +30,10 @@ public class SecurityConfig {
                         .anyRequest().authenticated()
                 )
                 .csrf().disable()
+                .cors()
+                .and().headers().frameOptions().disable()
+                .and().oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
+                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();
     }
 }
