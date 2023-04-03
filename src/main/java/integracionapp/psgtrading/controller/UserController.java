@@ -1,43 +1,56 @@
 package integracionapp.psgtrading.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import integracionapp.psgtrading.dto.UserDTO;
 import integracionapp.psgtrading.model.User;
-import integracionapp.psgtrading.repository.UserRepository;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
+import integracionapp.psgtrading.service.UserService;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
+import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
-import java.util.ArrayList;
-import java.util.List;
+
 
 @RestController
-@RequestMapping("/user")
+@AllArgsConstructor
+@RequestMapping("/users")
 public class UserController {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
+    private final ObjectMapper objectMapper;
 
-    @Autowired
-    public UserController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    @GetMapping
+    public Page<UserDTO> getAllUsers(Pageable pageable) {
+       return userService.findAll(pageable)
+         .map(this::getUserDTO);
     }
 
-    @GetMapping()
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = new ArrayList<>(userRepository.findAll());
-        return new ResponseEntity<>(users, HttpStatus.OK);
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "409", description = "User already exists")
+    })
+    public UserDTO createUser(@RequestBody @Valid UserDTO user) {
+        User u = userService.saveUser(user.getEmail(), user.getFirstName(),
+                user.getLastName(), user.getDni(), user.getLocation(), user.getPassword());
+        return getUserDTO(u);
     }
 
-    @PostMapping()
-    public ResponseEntity<User> createUser(@RequestBody User user) {
-        try {
-            User _user = userRepository
-                    .save(new User(user.getFirstName(), user.getLastName(), user.getExternalIdentifier()));
-            return new ResponseEntity<>(_user, HttpStatus.CREATED);
-        } catch (DataIntegrityViolationException exc) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User already exists.", exc);
-        }
+    @GetMapping("/{id}")
+    public UserDTO getUserById(@PathVariable long id){ return getUserDTO(userService.findById(id));}
 
+    @PutMapping("/{id}")
+    public UserDTO updateUser(@RequestBody UserDTO user){
+        User u = userService.updateUser(user.getEmail(),user.getPassword(),user.getFirstName(),user.getLastName(),user.getDni());
+        return getUserDTO(u);
     }
+
+    private UserDTO getUserDTO(User u) {
+        return objectMapper.convertValue(u, UserDTO.class);
+    }
+
 }

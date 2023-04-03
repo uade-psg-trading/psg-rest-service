@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "d1e67f51-a9c0-4805-a3bd-1ad15893224d",
+		"_postman_id": "3f288d0b-ed33-4f44-9382-858c529be812",
 		"name": "PSG",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "14469653"
+		"_exporter_id": "1079556"
 	},
 	"item": [
 		{
@@ -12,7 +12,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/user",
+					"raw": "http://localhost:8080/api/users",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -20,20 +20,103 @@
 					"port": "8080",
 					"path": [
 						"api",
-						"user"
+						"users"
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "http://localhost:8080/api/user",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 31 Mar 2023 20:32:58 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"content\": [\n        {\n            \"id\": 1,\n            \"firstName\": null,\n            \"lastName\": \"brea\",\n            \"email\": \"ebrea@uade.edu.ar\",\n            \"dni\": 94477311,\n            \"location\": null,\n            \"externalIdentifier\": 0\n        }\n    ],\n    \"pageable\": {\n        \"sort\": {\n            \"empty\": true,\n            \"unsorted\": true,\n            \"sorted\": false\n        },\n        \"offset\": 0,\n        \"pageNumber\": 0,\n        \"pageSize\": 20,\n        \"paged\": true,\n        \"unpaged\": false\n    },\n    \"last\": true,\n    \"totalPages\": 1,\n    \"totalElements\": 1,\n    \"size\": 20,\n    \"number\": 0,\n    \"sort\": {\n        \"empty\": true,\n        \"unsorted\": true,\n        \"sorted\": false\n    },\n    \"first\": true,\n    \"numberOfElements\": 1,\n    \"empty\": false\n}"
+				}
+			]
 		},
 		{
-			"name": "http://localhost:8080/api/user",
+			"name": "create user",
 			"request": {
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"firstName\":\"ema\",\r\n    \"lastName\":\"brea\",\r\n    \"externalIdentifier\":40127028\r\n\r\n}",
+					"raw": "{\r\n    \"firstName\":\"Gonza\",\r\n    \"lastName\":\"Falange\",\r\n    \"email\":\"gfalange@gmail.com\",\r\n    \"dni\":34723373,\r\n    \"password\": \"12334\",\r\n    \"location\": {\r\n        \"country\":\"Argentina\",\r\n        \"province\":\"Buenos Aires\",\r\n        \"city\": \"CABA\",\r\n        \"zipCode\": \"1188\",\r\n        \"direction\":\"Cordoba 3915\"\r\n    }\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -41,7 +124,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/user",
+					"raw": "http://localhost:8080/api/users",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -49,11 +132,103 @@
 					"port": "8080",
 					"path": [
 						"api",
-						"user"
+						"users"
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "create user",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"firstName\":\"ema\",\r\n    \"lastName\":\"brea\",\r\n    \"email\":\"ebrea@uade.edu.ar\",\r\n    \"dni\":94477311,\r\n    \"password\": \"123\",\r\n    \"location\": {}\r\n\r\n\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"users"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "X-Content-Type-Options",
+							"value": "nosniff"
+						},
+						{
+							"key": "X-XSS-Protection",
+							"value": "0"
+						},
+						{
+							"key": "Cache-Control",
+							"value": "no-cache, no-store, max-age=0, must-revalidate"
+						},
+						{
+							"key": "Pragma",
+							"value": "no-cache"
+						},
+						{
+							"key": "Expires",
+							"value": "0"
+						},
+						{
+							"key": "X-Frame-Options",
+							"value": "DENY"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Fri, 31 Mar 2023 20:31:49 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 1,\n    \"firstName\": null,\n    \"lastName\": \"brea\",\n    \"email\": \"ebrea@uade.edu.ar\",\n    \"dni\": 94477311,\n    \"location\": {\n        \"country\": null,\n        \"provine\": null,\n        \"city\": null,\n        \"zipCode\": null,\n        \"direction\": null\n    },\n    \"externalIdentifier\": 0\n}"
+				}
+			]
 		},
 		{
 			"name": "http://localhost:8080/api/balance",
@@ -171,6 +346,82 @@
 						"api",
 						"transaction",
 						"40127028"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "findById",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/users/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"users",
+						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8090/producer",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Chito\",\r\n    \"message\": \"ocurrió algo!\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8090/producer",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"producer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8090/producer/wrong",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"wrongText\":\"Le pifiamos a algo\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8090/producer/wrong",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"producer",
+						"wrong"
 					]
 				}
 			},

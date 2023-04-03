@@ -2,13 +2,12 @@ package integracionapp.psgtrading.service;
 
 
 import integracionapp.psgtrading.dto.CoinResponseDto;
-import integracionapp.psgtrading.exception.ClientException;
+import integracionapp.psgtrading.exception.CustomRuntimeException;
+import integracionapp.psgtrading.exception.ErrorCode;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
-
-import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 
 @Service
 public class NewStockService {
@@ -30,7 +29,7 @@ public class NewStockService {
                 .header("X-CMC_PRO_API_KEY",apiKey)
                 .retrieve()
                 .bodyToMono(CoinResponseDto.class)
-                .onErrorResume( exc -> Mono.error(new ClientException(INTERNAL_SERVER_ERROR.toString(),"There was a problem")))
+                .onErrorResume(exc -> Mono.error(new CustomRuntimeException(ErrorCode.GENERAL_ERROR, "There was a problem", exc)))
                 .block();
     }
 }

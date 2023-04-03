@@ -16,7 +16,7 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 public class RefreshService {
     private final Map<StockWrapper, Boolean> stocksToRefresh;
     private static final ScheduledExecutorService scheduler = Executors.newScheduledThreadPool(1);
-    private static final Duration refreshPeriod = Duration.ofSeconds(15);
+    private static final Duration refreshPeriod = Duration.ofSeconds(30);
 
     public RefreshService() {
         this.stocksToRefresh = new HashMap<>();
