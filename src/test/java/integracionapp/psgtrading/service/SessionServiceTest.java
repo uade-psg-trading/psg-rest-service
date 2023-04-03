@@ -38,9 +38,9 @@ class SessionServiceTest {
         when(userRepository.findByEmailIgnoreCase(any(String.class)))
                 .thenReturn(Optional.of(mockUser));
 
-        String tocken = sessionService.login(email,"password");
+        String token = sessionService.login(email,"password");
 
-        Assertions.assertNotNull(tocken);
+        Assertions.assertNotNull(token);
     }
 
 }
