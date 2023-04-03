@@ -1,5 +1,6 @@
 package integracionapp.psgtrading.service;
 
+import integracionapp.psgtrading.exception.CustomRuntimeException;
 import integracionapp.psgtrading.model.Location;
 import integracionapp.psgtrading.model.User;
 import integracionapp.psgtrading.repository.UserRepository;
@@ -41,6 +42,30 @@ class SessionServiceTest {
         String token = sessionService.login(email,"password");
 
         Assertions.assertNotNull(token);
+    }
+
+    @Test
+    void login_WrongEmail() {
+        Assertions.assertThrows(CustomRuntimeException.class
+                ,() -> sessionService.login("wrong@email.com","password"));
+    }
+
+    @Test
+    void login_WrongPass(){
+        String email = "jwick@email.com";
+        String firstName = "Jhon";
+        String lastName = "Wick";
+        Integer dni = 11111;
+        String pass = "password";
+        Location location = new Location("Argentina","Buenos Aires"
+                ,"CABA","1188","Av siempre viva 123");
+        User mockUser = new User(firstName,lastName,email,pass,dni,location);
+
+        when(userRepository.findByEmailIgnoreCase(any(String.class)))
+                .thenReturn(Optional.of(mockUser));
+
+        Assertions.assertThrows(CustomRuntimeException.class
+                ,() -> sessionService.login("wrong@email.com","password"));
     }
 
 }
