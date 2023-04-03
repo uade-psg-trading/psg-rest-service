@@ -116,7 +116,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"firstName\":\"July2\",\r\n    \"lastName\":\"Bustamante2\",\r\n    \"email\":\"jbust2a@uade.edu.ar\",\r\n    \"dni\":347273383,\r\n    \"password\": \"12334\",\r\n    \"location\": {\r\n        \"country\":\"Argentina\",\r\n        \"province\":\"Buenos Aires\",\r\n        \"city\": \"CABA\",\r\n        \"zipCode\": \"1188\",\r\n        \"direction\":\"Cordoba 3915\"\r\n    }\r\n}",
+					"raw": "{\r\n    \"firstName\":\"Gonza\",\r\n    \"lastName\":\"Falange\",\r\n    \"email\":\"gfalange@gmail.com\",\r\n    \"dni\":34723373,\r\n    \"password\": \"12334\",\r\n    \"location\": {\r\n        \"country\":\"Argentina\",\r\n        \"province\":\"Buenos Aires\",\r\n        \"city\": \"CABA\",\r\n        \"zipCode\": \"1188\",\r\n        \"direction\":\"Cordoba 3915\"\r\n    }\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -367,6 +367,61 @@
 						"api",
 						"users",
 						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8090/producer",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"Chito\",\r\n    \"message\": \"ocurrió algo!\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8090/producer",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"producer"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "localhost:8090/producer/wrong",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"wrongText\":\"Le pifiamos a algo\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:8090/producer/wrong",
+					"host": [
+						"localhost"
+					],
+					"port": "8090",
+					"path": [
+						"producer",
+						"wrong"
 					]
 				}
 			},

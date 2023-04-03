@@ -24,14 +24,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(registry -> registry
-                        .requestMatchers("/users").permitAll()
+                        .requestMatchers("/users/**").permitAll()
                         .requestMatchers("/h2/**").permitAll()
                         .requestMatchers("/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .csrf().disable()
-                .cors()
-                .and().headers().frameOptions().disable()
+                .cors().disable()
+                .headers().frameOptions().disable()
                 .and().oauth2ResourceServer(OAuth2ResourceServerConfigurer::jwt)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .build();
