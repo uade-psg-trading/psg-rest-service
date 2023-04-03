@@ -1,0 +1,19 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: coretto17
+  pre_build:
+    commands:
+      - echo In the pre_build phase...
+      - mvn test
+  build:
+    commands:
+      - echo building the Jar file
+      - mvn clean package
+      - echo Build completed on `date`
+artifacts:
+  files:
+    - target/*.jar
+  discard-paths: yes
