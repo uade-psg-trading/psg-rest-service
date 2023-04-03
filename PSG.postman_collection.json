@@ -7,7 +7,46 @@
 	},
 	"item": [
 		{
-			"name": "http://localhost:8080/api/user",
+			"name": "login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"console.log(pm.response.text());\r",
+							"pm.environment.set(\"BEARER\",pm.response.text());"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"jbusta2@uade.edu.ar\",\r\n    \"password\": \"12334\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url_local}}/api/session",
+					"host": [
+						"{{url_local}}"
+					],
+					"path": [
+						"api",
+						"session"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "User list",
 			"request": {
 				"method": "GET",
 				"header": [],
@@ -116,7 +155,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"firstName\":\"Gonza\",\r\n    \"lastName\":\"Falange\",\r\n    \"email\":\"gfalange@gmail.com\",\r\n    \"dni\":34723373,\r\n    \"password\": \"12334\",\r\n    \"location\": {\r\n        \"country\":\"Argentina\",\r\n        \"province\":\"Buenos Aires\",\r\n        \"city\": \"CABA\",\r\n        \"zipCode\": \"1188\",\r\n        \"direction\":\"Cordoba 3915\"\r\n    }\r\n}",
+					"raw": "{\r\n    \"firstName\":\"Gonza\",\r\n    \"lastName\":\"Falange\",\r\n    \"email\":\"gfalange2@gmail.com\",\r\n    \"dni\":347233735,\r\n    \"password\": \"12334\",\r\n    \"location\": {\r\n        \"country\":\"Argentina\",\r\n        \"province\":\"Buenos Aires\",\r\n        \"city\": \"CABA\",\r\n        \"zipCode\": \"1188\",\r\n        \"direction\":\"Cordoba 3915\"\r\n    }\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -371,61 +410,247 @@
 				}
 			},
 			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{BEARER}}",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		},
 		{
-			"name": "localhost:8090/producer",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"title\": \"Chito\",\r\n    \"message\": \"ocurrió algo!\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": {
+				"id": "cd23dfa0-6ce4-42e7-9748-e5889aa70c3b",
+				"status": "OK",
+				"code": 200,
+				"header": [
+					{
+						"key": "X-Content-Type-Options",
+						"value": "nosniff"
+					},
+					{
+						"key": "X-XSS-Protection",
+						"value": "0"
+					},
+					{
+						"key": "Cache-Control",
+						"value": "no-cache, no-store, max-age=0, must-revalidate"
+					},
+					{
+						"key": "Pragma",
+						"value": "no-cache"
+					},
+					{
+						"key": "Expires",
+						"value": "0"
+					},
+					{
+						"key": "Content-Type",
+						"value": "text/plain;charset=UTF-8"
+					},
+					{
+						"key": "Content-Length",
+						"value": "147"
+					},
+					{
+						"key": "Date",
+						"value": "Mon, 03 Apr 2023 20:13:41 GMT"
+					},
+					{
+						"key": "Keep-Alive",
+						"value": "timeout=60"
+					},
+					{
+						"key": "Connection",
+						"value": "keep-alive"
 					}
-				},
-				"url": {
-					"raw": "localhost:8090/producer",
-					"host": [
-						"localhost"
-					],
-					"port": "8090",
-					"path": [
-						"producer"
+				],
+				"stream": {
+					"type": "Buffer",
+					"data": [
+						101,
+						121,
+						74,
+						104,
+						98,
+						71,
+						99,
+						105,
+						79,
+						105,
+						74,
+						73,
+						85,
+						122,
+						73,
+						49,
+						78,
+						105,
+						74,
+						57,
+						46,
+						101,
+						121,
+						74,
+						122,
+						100,
+						87,
+						73,
+						105,
+						79,
+						105,
+						74,
+						113,
+						89,
+						110,
+						86,
+						122,
+						100,
+						71,
+						69,
+						121,
+						81,
+						72,
+						86,
+						104,
+						90,
+						71,
+						85,
+						117,
+						90,
+						87,
+						82,
+						49,
+						76,
+						109,
+						70,
+						121,
+						73,
+						105,
+						119,
+						105,
+						90,
+						88,
+						104,
+						119,
+						73,
+						106,
+						111,
+						120,
+						78,
+						106,
+						103,
+						119,
+						78,
+						84,
+						85,
+						121,
+						79,
+						84,
+						81,
+						120,
+						76,
+						67,
+						74,
+						122,
+						89,
+						50,
+						57,
+						119,
+						90,
+						83,
+						73,
+						54,
+						73,
+						108,
+						86,
+						84,
+						82,
+						86,
+						73,
+						105,
+						102,
+						81,
+						46,
+						90,
+						109,
+						76,
+						116,
+						114,
+						51,
+						114,
+						68,
+						101,
+						52,
+						51,
+						80,
+						103,
+						85,
+						73,
+						104,
+						79,
+						70,
+						108,
+						75,
+						79,
+						117,
+						53,
+						76,
+						53,
+						70,
+						74,
+						77,
+						120,
+						121,
+						83,
+						83,
+						115,
+						101,
+						53,
+						81,
+						115,
+						75,
+						52,
+						71,
+						51,
+						117,
+						48
 					]
-				}
+				},
+				"cookie": [],
+				"responseTime": 84,
+				"responseSize": 147
 			},
-			"response": []
+			"value": ""
 		},
 		{
-			"name": "localhost:8090/producer/wrong",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"wrongText\":\"Le pifiamos a algo\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
-						}
-					}
-				},
-				"url": {
-					"raw": "localhost:8090/producer/wrong",
-					"host": [
-						"localhost"
-					],
-					"port": "8090",
-					"path": [
-						"producer",
-						"wrong"
-					]
-				}
-			},
-			"response": []
+			"key": "01d350a4-ebfc-4a5b-9993-da6d4485edaf",
+			"value": ""
 		}
 	]
 }
