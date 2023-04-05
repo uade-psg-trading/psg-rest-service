@@ -3,7 +3,7 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      java: coretto17
+      java: corretto17
   pre_build:
     commands:
       - echo In the pre_build phase...
