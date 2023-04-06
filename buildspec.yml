@@ -12,6 +12,8 @@ phases:
     commands:
       - export CODEARTIFACT_TOKEN=`aws codeartifact get-authorization-token --domain psg-trading --domain-owner 927181815713 --region us-east-1 --query authorizationToken --output text`
       - echo building the Jar file
+      - echo ${env.CODEARTIFACT_TOKEN}
+      - echo ${CODEARTIFACT_TOKEN}
       - mvn -s settings.xml clean package deploy
       - echo Build completed on `date`
 artifacts:
