@@ -10,9 +10,8 @@ phases:
       - pip3 install awscli --upgrade --user
   build:
     commands:
-      - export CODEARTIFACT_TOKEN=`aws codeartifact get-authorization-token --domain psg-trading --domain-owner 927181815713 --region us-east-1 --query authorizationToken --output text`
       - echo building the Jar file
-      - mvn -s settings.xml clean package deploy
+      - mvn clean package
       - echo Build completed on `date`
 artifacts:
   files:
