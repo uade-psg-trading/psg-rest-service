@@ -3,17 +3,19 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      java: coretto17
+      java: corretto17
   pre_build:
     commands:
-      - echo In the pre_build phase...
-      - mvn test
+      - echo In the pre build phase
+      - pip3 install awscli --upgrade --user
   build:
     commands:
+      - export CODEARTIFACT_TOKEN=`aws codeartifact get-authorization-token --domain psg-trading --domain-owner 927181815713 --region us-east-1 --query authorizationToken --output text`
       - echo building the Jar file
-      - mvn clean package
+      - mvn -s settings.xml clean package deploy
       - echo Build completed on `date`
 artifacts:
   files:
     - target/*.jar
+    - .ebextensions/**/*
   discard-paths: yes
