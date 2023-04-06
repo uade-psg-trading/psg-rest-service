@@ -6,6 +6,7 @@ phases:
       java: corretto17
   pre_build:
     commands:
+      - echo In the pre build phase
       - pip3 install awscli --upgrade --user
   build:
     commands:
