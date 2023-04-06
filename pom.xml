@@ -21,6 +21,13 @@
 		<sonar.jacoco.reportPath>${project.basedir}/../target/jacoco.exec</sonar.jacoco.reportPath>
 		<sonar.language>java</sonar.language>
 	</properties>
+	<distributionManagement>
+		<repository>
+			<id>psg-trading-psg-trading-repo</id>
+			<name>psg-trading-psg-trading-repo</name>
+			<url>https://psg-trading-927181815713.d.codeartifact.us-east-1.amazonaws.com/maven/psg-trading-repo/</url>
+		</repository>
+	</distributionManagement>
 	<dependencies>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
