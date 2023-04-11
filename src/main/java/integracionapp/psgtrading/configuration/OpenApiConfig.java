@@ -26,7 +26,7 @@ public class OpenApiConfig {
 
         Info info = new Info()
                 .description("Here's some information about Trading GPS, as well as a bunch of market´s price.")
-                .title("GPS trading")
+                .title("PSG trading")
                 .version("1.0.0")
                 .contact(new Contact().url("https://trading.com.ar"));
 
