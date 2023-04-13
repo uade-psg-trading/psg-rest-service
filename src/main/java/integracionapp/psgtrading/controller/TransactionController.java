@@ -8,7 +8,6 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -37,7 +36,7 @@ public class TransactionController {
     }
 
     @GetMapping("/{external_identifier}")
-    public ResponseEntity<List<Transaction>> getUserTransactions(@PathVariable("external_identifier") long externalIdentifier) {
+    public ResponseEntity<List<Transaction>> getUserTransactions(@PathVariable("external_identifier") String externalIdentifier) {
         try {
             User user = userRepository.findByExternalIdentifier(externalIdentifier).orElseThrow(EntityNotFoundException::new);
             List<Transaction> transactions = new ArrayList<>(transactionRepository.findByUser(user));
@@ -49,13 +48,13 @@ public class TransactionController {
 
     @PostMapping("/{external_identifier}")
     public ResponseEntity<Transaction> createTransaction(@RequestBody Transaction transaction,
-                                                         @PathVariable("external_identifier") long externalIdentifier) {
+                                                         @PathVariable("external_identifier") String externalIdentifier) {
         try {
             User user = userRepository.findByExternalIdentifier(externalIdentifier).orElseThrow(EntityNotFoundException::new);
-            Transaction _transaction = transactionRepository
+            Transaction newTransaction = transactionRepository
                     .save(new Transaction(transaction.getToken(), transaction.getQuantity(), transaction.getPrice(),
                             transaction.getBalance(), transaction.getOperation(), LocalDateTime.now(), user));
-            return new ResponseEntity<>(_transaction, HttpStatus.CREATED);
+            return new ResponseEntity<>(newTransaction, HttpStatus.CREATED);
         } catch (EntityNotFoundException exc) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found", exc);
         }
