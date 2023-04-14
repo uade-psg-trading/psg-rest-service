@@ -1,5 +1,6 @@
 package integracionapp.psgtrading.exception;
 
+import integracionapp.psgtrading.dto.GenericDTO;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -21,35 +22,28 @@ public class GlobalErrorHandler {
 
     @ResponseStatus(code = HttpStatus.BAD_REQUEST)
     @ExceptionHandler({ MethodArgumentNotValidException.class })
-    public ResponseEntity<Error> noSuchElementHandler(MethodArgumentNotValidException e, HttpServletRequest request) {
+    public ResponseEntity<GenericDTO> noSuchElementHandler(MethodArgumentNotValidException e, HttpServletRequest request) {
         String message = e.getBindingResult().getFieldErrors().stream()
                 .map(error -> error.getField() + ": " + error.getDefaultMessage())
                 .collect(Collectors.joining(". "));
         return ResponseEntity
                 .status(400)
-                .body(new Error(ErrorCode.INVALID_PARAMETER.name(), message));
+                .body(GenericDTO.error(message));
     }
 
     @ExceptionHandler({ CustomRuntimeException.class })
-    public ResponseEntity<Error> customRunTimeExceptionHandler(CustomRuntimeException e, HttpServletRequest request) {
+    public ResponseEntity<GenericDTO> customRunTimeExceptionHandler(CustomRuntimeException e, HttpServletRequest request) {
         tryToLog(e, request);
         return ResponseEntity
                 .status(e.getCode().getStatus())
-                .body(new Error(e.getCode().name(), e.getMessage()));
+                .body(GenericDTO.error(e.getMessage()));
     }
 
     @ResponseStatus(code = HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler({ Exception.class })
-    public ResponseEntity<Error> defaultHandler(Exception e, HttpServletRequest request) {
+    public ResponseEntity<GenericDTO> defaultHandler(Exception e, HttpServletRequest request) {
         log.error("Not handled error", e);
-        return ResponseEntity.internalServerError().body(new Error("GENERAL", e.getMessage()));
-    }
-
-    @AllArgsConstructor
-    @Getter
-    public static class Error {
-        private final String code;
-        private final String description;
+        return ResponseEntity.internalServerError().body(GenericDTO.error(e.getMessage()));
     }
 
     private void tryToLog(CustomRuntimeException e, HttpServletRequest request) {
@@ -57,5 +51,12 @@ public class GlobalErrorHandler {
             //log.error("General error - Request {}", request.getHeader("x-request-id"), e);
             log.error("General error", e);
         }
+    }
+
+    @AllArgsConstructor
+    @Getter
+    public static class Error {
+        private final String code;
+        private final String description;
     }
 }

@@ -1,6 +1,7 @@
 package integracionapp.psgtrading.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import integracionapp.psgtrading.dto.GenericDTO;
 import integracionapp.psgtrading.dto.UserDTO;
 import integracionapp.psgtrading.model.User;
 import integracionapp.psgtrading.service.UserService;
@@ -14,7 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 
-
 @RestController
 @AllArgsConstructor
 @RequestMapping("/users")
@@ -24,9 +24,10 @@ public class UserController {
     private final ObjectMapper objectMapper;
 
     @GetMapping
-    public Page<UserDTO> getAllUsers(Pageable pageable) {
-       return userService.findAll(pageable)
-         .map(this::getUserDTO);
+    public GenericDTO<Page<UserDTO>> getAllUsers(Pageable pageable) {
+        Page<UserDTO> userDto = userService.findAll(pageable)
+                .map(this::getUserDTO);
+       return GenericDTO.success(userDto);
     }
 
     @PostMapping
@@ -34,19 +35,22 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "409", description = "User already exists")
     })
-    public UserDTO createUser(@RequestBody @Valid UserDTO user) {
+    public GenericDTO<UserDTO> createUser(@RequestBody @Valid UserDTO user) {
         User u = userService.saveUser(user.getEmail(), user.getFirstName(),
                 user.getLastName(), user.getDni(), user.getLocation(), user.getPassword());
-        return getUserDTO(u);
+        UserDTO userDto = getUserDTO(u);
+        return GenericDTO.success(userDto);
     }
 
     @GetMapping("/{id}")
-    public UserDTO getUserById(@PathVariable long id){ return getUserDTO(userService.findById(id));}
+    public GenericDTO<UserDTO> getUserById(@PathVariable long id){
+        return GenericDTO.success(getUserDTO(userService.findById(id)));
+    }
 
     @PutMapping("/{id}")
-    public UserDTO updateUser(@RequestBody UserDTO user){
+    public GenericDTO<UserDTO> updateUser(@RequestBody UserDTO user){
         User u = userService.updateUser(user.getEmail(),user.getPassword(),user.getFirstName(),user.getLastName(),user.getDni());
-        return getUserDTO(u);
+        return GenericDTO.success(getUserDTO(u));
     }
 
     private UserDTO getUserDTO(User u) {
