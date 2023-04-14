@@ -1,5 +1,6 @@
 package integracionapp.psgtrading.controller;
 
+import integracionapp.psgtrading.dto.GenericDTO;
 import integracionapp.psgtrading.model.Transaction;
 import integracionapp.psgtrading.model.User;
 import integracionapp.psgtrading.repository.TransactionRepository;
@@ -29,32 +30,32 @@ public class TransactionController {
     }
 
     @GetMapping()
-    public ResponseEntity<List<Transaction>> getAllTransactions() {
+    public ResponseEntity<GenericDTO<List<Transaction>>> getAllTransactions() {
         List<Transaction> transactions = new ArrayList<>(transactionRepository.findAll());
-        return new ResponseEntity<>(transactions, HttpStatus.OK);
+        return new ResponseEntity<>(GenericDTO.success(transactions), HttpStatus.OK);
 
     }
 
     @GetMapping("/{external_identifier}")
-    public ResponseEntity<List<Transaction>> getUserTransactions(@PathVariable("external_identifier") String externalIdentifier) {
+    public ResponseEntity<GenericDTO<List<Transaction>>> getUserTransactions(@PathVariable("external_identifier") String externalIdentifier) {
         try {
             User user = userRepository.findByExternalIdentifier(externalIdentifier).orElseThrow(EntityNotFoundException::new);
             List<Transaction> transactions = new ArrayList<>(transactionRepository.findByUser(user));
-            return new ResponseEntity<>(transactions, HttpStatus.OK);
+            return new ResponseEntity<>(GenericDTO.success(transactions), HttpStatus.OK);
         } catch (EntityNotFoundException exc) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found", exc);
         }
     }
 
     @PostMapping("/{external_identifier}")
-    public ResponseEntity<Transaction> createTransaction(@RequestBody Transaction transaction,
+    public ResponseEntity<GenericDTO<Transaction>> createTransaction(@RequestBody Transaction requestTransaction,
                                                          @PathVariable("external_identifier") String externalIdentifier) {
         try {
             User user = userRepository.findByExternalIdentifier(externalIdentifier).orElseThrow(EntityNotFoundException::new);
-            Transaction newTransaction = transactionRepository
-                    .save(new Transaction(transaction.getToken(), transaction.getQuantity(), transaction.getPrice(),
-                            transaction.getBalance(), transaction.getOperation(), LocalDateTime.now(), user));
-            return new ResponseEntity<>(newTransaction, HttpStatus.CREATED);
+            Transaction transaction = transactionRepository
+                    .save(new Transaction(requestTransaction.getToken(), requestTransaction.getQuantity(), requestTransaction.getPrice(),
+                            requestTransaction.getBalance(), requestTransaction.getOperation(), LocalDateTime.now(), user));
+            return new ResponseEntity<>(GenericDTO.success(transaction), HttpStatus.CREATED);
         } catch (EntityNotFoundException exc) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found", exc);
         }
