@@ -17,11 +17,8 @@ public class PaymentDTO {
     @NotNull
     @Min(16)
     private String cardNumber;
-    @Max(3)
     private Integer cardExpirationDateMonth;
-    @Max(3)
     private Integer cardExpirationDateDay;
-    @Max(3)
     private Integer cardSecurityCode;
     private String bankName;
     private String accountNumber;

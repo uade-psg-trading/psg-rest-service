@@ -30,7 +30,7 @@ public class BalanceController {
 
     @GetMapping()
     public ResponseEntity<List<Balance>> getTokenBalances(@RequestParam(required = false) String token,
-                                                          @RequestParam(required = false) Long externalIdentifier) {
+                                                          @RequestParam(required = false) String externalIdentifier) {
         List<Balance> balances;
         try {
             if (token != null && externalIdentifier == null) {
@@ -55,12 +55,12 @@ public class BalanceController {
 
     @PostMapping("/{external_identifier}")
     public ResponseEntity<Balance> createBalance(@RequestBody Balance balance,
-                                                 @PathVariable("external_identifier") long externalIdentifier) {
+                                                 @PathVariable("external_identifier") String externalIdentifier) {
         try {
             User user = userRepository.findByExternalIdentifier(externalIdentifier).orElseThrow(EntityNotFoundException::new);
-            Balance b = balanceRepository
+            Balance _balance = balanceRepository
                     .save(new Balance(balance.getSymbol(), balance.getAmount(), user, LocalDateTime.now()));
-            return new ResponseEntity<>(b, HttpStatus.CREATED);
+            return new ResponseEntity<>(_balance, HttpStatus.CREATED);
         } catch (EntityNotFoundException exc) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found", exc);
         }
