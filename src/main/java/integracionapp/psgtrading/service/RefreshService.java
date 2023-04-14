@@ -39,6 +39,6 @@ public class RefreshService {
                     stocksToRefresh.remove(stock);
                     stocksToRefresh.put(stock.withLastAccessed(LocalDateTime.now()), true);
                 }
-            }), 0, 15, SECONDS);
+            }), 0, 60, SECONDS);
     }
 }

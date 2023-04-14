@@ -1,7 +1,6 @@
 package integracionapp.psgtrading.service;
 
 import integracionapp.psgtrading.exception.CustomRuntimeException;
-import integracionapp.psgtrading.exception.ErrorCode;
 import integracionapp.psgtrading.model.Location;
 import integracionapp.psgtrading.model.User;
 import integracionapp.psgtrading.repository.UserRepository;

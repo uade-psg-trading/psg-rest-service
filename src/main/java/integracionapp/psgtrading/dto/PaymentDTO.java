@@ -17,15 +17,17 @@ public class PaymentDTO {
     @NotNull
     @Min(16)
     private String cardNumber;
-    @Max(2)
+    @Max(3)
     private Integer cardExpirationDateMonth;
-    @Max(2)
+    @Max(3)
     private Integer cardExpirationDateDay;
     @Max(3)
-    private String cardSecurityCode;
+    private Integer cardSecurityCode;
     private String bankName;
     private String accountNumber;
     @Schema(example = "John Wick")
     private String accountHolderName;
+    @Schema(example = "jwick@mail.com")
+    private String email;
 
 }
