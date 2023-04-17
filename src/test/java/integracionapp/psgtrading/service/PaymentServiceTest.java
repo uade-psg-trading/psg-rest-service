@@ -30,7 +30,7 @@ class PaymentServiceTest {
     void creditCardPayment_OK(){
         Income payment = new Income("4456",200.30, LocalDate.now(),
                 PaymenMethod.CREDIT_CARD,"jwick@mail.com");
-        Card creditCard = new Card("4456",12,02,"234","Bankcity","",
+        Card creditCard = new Card("4456",12,02,237,"Bankcity","",
                 "J Wick");
         String email = "jhon@email.com";
         String firstName = "Jhon";

@@ -16,5 +16,5 @@ public class Location {
     private String province;
     private String city;
     private String zipCode;
-    private String direction;
+    private String address;
 }

@@ -20,22 +20,18 @@ public class RefreshService {
 
     public RefreshService() {
         this.stocksToRefresh = new HashMap<>();
-        setRefreshEvery15Minutes();
+        setRefreshEvery60SECONDS();
     }
 
     public boolean shouldRefresh(final StockWrapper stock) {
-        if(!stocksToRefresh.containsKey(stock)) {
-            stocksToRefresh.put(stock, true);
-            return true;
-        }
+        stocksToRefresh.computeIfAbsent(stock, k -> true);
         return stocksToRefresh.get(stock);
     }
-
-    public void setRefreshEvery15Minutes() {
+    public void setRefreshEvery60SECONDS() {
         scheduler.scheduleAtFixedRate(() ->
             stocksToRefresh.forEach((stock, value)-> {
-                if(stock.getLastAccessed().isBefore(LocalDateTime.now().minus(refreshPeriod))) {
-                    System.out.println("Actualizar configuración" + stock.getStock().getSymbol());
+                if(stock.getLastAccessed().isBefore(
+                        LocalDateTime.now().minus(refreshPeriod))) {
                     stocksToRefresh.remove(stock);
                     stocksToRefresh.put(stock.withLastAccessed(LocalDateTime.now()), true);
                 }

@@ -13,7 +13,7 @@ import java.util.Arrays;
 import java.util.List;
 
 @SpringBootTest
-public class StockServiceTest {
+class StockServiceTest {
 
     @Autowired
     private StockService stockService;
