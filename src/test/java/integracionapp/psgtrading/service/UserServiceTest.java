@@ -48,8 +48,8 @@ import static org.mockito.Mockito.*;
     }
 
     @Test
-    void create_EmailInUse() {
-        when(userRepository.findByEmailIgnoreCase(any())).thenReturn(Optional.of(new User()));
+    void create_EmailOrDniInUse() {
+        when(userRepository.findByEmailIgnoreCaseOrDni(any(),any())).thenReturn(Optional.of(new User()));
         Assertions.assertThrows(CustomRuntimeException.class
                 , () -> userService.saveUser("any@mail.com", "", ""
                 ,999, null, ""));

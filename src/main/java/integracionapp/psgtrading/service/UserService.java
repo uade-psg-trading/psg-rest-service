@@ -26,9 +26,9 @@ public class UserService {
     }
 
     public User saveUser(String email, String name, String lastName, Integer dni, Location location, String password) {
-        Optional<User> opt = userRepository.findByEmailIgnoreCase(email);
+        Optional<User> opt = userRepository.findByEmailIgnoreCaseOrDni(email, dni);
         if (opt.isPresent()) {
-            throw new CustomRuntimeException(ErrorCode.INVALID_STATE, "Email in use");
+            throw new CustomRuntimeException(ErrorCode.INVALID_STATE, "Email Or DNI in use");
         }
         password = passwordEncoder.encode(password);
         email = email.toLowerCase();
