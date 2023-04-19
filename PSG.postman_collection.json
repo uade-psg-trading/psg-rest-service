@@ -13,14 +13,17 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"console.log(pm.response.text());\r",
-							"pm.environment.set(\"BEARER\",pm.response.text());"
+							"var jsonData = pm.response.json();\r",
+							"pm.environment.set(\"BEARER\",jsonData.data.jwt);"
 						],
 						"type": "text/javascript"
 					}
 				}
 			],
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
@@ -151,6 +154,9 @@
 		{
 			"name": "create user",
 			"request": {
+				"auth": {
+					"type": "noauth"
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
@@ -406,6 +412,33 @@
 						"api",
 						"users",
 						"1"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "buyToken",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"amount\": 30.10,\r\n    \"paymentMethod\": \"CREDIT_CARD\",\r\n    \"cardNumber\": \"1234567891012342\",\r\n    \"cardExpirationDateMonth\": 12,\r\n    \"cardExpirationDateDay\":10,\r\n    \"cardSecurityCode\": 232,\r\n    \"accountNumber\": \"33334323\",\r\n    \"bankName\":\"Jbustamante\",\r\n    \"accountHolderName\": \"j bus\",\r\n    \"email\": \"jbusta2@uade.edu.ar\"\r\n\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url_local}}/api/payments",
+					"host": [
+						"{{url_local}}"
+					],
+					"path": [
+						"api",
+						"payments"
 					]
 				}
 			},

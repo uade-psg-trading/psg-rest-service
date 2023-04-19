@@ -13,14 +13,14 @@ import java.util.Arrays;
 import java.util.List;
 
 @SpringBootTest
-public class StockServiceTest {
+class StockServiceTest {
 
     @Autowired
     private StockService stockService;
     @Test
     void invoke_Stock() throws IOException {
         //find stock united utilities group
-        final StockWrapper stock = stockService.findStock("UU.L");
+        final StockWrapper stock = stockService.findStock("PSG-USD");
         System.out.println(stock.getStock());
 
         final BigDecimal price = stockService.findPrice(stock);

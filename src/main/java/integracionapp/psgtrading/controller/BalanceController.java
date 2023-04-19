@@ -35,10 +35,10 @@ public class BalanceController {
         List<Balance> balances;
         try {
             if (token != null && externalIdentifier == null) {
-                balances = new ArrayList<>(balanceRepository.findByToken(token));
+                balances = new ArrayList<>(balanceRepository.findBySymbol(token));
             } else if (token != null) {
                 User user = userRepository.findByExternalIdentifier(externalIdentifier).orElseThrow(IllegalArgumentException::new);
-                balances = new ArrayList<>(balanceRepository.findByTokenAndUser(token, user));
+                balances = new ArrayList<>(balanceRepository.findBySymbolAndUser(token, user));
             } else if (externalIdentifier != null) {
                 User user = userRepository.findByExternalIdentifier(externalIdentifier).orElseThrow(IllegalArgumentException::new);
                 balances = balanceRepository.findByUser(user);
@@ -60,7 +60,7 @@ public class BalanceController {
         try {
             User user = userRepository.findByExternalIdentifier(externalIdentifier).orElseThrow(EntityNotFoundException::new);
             Balance newBalance = balanceRepository
-                    .save(new Balance(balance.getToken(), balance.getBalance(), user, LocalDateTime.now()));
+                    .save(new Balance(balance.getSymbol(), balance.getAmount(), user, LocalDateTime.now()));
             return new ResponseEntity<>(GenericDTO.success(newBalance), HttpStatus.CREATED);
         } catch (EntityNotFoundException exc) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found", exc);
