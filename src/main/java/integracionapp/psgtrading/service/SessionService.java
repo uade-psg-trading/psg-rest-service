@@ -27,7 +27,7 @@ public class SessionService {
             throw new CustomRuntimeException(ErrorCode.FORBIDDEN, "You do not have permissions for this request");
         }
 
-        Instant expiration = Instant.now().plusMillis(120_000);
+        Instant expiration = Instant.now().plusMillis(300_000);
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .subject(email)
                 .expiresAt(expiration)

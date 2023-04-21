@@ -14,14 +14,14 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "Balance",
-        uniqueConstraints = { @UniqueConstraint(columnNames = { "user_id", "token" }) })
+        uniqueConstraints = { @UniqueConstraint(columnNames = { "user_id", "symbol" }) })
 public class Balance {
     @Id
-    @Column(name = "token")
-    private String token;
+    @Column(name = "symbol")
+    private String symbol;
 
-    @Column(name = "balance")
-    private Double balance;
+    @Column(name = "amount")
+    private Double amount;
 
     @ManyToOne
     @JoinColumn(name ="user_id", nullable=false)

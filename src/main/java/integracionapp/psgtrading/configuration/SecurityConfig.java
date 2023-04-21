@@ -24,6 +24,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http.authorizeHttpRequests(registry -> registry
+                        .requestMatchers(HttpMethod.POST, "/users").permitAll()
                         .requestMatchers("/session").permitAll()
                         .requestMatchers("/coins").permitAll()
                         .requestMatchers("/coins/**").permitAll()
