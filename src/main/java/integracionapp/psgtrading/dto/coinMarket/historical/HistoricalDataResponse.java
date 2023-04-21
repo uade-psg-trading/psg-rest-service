@@ -1,24 +1,23 @@
-package integracionapp.psgtrading.dto;
+package integracionapp.psgtrading.dto.coinMarket.historical;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import integracionapp.psgtrading.dto.coinMarket.Status;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.reactivestreams.Publisher;
 
 import java.io.Serializable;
 
-@lombok.Data
+@Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CoinResponseDto implements Serializable {
-
-
+public class HistoricalDataResponse implements Serializable {
 
     @JsonProperty("data")
-    private Data data;
+    private HistoricalData data;
     @JsonProperty("status")
-    private Estado estado;
+    private Status status;
 
 }

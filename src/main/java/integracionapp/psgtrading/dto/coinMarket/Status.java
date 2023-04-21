@@ -1,5 +1,6 @@
-package integracionapp.psgtrading.dto;
+package integracionapp.psgtrading.dto.coinMarket;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -11,13 +12,19 @@ import java.io.Serializable;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Estado  implements Serializable {
+public class Status implements Serializable {
 
+    @JsonProperty("error_message")
     private String error_message;
+    @JsonProperty("elapsed")
     private Integer elapsed;
+    @JsonProperty("credit_count")
     private Integer credit_count;
+    @JsonProperty("error_code")
     private Integer error_code;
+    @JsonProperty("timestamp")
     private String timestamp;
+    @JsonProperty("notice")
     private String notice;
 
 }

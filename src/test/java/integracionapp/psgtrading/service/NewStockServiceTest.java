@@ -20,9 +20,9 @@ class NewStockServiceTest {
   @DisplayName("When the stock price is requested the response is a Double")
   void getStockPrice() {
 
-    when(newStockService.getStockPrice()).thenReturn(getCoinResponse());
+    when(newStockService.getStockPrice("PSG")).thenReturn(getCoinResponse());
     
-    CoinResponseDto coinResponseDto = newStockService.getStockPrice();
+    CoinResponseDto coinResponseDto = newStockService.getStockPrice("PSG");
     Double price = coinResponseDto.getData().getPSG().getQuote().getUSD().getPrice();
     assertTrue(price instanceof Double);
   }
