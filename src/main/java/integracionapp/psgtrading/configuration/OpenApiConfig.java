@@ -1,5 +1,6 @@
 package integracionapp.psgtrading.configuration;
 
+import integracionapp.psgtrading.dto.GenericDTO;
 import integracionapp.psgtrading.exception.ErrorCode;
 import integracionapp.psgtrading.exception.GlobalErrorHandler;
 import io.swagger.v3.core.converter.AnnotatedType;
@@ -26,7 +27,7 @@ public class OpenApiConfig {
 
         Info info = new Info()
                 .description("Here's some information about Trading GPS, as well as a bunch of market´s price.")
-                .title("GPS trading")
+                .title("PSG trading")
                 .version("1.0.0")
                 .contact(new Contact().url("https://trading.com.ar"));
 
@@ -37,7 +38,7 @@ public class OpenApiConfig {
     public OpenApiCustomizer openApiCustomizer() {
         return openApi -> {
             Schema<?> errorSchema = ModelConverters.getInstance()
-                    .resolveAsResolvedSchema(new AnnotatedType(GlobalErrorHandler.Error.class)).schema;
+                    .resolveAsResolvedSchema(new AnnotatedType(GenericDTO.class)).schema;
             openApi.getPaths()
                     .forEach((key, value) -> 
                             value.readOperations()

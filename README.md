@@ -83,7 +83,7 @@ mvn test
 ```
 
 ## Documentation 📖
-[Click link](http://localhost:8080/swagger-ui/index.html#/)
+[Click link](http://localhost:8080/api/swagger-ui/index.html#/)
 
 ## How to setup SonarLint with IntelliJ IDEA
 1. Go to File > Settings > Plugins and select Marketplace. Now enter “SonarLint” and click install.
