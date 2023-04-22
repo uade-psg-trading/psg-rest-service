@@ -32,6 +32,7 @@ public class SessionService {
                 .subject(email)
                 .expiresAt(expiration)
                 .claim("scope", "USER")
+                .claim(JwtConfig.TENANT_CLAIM, user.getTenantId())
                 .build();
         JwsHeader jwsHeader = JwsHeader.with(JwtConfig.ALGORITHM).build();
         Jwt jwt = jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader, claims));

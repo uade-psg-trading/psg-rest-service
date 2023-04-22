@@ -37,7 +37,7 @@ import static org.mockito.Mockito.*;
                 .thenReturn(mockUser);
 
         User user = userService.saveUser(email,firstName, lastName,
-                dni,location,pass);
+                dni,location,pass,"psg");
 
         Assertions.assertNotNull(user);
         Assertions.assertEquals(firstName,user.getFirstName());
@@ -48,10 +48,10 @@ import static org.mockito.Mockito.*;
 
     @Test
     void create_EmailOrDniInUse() {
-        when(userRepository.findByEmailIgnoreCaseOrDni(any(),any())).thenReturn(Optional.of(new User()));
+        when(userRepository.findByEmailIgnoreCaseAndTenantId(any(),any())).thenReturn(Optional.of(new User()));
         Assertions.assertThrows(CustomRuntimeException.class
                 , () -> userService.saveUser("any@mail.com", "", ""
-                ,999, null, ""));
+                ,999, null, "","default"));
     }
 
     @Test

@@ -25,6 +25,10 @@ public class UserDTO {
     private String email;
 
     @NotBlank
+    @Schema(example = "psg")
+    private String tenantId;
+
+    @NotBlank
     @Schema(example = "my-password")
     private String password;
 
