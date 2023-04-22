@@ -1,4 +1,4 @@
-package integracionapp.psgtrading.dto.coinMarket.historical;
+package integracionapp.psgtrading.dto.coinMarket;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -7,8 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
-import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @Builder

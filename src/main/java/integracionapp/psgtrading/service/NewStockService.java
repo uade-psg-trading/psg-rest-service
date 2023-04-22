@@ -3,6 +3,9 @@ package integracionapp.psgtrading.service;
 
 import integracionapp.psgtrading.dto.CoinResponseDto;
 import integracionapp.psgtrading.dto.coinMarket.historical.HistoricalDataResponse;
+import integracionapp.psgtrading.dto.coinMarket.latest.LatestDataResponse;
+import integracionapp.psgtrading.dto.coinMarket.response.CoinDTO;
+import integracionapp.psgtrading.dto.coinMarket.response.LatestDataResponseBuilder;
 import integracionapp.psgtrading.exception.CustomRuntimeException;
 import integracionapp.psgtrading.exception.ErrorCode;
 import org.springframework.beans.factory.annotation.Value;
@@ -38,6 +41,23 @@ public class NewStockService {
                     }
                 })
                 .block();
+    }
+
+    public CoinDTO getCoinPrice(String symbol) {
+        LatestDataResponse responsecm = webClient.get()
+                .uri(host , uriBuilder -> uriBuilder.path("cryptocurrency/quotes/latest").queryParam("symbol",symbol).build())
+                .header("X-CMC_PRO_API_KEY",apiKey)
+                .exchangeToMono(response -> {
+                    if(response.statusCode().equals(HttpStatus.OK)){
+                        return response.bodyToMono(LatestDataResponse.class);
+                    }else{
+                        return response.createException()
+                                .flatMap(Mono::error);
+                    }
+                })
+                .block();
+
+        return new LatestDataResponseBuilder(responsecm, symbol).build();
     }
 
     public HistoricalDataResponse getHistoricalStockPrice(String symbol) {

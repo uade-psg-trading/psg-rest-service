@@ -1,4 +1,4 @@
-package integracionapp.psgtrading.dto.coinMarket.historical;
+package integracionapp.psgtrading.dto.coinMarket;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
@@ -26,5 +26,7 @@ public class USD implements Serializable {
     private Double total_supply;
     @JsonProperty("timestamp")
     private String timestamp;
+    @JsonProperty("percent_change_24h")
+    private Double percent_change_24h;
 
 }

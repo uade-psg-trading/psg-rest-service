@@ -34,7 +34,7 @@ public class MonedaController {
     @GetMapping("/{symbol}")
     public ResponseEntity<List<Transaction>> getCoin(@PathVariable("symbol") String symbol) {
 
-        System.out.println(newStockService.getStockPrice(symbol));
+        System.out.println(newStockService.getCoinPrice(symbol));
 
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
 
