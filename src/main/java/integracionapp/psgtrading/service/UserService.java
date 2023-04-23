@@ -39,7 +39,7 @@ public class UserService {
     }
 
     public User findById(long id){
-        String tenant = TenantUtils.getTenant();
+        String tenant = AuthorizationService.getTenant();
         return userRepository.findByIdAndBalances_tenantId(id, tenant)
                 .orElseThrow();
     }
