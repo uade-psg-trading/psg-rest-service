@@ -30,12 +30,12 @@ public class BalanceController {
         this.balanceService = balanceService;
     }
     @GetMapping()
-    public ResponseEntity<List<Yield>> getAllByUser(@RequestBody Balance balance,
+    public GenericDTO<List<Yield>> getAllByUser(@RequestBody Balance balance,
                                                  @PathVariable("external_identifier") String externalIdentifier) {
         try {
             User user = userRepository.findByExternalIdentifier(externalIdentifier).orElseThrow(EntityNotFoundException::new);
             List<Yield> yields = balanceService.getYieldsByUser(user);
-            return new ResponseEntity<>(yields, HttpStatus.OK);
+            return GenericDTO.success(yields);
         } catch (EntityNotFoundException exc) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found", exc);
         }
