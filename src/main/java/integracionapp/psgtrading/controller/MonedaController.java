@@ -1,6 +1,5 @@
 package integracionapp.psgtrading.controller;
 
-import integracionapp.psgtrading.dto.coinMarket.historical.HistoricalDataResponse;
 import integracionapp.psgtrading.model.Transaction;
 import integracionapp.psgtrading.service.NewStockService;
 import lombok.AllArgsConstructor;
@@ -22,30 +21,12 @@ public class MonedaController {
 
     private final NewStockService newStockService;
 
-    @GetMapping()
-    public ResponseEntity<List<Transaction>> getAllCoins() {
-
-        System.out.println(newStockService.getAllStock());
-
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
-
-    }
-
     @GetMapping("/{symbol}")
     public ResponseEntity<List<Transaction>> getCoin(@PathVariable("symbol") String symbol) {
 
         System.out.println(newStockService.getCoinPrice(symbol));
 
         return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
-
-    }
-
-    @GetMapping("/historical/{symbol}")
-    public ResponseEntity<HistoricalDataResponse> getHistoricalCoin(@PathVariable("symbol") String symbol) {
-
-        HistoricalDataResponse response = newStockService.getHistoricalStockPrice(symbol);
-
-        return new ResponseEntity<>(response, HttpStatus.OK);
 
     }
 

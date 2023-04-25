@@ -10,5 +10,6 @@ public class CoinDTO {
     private String name;
     private Double price;
     private Double percent_change_24h;
+    private Double volume_change_24h;
 
 }

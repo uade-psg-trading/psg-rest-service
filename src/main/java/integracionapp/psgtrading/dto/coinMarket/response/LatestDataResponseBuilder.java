@@ -1,10 +1,9 @@
 package integracionapp.psgtrading.dto.coinMarket.response;
 
-import integracionapp.psgtrading.dto.coinMarket.coins.Coin;
+import integracionapp.psgtrading.dto.coinMarket.Coin;
 import integracionapp.psgtrading.dto.coinMarket.latest.LatestDataResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 
 @AllArgsConstructor
 @Builder
@@ -22,6 +21,7 @@ public class LatestDataResponseBuilder {
         coinDto.setPrice(coin.getQuote().getUSD().getPrice());
         coinDto.setPercent_change_24h(coin.getQuote().getUSD().getPercent_change_24h());
         coinDto.setSymbol(this.symbol);
+        coinDto.setVolume_change_24h(coin.getQuote().getUSD().getVolume_change_24h());
 
         return coinDto;
     }

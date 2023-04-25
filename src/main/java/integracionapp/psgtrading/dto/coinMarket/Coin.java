@@ -1,4 +1,4 @@
-package integracionapp.psgtrading.dto.coinMarket.coins;
+package integracionapp.psgtrading.dto.coinMarket;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import integracionapp.psgtrading.dto.coinMarket.Quote;

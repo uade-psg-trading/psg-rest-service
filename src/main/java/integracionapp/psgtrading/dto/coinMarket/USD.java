@@ -18,8 +18,8 @@ public class USD implements Serializable {
     private Double market_cap;
     @JsonProperty("price")
     private Double price;
-    @JsonProperty("volume_24h")
-    private Double volume_24h;
+    @JsonProperty("volume_change_24h")
+    private Double volume_change_24h;
     @JsonProperty("circulating_supply")
     private Double circulating_supply;
     @JsonProperty("total_supply")
