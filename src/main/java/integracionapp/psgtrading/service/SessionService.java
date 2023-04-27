@@ -55,8 +55,6 @@ public class SessionService {
         Optional<User> user = userRepository.findByEmailIgnoreCase(email);
         Jwt jwt;
         if (!user.isPresent()) {
-            System.out.println("User not exists");
-            // el usuario no existe, lo creamos
             String name = (String) payload.get("given_name");
             String lastName = (String) payload.get("family_name");
             String pictureUrl = (String) payload.get("picture");
@@ -64,7 +62,6 @@ public class SessionService {
             User newUser = userService.saveUser(email, name, lastName, null, null, payload.getSubject(), tenant);
             jwt = createJwtSession(newUser);
         } else {
-            System.out.println("User exists");
             jwt = createJwtSession(user.get());
         }
 
