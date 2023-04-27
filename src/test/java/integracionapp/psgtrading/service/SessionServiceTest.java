@@ -21,6 +21,8 @@ class SessionServiceTest {
     private SessionService sessionService;
     @MockBean
     private UserRepository userRepository;
+    @MockBean
+    private UserService userService;
 
     @Autowired
     private  PasswordEncoder passwordEncoder;

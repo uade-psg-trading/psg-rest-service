@@ -1,4 +1,4 @@
-package integracionapp.psgtrading.dto.login;
+package integracionapp.psgtrading.model.provider;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -10,8 +10,9 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class LoginResponseDTO {
+public class LoginProvider {
+    private String email;
+    private String provider;
     private String jwt;
     private String refreshToken;
-    private String email;
 }
