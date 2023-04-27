@@ -57,8 +57,6 @@ public class SessionService {
         if (!user.isPresent()) {
             String name = (String) payload.get("given_name");
             String lastName = (String) payload.get("family_name");
-            String pictureUrl = (String) payload.get("picture");
-            String locale = (String) payload.get("locale");
             User newUser = userService.saveUser(email, name, lastName, null, null, payload.getSubject(), tenant);
             jwt = createJwtSession(newUser);
         } else {
