@@ -29,9 +29,10 @@ public class SessionService {
 
         Instant expiration = Instant.now().plusMillis(300_000);
         JwtClaimsSet claims = JwtClaimsSet.builder()
-                .subject(email)
+                .subject(String.valueOf(user.getId()))
                 .expiresAt(expiration)
                 .claim("scope", "USER")
+                .claim(JwtConfig.TENANT_CLAIM, user.getTenantId())
                 .build();
         JwsHeader jwsHeader = JwsHeader.with(JwtConfig.ALGORITHM).build();
         Jwt jwt = jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader, claims));

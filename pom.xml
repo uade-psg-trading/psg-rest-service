@@ -72,6 +72,11 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>com.yahoofinance-api</groupId>
 			<artifactId>YahooFinanceAPI</artifactId>
 			<version>3.17.0</version>

@@ -19,6 +19,9 @@ public class Income {
     @SequenceGenerator(name = "seq_user", sequenceName = "seq_user", allocationSize = 1)
     private long id;
     // 4 últimos digitos de la tarjeta de credito o transacicon id
+
+    @Column(name = "tenant_id")
+    private String tenantId;
     private String paymentId;
     private double amount;
     private LocalDate historicalDate;
