@@ -35,9 +35,10 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "409", description = "User already exists")
     })
-    public GenericDTO<UserDTO> createUser(@RequestBody @Valid UserDTO user) {
+    public GenericDTO<UserDTO> createUser( @RequestBody @Valid UserDTO user) {
         User u = userService.saveUser(user.getEmail(), user.getFirstName(),
-                user.getLastName(), user.getDni(), user.getLocation(), user.getPassword());
+                    user.getLastName(), user.getDni(), user.getLocation(),
+                    user.getPassword(),user.getTenantId());
         UserDTO userDto = getUserDTO(u);
         return GenericDTO.success(userDto);
     }

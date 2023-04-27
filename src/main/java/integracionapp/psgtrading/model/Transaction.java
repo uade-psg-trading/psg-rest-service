@@ -14,6 +14,9 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+    @Column(name = "tenant_id")
+    private String tenantId;
+
     @Column(name = "token")
     private String token;
 

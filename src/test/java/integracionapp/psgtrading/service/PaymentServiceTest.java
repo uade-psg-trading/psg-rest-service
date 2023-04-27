@@ -37,9 +37,10 @@ class PaymentServiceTest {
         String lastName = "Wick";
         Integer dni = 11111;
         String pass = "password";
+        String tenant = "tenant";
         Location location = new Location("Argentina","Buenos Aires"
                 ,"CABA","1188","Av siempre viva 123");
-        User mockUser = new User(firstName,lastName,email,pass,dni,location);
+        User mockUser = new User(firstName,lastName,email,pass,dni,location,tenant);
         when(userRepository.findByEmailIgnoreCase(any())).thenReturn(Optional.of(mockUser));
         when(userRepository.save(any(User.class))).thenReturn(any(User.class));
         paymentService.creditCardPayment(payment, creditCard);
