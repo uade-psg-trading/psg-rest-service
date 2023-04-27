@@ -1,5 +1,8 @@
 package integracionapp.psgtrading.controller;
 
+import integracionapp.psgtrading.dto.GenericDTO;
+import integracionapp.psgtrading.dto.coinMarket.response.CoinDTO;
+import integracionapp.psgtrading.dto.response.Yield;
 import integracionapp.psgtrading.model.Transaction;
 import integracionapp.psgtrading.service.NewStockService;
 import lombok.AllArgsConstructor;
@@ -15,18 +18,16 @@ import java.util.List;
 
 @RestController
 @AllArgsConstructor
-@RequestMapping("/coins")
+@RequestMapping("/coin")
 public class MonedaController {
 
 
     private final NewStockService newStockService;
 
     @GetMapping("/{symbol}")
-    public ResponseEntity<List<Transaction>> getCoin(@PathVariable("symbol") String symbol) {
+    public GenericDTO<CoinDTO> getCoin(@PathVariable("symbol") String symbol) {
 
-        System.out.println(newStockService.getCoinPrice(symbol));
-
-        return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
+        return GenericDTO.success(newStockService.getCoinPrice(symbol));
 
     }
 

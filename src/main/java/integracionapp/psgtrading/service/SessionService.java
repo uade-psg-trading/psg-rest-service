@@ -18,6 +18,7 @@ public class SessionService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtEncoder jwtEncoder;
+    private final JwtService jwtService;
     public String login(String email, String password) {
         email = email.toLowerCase();
         User user = userRepository.findByEmailIgnoreCase(email)
@@ -27,14 +28,6 @@ public class SessionService {
             throw new CustomRuntimeException(ErrorCode.FORBIDDEN, "You do not have permissions for this request");
         }
 
-        Instant expiration = Instant.now().plusMillis(300_000);
-        JwtClaimsSet claims = JwtClaimsSet.builder()
-                .subject(email)
-                .expiresAt(expiration)
-                .claim("scope", "USER")
-                .build();
-        JwsHeader jwsHeader = JwsHeader.with(JwtConfig.ALGORITHM).build();
-        Jwt jwt = jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader, claims));
-        return jwt.getTokenValue();
+        return jwtService.generateJWT(email);
     }
 }

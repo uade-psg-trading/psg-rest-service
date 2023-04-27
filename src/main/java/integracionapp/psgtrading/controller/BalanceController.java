@@ -7,6 +7,7 @@ import integracionapp.psgtrading.model.User;
 import integracionapp.psgtrading.repository.BalanceRepository;
 import integracionapp.psgtrading.repository.UserRepository;
 import integracionapp.psgtrading.service.BalanceService;
+import integracionapp.psgtrading.service.JwtService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,17 +24,21 @@ import java.util.List;
 public class BalanceController {
     private final BalanceService balanceService;
     private final UserRepository userRepository;
+    private final JwtService jwtService;
 
     @Autowired
-    public BalanceController(BalanceService balanceService, UserRepository userRepository) {
+    public BalanceController(BalanceService balanceService, UserRepository userRepository, JwtService jwtService) {
         this.userRepository = userRepository;
         this.balanceService = balanceService;
+        this.jwtService = jwtService;
     }
     @GetMapping()
-    public GenericDTO<List<Yield>> getAllByUser(@RequestBody Balance balance,
-                                                 @PathVariable("external_identifier") String externalIdentifier) {
+    public GenericDTO<List<Yield>> getAllByUser(@RequestHeader("Authorization") String jwt) {
         try {
-            User user = userRepository.findByExternalIdentifier(externalIdentifier).orElseThrow(EntityNotFoundException::new);
+
+            jwtService.decodeJWT(jwt);
+
+            User user = userRepository.findById(Long.getLong("1")).orElseThrow(EntityNotFoundException::new);
             List<Yield> yields = balanceService.getYieldsByUser(user);
             return GenericDTO.success(yields);
         } catch (EntityNotFoundException exc) {
