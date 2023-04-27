@@ -1,6 +1,7 @@
 package integracionapp.psgtrading.controller;
 
 import integracionapp.psgtrading.dto.GenericDTO;
+import integracionapp.psgtrading.dto.JWTObjectDTO;
 import integracionapp.psgtrading.dto.response.Yield;
 import integracionapp.psgtrading.model.Balance;
 import integracionapp.psgtrading.model.User;
@@ -36,9 +37,9 @@ public class BalanceController {
     public GenericDTO<List<Yield>> getAllByUser(@RequestHeader("Authorization") String jwt) {
         try {
 
-            jwtService.decodeJWT(jwt);
+            JWTObjectDTO jwtObjectDTO = jwtService.decodeJWT(jwt);
 
-            User user = userRepository.findById(Long.getLong("1")).orElseThrow(EntityNotFoundException::new);
+            User user = userRepository.findById(jwtObjectDTO.getUserId()).orElseThrow(EntityNotFoundException::new);
             List<Yield> yields = balanceService.getYieldsByUser(user);
             return GenericDTO.success(yields);
         } catch (EntityNotFoundException exc) {

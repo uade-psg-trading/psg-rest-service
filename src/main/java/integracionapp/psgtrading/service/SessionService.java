@@ -1,6 +1,7 @@
 package integracionapp.psgtrading.service;
 
 import integracionapp.psgtrading.configuration.JwtConfig;
+import integracionapp.psgtrading.dto.JWTObjectDTO;
 import integracionapp.psgtrading.exception.CustomRuntimeException;
 import integracionapp.psgtrading.exception.ErrorCode;
 import integracionapp.psgtrading.model.User;
@@ -28,6 +29,6 @@ public class SessionService {
             throw new CustomRuntimeException(ErrorCode.FORBIDDEN, "You do not have permissions for this request");
         }
 
-        return jwtService.generateJWT(email);
+        return jwtService.generateJWT(new JWTObjectDTO(email, user.getId()));
     }
 }
