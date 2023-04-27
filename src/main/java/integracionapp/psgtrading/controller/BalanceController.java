@@ -19,7 +19,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/balance")
 public class  BalanceController {
-    private figinal BalanceRepository balanceRepository;
+    private final BalanceRepository balanceRepository;
     private final UserRepository userRepository;
 
     @Autowired
