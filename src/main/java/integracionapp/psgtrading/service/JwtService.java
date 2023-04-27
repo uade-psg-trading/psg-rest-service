@@ -23,6 +23,7 @@ public class JwtService {
                 .claim("scope", "USER")
                 .claim("userID", jwtObjectDTO.getUserId())
                 .claim("email", jwtObjectDTO.getEmail())
+                .claim(JwtConfig.TENANT_CLAIM, jwtObjectDTO.getTenantId())
                 .build();
         JwsHeader jwsHeader = JwsHeader.with(JwtConfig.ALGORITHM).build();
         Jwt jwt = jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader, claims));
@@ -33,7 +34,7 @@ public class JwtService {
 
         Jwt jwt = jwtDecoder.decode(token.replace("Bearer ", ""));
 
-        return new JWTObjectDTO(jwt.getClaim("email"), jwt.getClaim("userID"));
+        return new JWTObjectDTO(jwt.getClaim("email"), jwt.getClaim("userID"), jwt.getClaim(JwtConfig.TENANT_CLAIM));
 
     }
 

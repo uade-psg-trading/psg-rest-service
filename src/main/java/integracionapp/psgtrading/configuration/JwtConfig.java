@@ -18,6 +18,7 @@ import java.nio.charset.StandardCharsets;
 
 @Configuration
 public class JwtConfig {
+    public static final String TENANT_CLAIM = "tenant";
     private final SecretKey secretKey;
     public static final MacAlgorithm ALGORITHM = MacAlgorithm.HS256;
 

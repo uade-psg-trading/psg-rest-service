@@ -22,6 +22,8 @@ public class User {
     @SequenceGenerator(name = "seq_user", sequenceName = "seq_user", allocationSize = 1)
     private long id;
 
+    @Column(name="tenant_id", nullable = false)
+    private String tenantId;
     @Schema(example = "John")
     private String firstName;
 

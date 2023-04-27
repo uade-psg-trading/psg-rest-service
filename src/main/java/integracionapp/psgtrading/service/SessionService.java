@@ -29,6 +29,6 @@ public class SessionService {
             throw new CustomRuntimeException(ErrorCode.FORBIDDEN, "You do not have permissions for this request");
         }
 
-        return jwtService.generateJWT(new JWTObjectDTO(email, user.getId()));
+        return jwtService.generateJWT(new JWTObjectDTO(email, user.getId(), user.getTenantId()));
     }
 }

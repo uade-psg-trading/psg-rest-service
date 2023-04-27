@@ -11,5 +11,6 @@ public class JWTObjectDTO {
 
     private String email;
     private long userId;
+    private String tenantId;
 
 }
