@@ -8,6 +8,7 @@ import integracionapp.psgtrading.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -25,19 +26,21 @@ public class UserService {
         return userRepository.findAll(pageable);
     }
 
-    public User saveUser(String email, String name, String lastName, Integer dni, Location location, String password) {
-        Optional<User> opt = userRepository.findByEmailIgnoreCaseOrDni(email, dni);
+    public User saveUser(String email, String name, String lastName, Integer dni,
+                         Location location, String password, String tenant) {
+        Optional<User> opt = userRepository.findByEmailIgnoreCaseAndTenantId(email, tenant);
         if (opt.isPresent()) {
-            throw new CustomRuntimeException(ErrorCode.INVALID_STATE, "Email Or DNI in use");
+            throw new CustomRuntimeException(ErrorCode.INVALID_STATE, "Email in use");
         }
         password = passwordEncoder.encode(password);
         email = email.toLowerCase();
-        User user = new User(name, lastName, email, password, dni, location);
+        User user = new User(name, lastName, email, password, dni, location, tenant);
         return userRepository.save(user);
     }
 
     public User findById(long id){
-        return userRepository.findById(id)
+        String tenant = AuthorizationService.getTenant();
+        return userRepository.findByIdAndBalances_tenantId(id, tenant)
                 .orElseThrow();
     }
 

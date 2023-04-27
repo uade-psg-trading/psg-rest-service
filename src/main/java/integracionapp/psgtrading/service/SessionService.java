@@ -30,5 +30,6 @@ public class SessionService {
         }
 
         return jwtService.generateJWT(new JWTObjectDTO(email, user.getId(), user.getTenantId()));
+
     }
 }
