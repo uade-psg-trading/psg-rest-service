@@ -10,7 +10,7 @@ import java.util.List;
 public interface BalanceRepository extends JpaRepository<Balance, Long> {
     List<Balance> findByUser(User user);
 
-    List<Balance> findByToken(String token);
+    List<Balance> findBySymbol(String symbol);
 
-    List<Balance> findByTokenAndUser(String token, User user);
+    List<Balance> findBySymbolAndUser(String symbol, User user);
 }

@@ -21,6 +21,8 @@ class SessionServiceTest {
     private SessionService sessionService;
     @MockBean
     private UserRepository userRepository;
+    @MockBean
+    private UserService userService;
 
     @Autowired
     private  PasswordEncoder passwordEncoder;
@@ -31,10 +33,11 @@ class SessionServiceTest {
         String firstName = "Jhon";
         String lastName = "Wick";
         Integer dni = 11111;
+        String tenant = "TENANT";
         String pass = passwordEncoder.encode("password");
         Location location = new Location("Argentina","Buenos Aires"
                 ,"CABA","1188","Av siempre viva 123");
-        User mockUser = new User(firstName,lastName,email,pass,dni,location);
+        User mockUser = new User(firstName,lastName,email,pass,dni,location, tenant);
 
         when(userRepository.findByEmailIgnoreCase(any(String.class)))
                 .thenReturn(Optional.of(mockUser));
@@ -57,9 +60,10 @@ class SessionServiceTest {
         String lastName = "Wick";
         Integer dni = 11111;
         String pass = "password";
+        String tenant = "TENANT";
         Location location = new Location("Argentina","Buenos Aires"
                 ,"CABA","1188","Av siempre viva 123");
-        User mockUser = new User(firstName,lastName,email,pass,dni,location);
+        User mockUser = new User(firstName,lastName,email,pass,dni,location, tenant);
 
         when(userRepository.findByEmailIgnoreCase(any(String.class)))
                 .thenReturn(Optional.of(mockUser));

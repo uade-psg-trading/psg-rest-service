@@ -1,9 +1,10 @@
 package integracionapp.psgtrading.service;
 
+import integracionapp.psgtrading.exception.CustomRuntimeException;
+import integracionapp.psgtrading.exception.ErrorCode;
 import integracionapp.psgtrading.model.StockWrapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
-import yahoofinance.Stock;
 import yahoofinance.YahooFinance;
 
 import java.io.IOException;
@@ -21,10 +22,8 @@ public class StockService {
         try {
             return new StockWrapper(YahooFinance.get(ticker));
         } catch (IOException e) {
-            System.out.println("Error al obtener stock en YahooFinance");
+            throw new CustomRuntimeException(ErrorCode.GENERAL_ERROR, "Yahoo finance error");
         }
-
-        return null;
     }
     public BigDecimal findPrice(final StockWrapper stock) throws IOException {
         return stock.getStock().getQuote(refreshService.shouldRefresh(stock)).getPrice();
