@@ -1,8 +1,8 @@
 package integracionapp.psgtrading.service;
 
-import integracionapp.psgtrading.dto.coinMarket.latest.LatestDataResponse;
-import integracionapp.psgtrading.dto.coinMarket.response.CoinDTO;
-import integracionapp.psgtrading.dto.coinMarket.response.LatestDataResponseBuilder;
+import integracionapp.psgtrading.dto.coins.latest.LatestDataResponse;
+import integracionapp.psgtrading.dto.coins.response.CoinDTO;
+import integracionapp.psgtrading.dto.coins.response.LatestDataResponseBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;

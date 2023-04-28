@@ -1,7 +1,7 @@
-package integracionapp.psgtrading.dto.coinMarket.response;
+package integracionapp.psgtrading.dto.coins.response;
 
-import integracionapp.psgtrading.dto.coinMarket.Coin;
-import integracionapp.psgtrading.dto.coinMarket.latest.LatestDataResponse;
+import integracionapp.psgtrading.dto.coins.Coin;
+import integracionapp.psgtrading.dto.coins.latest.LatestDataResponse;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
