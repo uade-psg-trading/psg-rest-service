@@ -20,6 +20,10 @@ public class Balance {
     @Column(name = "symbol")
     private String symbol;
 
+
+    @Column(name = "tenant_id")
+    private String tenantId;
+
     @Column(name = "amount")
     private Double amount;
 
@@ -30,4 +34,10 @@ public class Balance {
     @Column(name = "update_time")
     private LocalDateTime updateTime;
 
+    public Balance(String symbol, Double amount, User user, LocalDateTime updateTime) {
+        this.symbol = symbol;
+        this.amount = amount;
+        this.user = user;
+        this.updateTime = updateTime;
+    }
 }

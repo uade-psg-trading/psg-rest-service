@@ -59,12 +59,13 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private Set<Income> historicalIncome;
 
-    public User(String firstName, String lastName, String email, String password, Integer dni, Location location) {
+    public User(String firstName, String lastName, String email, String password, Integer dni, Location location,  String tenantId) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.password = password;
         this.dni = dni;
         this.location = location;
+        this.tenantId = tenantId;
     }
 }
