@@ -2,6 +2,8 @@ package integracionapp.psgtrading.dto.coins.response;
 
 import integracionapp.psgtrading.dto.coins.Coin;
 import integracionapp.psgtrading.dto.coins.latest.LatestDataResponse;
+import integracionapp.psgtrading.exception.CustomRuntimeException;
+import integracionapp.psgtrading.exception.ErrorCode;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
@@ -69,6 +71,9 @@ public class LatestDataResponseBuilder {
             case "NAP": {
                 coin = this.response.getData().getNAP();
                 break;
+            }
+            default: {
+                throw new CustomRuntimeException(ErrorCode.GENERAL_ERROR, "Coin not found");
             }
         }
         return coin;
