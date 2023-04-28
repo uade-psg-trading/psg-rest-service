@@ -32,7 +32,6 @@ public class UserDTO {
     @Schema(example = "my-password")
     private String password;
 
-
     private Integer dni;
 
     private Location location;
