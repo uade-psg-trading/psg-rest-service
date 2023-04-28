@@ -3,6 +3,7 @@ package integracionapp.psgtrading.service;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import integracionapp.psgtrading.configuration.JwtConfig;
+import integracionapp.psgtrading.dto.JWTObjectDTO;
 import integracionapp.psgtrading.exception.CustomRuntimeException;
 import integracionapp.psgtrading.exception.ErrorCode;
 import integracionapp.psgtrading.model.User;
@@ -25,6 +26,7 @@ public class SessionService {
     private final UserService userService;
     private final PasswordEncoder passwordEncoder;
     private final JwtEncoder jwtEncoder;
+    private final JwtService jwtService;
     private final GoogleIdTokenVerifier googleIdTokenVerifier;
 
     public String login(String email, String password) {
@@ -36,8 +38,8 @@ public class SessionService {
             throw new CustomRuntimeException(ErrorCode.FORBIDDEN, "You do not have permissions for this request");
         }
 
-        Jwt jwt = createJwtSession(user);
-        return jwt.getTokenValue();
+        return jwtService.generateJWT(new JWTObjectDTO(email, user.getId(), user.getTenantId()));
+
     }
 
     public LoginProvider loginThroughProvider(String idToken, String tenant) throws IOException, GeneralSecurityException {
@@ -66,16 +68,4 @@ public class SessionService {
         return new LoginProvider(email, "google", jwt.getTokenValue(), "");
     }
 
-    private Jwt createJwtSession(User user) {
-        Instant expiration = Instant.now().plusMillis(300_000);
-        JwtClaimsSet claims = JwtClaimsSet.builder()
-                .subject(String.valueOf(user.getId()))
-                .expiresAt(expiration)
-                .claim("scope", "USER")
-                .claim(JwtConfig.TENANT_CLAIM, user.getTenantId())
-                .build();
-        JwsHeader jwsHeader = JwsHeader.with(JwtConfig.ALGORITHM).build();
-        Jwt jwt = jwtEncoder.encode(JwtEncoderParameters.from(jwsHeader, claims));
-        return jwt;
-    }
 }

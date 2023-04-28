@@ -1,10 +1,10 @@
 package integracionapp.psgtrading.service;
 
-
-import integracionapp.psgtrading.dto.CoinResponseDto;
-import integracionapp.psgtrading.exception.CustomRuntimeException;
-import integracionapp.psgtrading.exception.ErrorCode;
+import integracionapp.psgtrading.dto.coinMarket.latest.LatestDataResponse;
+import integracionapp.psgtrading.dto.coinMarket.response.CoinDTO;
+import integracionapp.psgtrading.dto.coinMarket.response.LatestDataResponseBuilder;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
@@ -22,15 +22,22 @@ public class NewStockService {
         this.apiKey = apiKey;
         this.host = host;
     }
-
-    public CoinResponseDto getStockPrice() {
-        return webClient.get()
-                .uri(host , uriBuilder -> uriBuilder.path("cryptocurrency/quotes/latest").queryParam("symbol","PSG").build())
+    public CoinDTO getCoinPrice(String symbol) {
+        LatestDataResponse responsecm = webClient.get()
+                .uri(host , uriBuilder -> uriBuilder.path("cryptocurrency/quotes/latest").queryParam("symbol",symbol).build())
                 .header("X-CMC_PRO_API_KEY",apiKey)
-                .retrieve()
-                .bodyToMono(CoinResponseDto.class)
-                .onErrorResume(exc -> Mono.error(new CustomRuntimeException(ErrorCode.GENERAL_ERROR, "There was a problem", exc)))
+                .exchangeToMono(response -> {
+                    if(response.statusCode().equals(HttpStatus.OK)){
+                        return response.bodyToMono(LatestDataResponse.class);
+                    }else{
+                        return response.createException()
+                                .flatMap(Mono::error);
+                    }
+                })
                 .block();
+
+        return new LatestDataResponseBuilder(responsecm, symbol).build();
     }
+
 }
 
