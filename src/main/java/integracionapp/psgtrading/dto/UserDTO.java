@@ -24,7 +24,6 @@ public class UserDTO {
     @Schema(example = "user@mail.com")
     private String email;
 
-    @NotBlank
     @Schema(example = "psg")
     private String tenantId;
 
@@ -32,7 +31,7 @@ public class UserDTO {
     @Schema(example = "my-password")
     private String password;
 
-    @NotNull
+    @NotBlank
     private Integer dni;
 
     private Location location;
