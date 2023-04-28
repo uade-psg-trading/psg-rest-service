@@ -24,7 +24,6 @@ public class UserDTO {
     @Schema(example = "user@mail.com")
     private String email;
 
-    @NotBlank
     @Schema(example = "psg")
     private String tenantId;
 

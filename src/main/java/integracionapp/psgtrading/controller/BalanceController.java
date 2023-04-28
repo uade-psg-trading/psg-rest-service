@@ -18,7 +18,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/balance")
-public class  BalanceController {
+public class BalanceController {
     private final BalanceRepository balanceRepository;
     private final UserRepository userRepository;
 
