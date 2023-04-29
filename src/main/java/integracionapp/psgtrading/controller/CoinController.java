@@ -1,7 +1,7 @@
 package integracionapp.psgtrading.controller;
 
 import integracionapp.psgtrading.dto.GenericDTO;
-import integracionapp.psgtrading.dto.coinMarket.response.CoinDTO;
+import integracionapp.psgtrading.dto.coins.response.CoinDTO;
 import integracionapp.psgtrading.service.NewStockService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;

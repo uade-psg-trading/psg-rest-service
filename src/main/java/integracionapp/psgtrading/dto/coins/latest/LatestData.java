@@ -1,7 +1,7 @@
-package integracionapp.psgtrading.dto.coinMarket.latest;
+package integracionapp.psgtrading.dto.coins.latest;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import integracionapp.psgtrading.dto.coinMarket.Coin;
+import integracionapp.psgtrading.dto.coins.Coin;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
