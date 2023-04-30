@@ -6,7 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Table
 @Getter
@@ -23,7 +23,7 @@ public class Income {
     @Column(name = "tenant_id")
     private String tenantId;
     private double amount;
-    private LocalDate historicalDate;
+    private LocalDateTime historicalDate;
     private PaymenMethod paymentMethod;
 
     @ManyToOne
@@ -32,7 +32,7 @@ public class Income {
 
     public Income(double amount, PaymenMethod paymentMethod, User user, String tenantId) {
         this.amount = amount;
-        this.historicalDate = LocalDate.now();
+        this.historicalDate = LocalDateTime.now();
         this.paymentMethod = paymentMethod;
         this.user = user;
         this.tenantId = tenantId;
