@@ -1,20 +1,21 @@
 package integracionapp.psgtrading.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
+import integracionapp.psgtrading.dto.GenericDTO;
+import integracionapp.psgtrading.dto.JWTObjectDTO;
 import integracionapp.psgtrading.dto.PaymenMethod;
 import integracionapp.psgtrading.dto.PaymentDTO;
-import integracionapp.psgtrading.model.Card;
 import integracionapp.psgtrading.model.Income;
+import integracionapp.psgtrading.model.User;
+import integracionapp.psgtrading.repository.UserRepository;
+import integracionapp.psgtrading.service.JwtService;
 import integracionapp.psgtrading.service.PaymentService;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-import java.time.LocalDate;
 
 @RestController
 @AllArgsConstructor
@@ -22,27 +23,20 @@ import java.time.LocalDate;
 public class PaymentController {
 
     private final PaymentService paymentService;
-    private final ObjectMapper objectMapper;
+    private final JwtService jwtService;
+    private final UserRepository userRepository;
     @PostMapping
-    public ResponseEntity<String> processPayment(@RequestBody @Valid PaymentDTO p) {
-        if (p.getPaymentMethod().equals(PaymenMethod.CREDIT_CARD)) {
-           Card d = new Card(p.getCardNumber(), p.getCardExpirationDateMonth(),
-                   p.getCardExpirationDateDay(),p.getCardSecurityCode(),p.getBankName(),p.getAccountNumber(),
-                   p.getAccountHolderName());
-            Income incomePay = new Income(getPaimentID(p.getCardNumber()),p.getAmount(),
-                    LocalDate.now(), p.getPaymentMethod(), p.getEmail());
-            paymentService.creditCardPayment(incomePay, d);
-        } else if (p.getPaymentMethod().equals(PaymenMethod.TRANSFER)) {
-            Income incomePay = new Income(p.getAccountHolderName(), p.getAmount(),
-                    LocalDate.now(),p.getPaymentMethod(),p.getEmail());
-            paymentService.transferPayment(incomePay);
-        } else {
-            return ResponseEntity.badRequest().body("Método de pago no válido");
+    public ResponseEntity<GenericDTO<String>> processPayment(@RequestBody @Valid PaymentDTO p,
+                                                 @RequestHeader("Authorization") String jwt) {
+        JWTObjectDTO jwtObjectDTO = jwtService.decodeJWT(jwt);
+        User user = userRepository.findById(jwtObjectDTO.getUserId()).orElseThrow(EntityNotFoundException::new);
+        if(p.getPaymentMethod() != PaymenMethod.TRANSFER && p.getPaymentMethod() != PaymenMethod.CREDIT_CARD){
+            return ResponseEntity.status(400).body(GenericDTO.error("Método de pago no válido"));
         }
-        return ResponseEntity.ok("Pago procesado exitosamente");
+        Income incomePay = new Income(p.getAmount(),p.getPaymentMethod(), user, user.getTenantId());
+        paymentService.transferPayment(incomePay, user);
+
+        return new ResponseEntity<>(GenericDTO.success("Payment processed correctly."), HttpStatus.CREATED);
     }
 
-    private String getPaimentID(String s) {
-        return s.substring(s.length() - 4 );
-    }
 }

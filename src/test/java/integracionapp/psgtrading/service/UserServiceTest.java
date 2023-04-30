@@ -71,7 +71,7 @@ import static org.mockito.Mockito.*;
                 ,"CABA","1188","Av siempre viva 123");
         User mockUser = new User(firstName,lastName,email,pass,dni,location,tenantId);
 
-        when(userRepository.findByIdAndBalances_tenantId(any(long.class),any()))
+        when(userRepository.findByIdAndTenantId(any(long.class),any()))
                 .thenReturn(Optional.of(mockUser));
 
         Assertions.assertEquals(mockUser, userService.findById(1l));
@@ -96,7 +96,7 @@ import static org.mockito.Mockito.*;
                         .of(mockUser));
         when(userRepository.save(mockUser)).thenReturn(mockUpdatedUser);
 
-        Assertions.assertEquals(mockUpdatedUser,userService.updateUser(email,"July"
+        Assertions.assertEquals(mockUpdatedUser,userService.updateUser(mockUser,"July"
                 ,lastName,pass,dni));
     }
 

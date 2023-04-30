@@ -16,7 +16,7 @@ public class JwtService {
     private final JwtDecoder jwtDecoder;
 
     public String generateJWT(JWTObjectDTO jwtObjectDTO){
-        Instant expiration = Instant.now().plusMillis(300_000);
+        Instant expiration = Instant.now().plusMillis(3_600_000);
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .subject(jwtObjectDTO.getEmail())
                 .expiresAt(expiration)

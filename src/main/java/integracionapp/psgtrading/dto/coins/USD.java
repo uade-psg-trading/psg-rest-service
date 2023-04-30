@@ -1,4 +1,4 @@
-package integracionapp.psgtrading.dto.coinMarket;
+package integracionapp.psgtrading.dto.coins;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;

@@ -1,5 +1,6 @@
 package integracionapp.psgtrading.dto.response;
 
+import integracionapp.psgtrading.model.Symbol;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class Yield {
 
-    private String symbol;
+    private Symbol symbol;
     private Double price;
     private Double percent_change_24h;
     private Double amount;

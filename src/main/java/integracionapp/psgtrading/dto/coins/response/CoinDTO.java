@@ -1,4 +1,4 @@
-package integracionapp.psgtrading.dto.coinMarket.response;
+package integracionapp.psgtrading.dto.coins.response;
 
 import lombok.Data;
 

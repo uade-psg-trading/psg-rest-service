@@ -1,10 +1,13 @@
 package integracionapp.psgtrading.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.PositiveOrZero;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -14,30 +17,33 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "Balance",
-        uniqueConstraints = { @UniqueConstraint(columnNames = { "user_id", "symbol" }) })
+        uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "symbol"})})
 public class Balance {
     @Id
-    @Column(name = "symbol")
-    private String symbol;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "balance_id")
+    private long balance_id;
 
+    @JsonIgnore
+    @ManyToOne
+    @JoinColumn(name = "symbol", nullable = false)
+    private Symbol symbol;
 
-    @Column(name = "tenant_id")
-    private String tenantId;
-
+    @PositiveOrZero
     @Column(name = "amount")
     private Double amount;
 
     @ManyToOne
-    @JoinColumn(name ="user_id", nullable=false)
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Column(name = "update_time")
+    @UpdateTimestamp
     private LocalDateTime updateTime;
 
-    public Balance(String symbol, Double amount, User user, LocalDateTime updateTime) {
+    public Balance(Symbol symbol, Double amount, User user) {
         this.symbol = symbol;
         this.amount = amount;
         this.user = user;
-        this.updateTime = updateTime;
     }
 }

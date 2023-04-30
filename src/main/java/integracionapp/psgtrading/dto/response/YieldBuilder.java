@@ -1,6 +1,6 @@
 package integracionapp.psgtrading.dto.response;
 
-import integracionapp.psgtrading.dto.coinMarket.response.CoinDTO;
+import integracionapp.psgtrading.dto.coins.response.CoinDTO;
 import integracionapp.psgtrading.model.Balance;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
