@@ -22,22 +22,19 @@ public class Income {
 
     @Column(name = "tenant_id")
     private String tenantId;
-    private String paymentId;
     private double amount;
     private LocalDate historicalDate;
-
-    private String email;
     private PaymenMethod paymentMethod;
 
     @ManyToOne
     @JoinColumn(name = "user_id", nullable=false)
     private User user;
 
-    public Income(String paymentId, double amount, LocalDate historicalDate, PaymenMethod paymentMethod, String email) {
-        this.paymentId = paymentId;
+    public Income(double amount, PaymenMethod paymentMethod, User user, String tenantId) {
         this.amount = amount;
-        this.historicalDate = historicalDate;
+        this.historicalDate = LocalDate.now();
         this.paymentMethod = paymentMethod;
-        this.email = email;
+        this.user = user;
+        this.tenantId = tenantId;
     }
 }
