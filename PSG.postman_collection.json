@@ -1,9 +1,9 @@
 {
 	"info": {
-		"_postman_id": "3f288d0b-ed33-4f44-9382-858c529be812",
+		"_postman_id": "d0523394-c7db-4b7c-b826-3b544addcc37",
 		"name": "PSG",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
-		"_exporter_id": "1079556"
+		"_exporter_id": "14469653"
 	},
 	"item": [
 		{
@@ -13,8 +13,8 @@
 					"listen": "test",
 					"script": {
 						"exec": [
-							"var jsonData = pm.response.json();\r",
-							"pm.environment.set(\"BEARER\",jsonData.data.jwt);"
+							"console.log(pm.response.text());\r",
+							"pm.environment.set(\"BEARER\",pm.response.text());"
 						],
 						"type": "text/javascript"
 					}
@@ -28,7 +28,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"email\": \"jbusta2@uade.edu.ar\",\r\n    \"password\": \"12334\"\r\n}",
+					"raw": "{\r\n    \"email\": \"gfalange@gmail.com\",\r\n    \"password\": \"12334\"  \r\n \r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -51,15 +51,23 @@
 		{
 			"name": "User list",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnZmFsYW5nZUBnbWFpbC5jb20iLCJzY29wZSI6IlVTRVIiLCJleHAiOjE2ODI4MDcwNDUsInVzZXJJRCI6MSwiZW1haWwiOiJnZmFsYW5nZUBnbWFpbC5jb20iLCJ0ZW5hbnQiOiJkZWZhdWx0In0.FS-WBqmBD1td0YUwnApj79Gu_7mDYE35fRHeOqxwWXg",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/users",
-					"protocol": "http",
+					"raw": "{{url_local}}/api/users",
 					"host": [
-						"localhost"
+						"{{url_local}}"
 					],
-					"port": "8080",
 					"path": [
 						"api",
 						"users"
@@ -161,7 +169,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"firstName\":\"Gonza\",\r\n    \"lastName\":\"Falange\",\r\n    \"email\":\"gfalange2@gmail.com\",\r\n    \"dni\":347233735,\r\n    \"password\": \"12334\",\r\n    \"location\": {\r\n        \"country\":\"Argentina\",\r\n        \"province\":\"Buenos Aires\",\r\n        \"city\": \"CABA\",\r\n        \"zipCode\": \"1188\",\r\n        \"direction\":\"Cordoba 3915\"\r\n    }\r\n}",
+					"raw": "{\r\n    \"firstName\":\"Gonza\",\r\n    \"lastName\":\"Falange\",\r\n    \"email\":\"gfalange@gmail.com\",\r\n    \"dni\":347233735,\r\n    \"tenantId\":\"default\",\r\n    \"password\": \"12334\",    \r\n    \"location\": {\r\n        \"country\":\"Argentina\",\r\n        \"province\":\"Buenos Aires\",\r\n        \"city\": \"CABA\",\r\n        \"zipCode\": \"1188\",\r\n        \"direction\":\"Cordoba 3915\"\r\n    }\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -169,12 +177,10 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:8080/api/users",
-					"protocol": "http",
+					"raw": "{{url_local}}/api/users",
 					"host": [
-						"localhost"
+						"{{url_local}}"
 					],
-					"port": "8080",
 					"path": [
 						"api",
 						"users"
@@ -276,67 +282,53 @@
 			]
 		},
 		{
-			"name": "http://localhost:8080/api/balance",
+			"name": "Get balances",
 			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/api/balance",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"balance"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:8080/api/balance/40127028",
-			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"token\":\"PSG\",\r\n    \"balance\":37\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnZmFsYW5nZUBnbWFpbC5jb20iLCJzY29wZSI6IlVTRVIiLCJleHAiOjE2ODI4MTI1MzgsInVzZXJJRCI6MSwiZW1haWwiOiJnZmFsYW5nZUBnbWFpbC5jb20iLCJ0ZW5hbnQiOiJkZWZhdWx0In0.fJ58ouE70Dljrxdgx6zQfkVLw7bcjiAkTa51ZuwoWw0",
+							"type": "string"
 						}
-					}
+					]
 				},
+				"method": "GET",
+				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/balance/40127028",
-					"protocol": "http",
+					"raw": "{{url_local}}/api/balances",
 					"host": [
-						"localhost"
+						"{{url_local}}"
 					],
-					"port": "8080",
 					"path": [
 						"api",
-						"balance",
-						"40127028"
+						"balances"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/api/transaction",
+			"name": "Get all transactions",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnZmFsYW5nZUBnbWFpbC5jb20iLCJzY29wZSI6IlVTRVIiLCJleHAiOjE2ODI4MTI1MzgsInVzZXJJRCI6MSwiZW1haWwiOiJnZmFsYW5nZUBnbWFpbC5jb20iLCJ0ZW5hbnQiOiJkZWZhdWx0In0.fJ58ouE70Dljrxdgx6zQfkVLw7bcjiAkTa51ZuwoWw0",
+							"type": "string"
+						}
+					]
+				},
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/transaction",
-					"protocol": "http",
+					"raw": "{{url_local}}/api/transaction",
 					"host": [
-						"localhost"
+						"{{url_local}}"
 					],
-					"port": "8080",
 					"path": [
 						"api",
 						"transaction"
@@ -346,85 +338,52 @@
 			"response": []
 		},
 		{
-			"name": "http://localhost:8080/api/transaction/40127028",
+			"name": "Get user info",
 			"request": {
-				"method": "POST",
-				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": "{\r\n    \"token\":\"PSG\",\r\n    \"quantity\":3,\r\n    \"price\":36.2,\r\n    \"balance\": 20,\r\n    \"operation\":\"BUY\"\r\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnZmFsYW5nZUBnbWFpbC5jb20iLCJzY29wZSI6IlVTRVIiLCJleHAiOjE2ODI4MTI1MzgsInVzZXJJRCI6MSwiZW1haWwiOiJnZmFsYW5nZUBnbWFpbC5jb20iLCJ0ZW5hbnQiOiJkZWZhdWx0In0.fJ58ouE70Dljrxdgx6zQfkVLw7bcjiAkTa51ZuwoWw0",
+							"type": "string"
 						}
-					}
+					]
 				},
-				"url": {
-					"raw": "http://localhost:8080/api/transaction/40127028",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
-					"path": [
-						"api",
-						"transaction",
-						"40127028"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "http://localhost:8080/api/transaction/40127028",
-			"request": {
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:8080/api/transaction/40127028",
-					"protocol": "http",
+					"raw": "{{url_local}}/api/users/me",
 					"host": [
-						"localhost"
+						"{{url_local}}"
 					],
-					"port": "8080",
-					"path": [
-						"api",
-						"transaction",
-						"40127028"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "findById",
-			"request": {
-				"method": "GET",
-				"header": [],
-				"url": {
-					"raw": "http://localhost:8080/api/users/1",
-					"protocol": "http",
-					"host": [
-						"localhost"
-					],
-					"port": "8080",
 					"path": [
 						"api",
 						"users",
-						"1"
+						"me"
 					]
 				}
 			},
 			"response": []
 		},
 		{
-			"name": "buyToken",
+			"name": "Ingress money",
 			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnZmFsYW5nZUBnbWFpbC5jb20iLCJzY29wZSI6IlVTRVIiLCJleHAiOjE2ODI4MTIwNDAsInVzZXJJRCI6MSwiZW1haWwiOiJnZmFsYW5nZUBnbWFpbC5jb20iLCJ0ZW5hbnQiOiJkZWZhdWx0In0.kohp8jtMUuEeOA9lP6HL7yBEprMH5DS4FxM7WEn4Zxw",
+							"type": "string"
+						}
+					]
+				},
 				"method": "POST",
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"amount\": 30.10,\r\n    \"paymentMethod\": \"CREDIT_CARD\",\r\n    \"cardNumber\": \"1234567891012342\",\r\n    \"cardExpirationDateMonth\": 12,\r\n    \"cardExpirationDateDay\":10,\r\n    \"cardSecurityCode\": 232,\r\n    \"accountNumber\": \"33334323\",\r\n    \"bankName\":\"Jbustamante\",\r\n    \"accountHolderName\": \"j bus\",\r\n    \"email\": \"jbusta2@uade.edu.ar\"\r\n\r\n}",
+					"raw": "{\r\n    \"amount\": 30.10,\r\n    \"paymentMethod\": \"CREDIT_CARD\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -439,6 +398,138 @@
 					"path": [
 						"api",
 						"payments"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update user",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"firstName\": \"Gonza\",\r\n    \"lastName\": \"Falange\",\r\n    \"email\": \"gfalange@gmail.com\",       \r\n    \"dni\": 347233736\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url_local}}/api/users",
+					"host": [
+						"{{url_local}}"
+					],
+					"path": [
+						"api",
+						"users"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Buy token",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnZmFsYW5nZUBnbWFpbC5jb20iLCJzY29wZSI6IlVTRVIiLCJleHAiOjE2ODI4MTI1MzgsInVzZXJJRCI6MSwiZW1haWwiOiJnZmFsYW5nZUBnbWFpbC5jb20iLCJ0ZW5hbnQiOiJkZWZhdWx0In0.fJ58ouE70Dljrxdgx6zQfkVLw7bcjiAkTa51ZuwoWw0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"quantity\":10,\r\n    \"token\":\"PSG\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url_local}}/api/transaction/buy",
+					"host": [
+						"{{url_local}}"
+					],
+					"path": [
+						"api",
+						"transaction",
+						"buy"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Sell token",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnZmFsYW5nZUBnbWFpbC5jb20iLCJzY29wZSI6IlVTRVIiLCJleHAiOjE2ODI4MTI1MzgsInVzZXJJRCI6MSwiZW1haWwiOiJnZmFsYW5nZUBnbWFpbC5jb20iLCJ0ZW5hbnQiOiJkZWZhdWx0In0.fJ58ouE70Dljrxdgx6zQfkVLw7bcjiAkTa51ZuwoWw0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"quantity\":1,\r\n    \"token\":\"PSG\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{url_local}}/api/transaction/sell",
+					"host": [
+						"{{url_local}}"
+					],
+					"path": [
+						"api",
+						"transaction",
+						"sell"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get token price",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJnZmFsYW5nZUBnbWFpbC5jb20iLCJzY29wZSI6IlVTRVIiLCJleHAiOjE2ODI4MTI1MzgsInVzZXJJRCI6MSwiZW1haWwiOiJnZmFsYW5nZUBnbWFpbC5jb20iLCJ0ZW5hbnQiOiJkZWZhdWx0In0.fJ58ouE70Dljrxdgx6zQfkVLw7bcjiAkTa51ZuwoWw0",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{url_local}}/api/coin/PSG",
+					"host": [
+						"{{url_local}}"
+					],
+					"path": [
+						"api",
+						"coin",
+						"PSG"
 					]
 				}
 			},
@@ -684,6 +775,10 @@
 		{
 			"key": "01d350a4-ebfc-4a5b-9993-da6d4485edaf",
 			"value": ""
+		},
+		{
+			"key": "url_local",
+			"value": "http://localhost:8080"
 		}
 	]
 }

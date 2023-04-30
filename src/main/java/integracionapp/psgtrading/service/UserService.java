@@ -41,13 +41,11 @@ public class UserService {
 
     public User findById(long id){
         String tenant = AuthorizationService.getTenant();
-        return userRepository.findByIdAndBalances_tenantId(id, tenant)
+        return userRepository.findByIdAndTenantId(id, tenant)
                 .orElseThrow();
     }
 
-    public User updateUser(String email, String password, String name, String lastName, int dni) {
-        email = email.toLowerCase();
-        User user = userRepository.findByEmailIgnoreCase(email).orElseThrow();
+    public User updateUser(User user, String password, String name, String lastName, int dni) {
         if (null != password) {
             user.setPassword(passwordEncoder.encode(password));
         }

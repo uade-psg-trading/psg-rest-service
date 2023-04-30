@@ -22,8 +22,8 @@ public class BalanceService {
 
         List<Balance> balances = this.balanceRepository.findByUser(user);
 
-        return balances.stream().map(
-                b -> new YieldBuilder(b, this.newStockService.getCoinPrice(b.getSymbol()))
+        return balances.stream().filter(b -> b.getSymbol().isToken()).map(
+                b -> new YieldBuilder(b, this.newStockService.getCoinPrice(b.getSymbol().getSymbol()))
                         .build()
         ).toList();
     }

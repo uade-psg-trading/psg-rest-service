@@ -1,21 +1,16 @@
 package integracionapp.psgtrading.service;
 
 import integracionapp.psgtrading.dto.PaymenMethod;
-import integracionapp.psgtrading.exception.CustomRuntimeException;
-import integracionapp.psgtrading.model.Card;
-import integracionapp.psgtrading.model.Income;
-import integracionapp.psgtrading.model.Location;
-import integracionapp.psgtrading.model.User;
+import integracionapp.psgtrading.model.*;
+import integracionapp.psgtrading.repository.BalanceRepository;
+import integracionapp.psgtrading.repository.SymbolRepository;
 import integracionapp.psgtrading.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-
-
-import java.time.LocalDate;
-import java.util.Optional;
 
 import static org.mockito.Mockito.*;
 
@@ -25,37 +20,47 @@ class PaymentServiceTest {
     private PaymentService paymentService;
     @MockBean
     private UserRepository userRepository;
+    @MockBean
+    private BalanceRepository balanceRepository;
+    @MockBean
+    private SymbolRepository symbolRepository;
 
     @Test
-    void creditCardPayment_OK(){
-        Income payment = new Income("4456",200.30, LocalDate.now(),
-                PaymenMethod.CREDIT_CARD,"jwick@mail.com");
-        Card creditCard = new Card("4456",12,02,237,"Bankcity","",
-                "J Wick");
-        String email = "jhon@email.com";
-        String firstName = "Jhon";
-        String lastName = "Wick";
-        Integer dni = 11111;
-        String pass = "password";
-        String tenant = "tenant";
-        Location location = new Location("Argentina","Buenos Aires"
-                ,"CABA","1188","Av siempre viva 123");
-        User mockUser = new User(firstName,lastName,email,pass,dni,location,tenant);
-        when(userRepository.findByEmailIgnoreCase(any())).thenReturn(Optional.of(mockUser));
-        when(userRepository.save(any(User.class))).thenReturn(any(User.class));
-        paymentService.creditCardPayment(payment, creditCard);
+    void creditCardPayment_OK() {
+        User mockUser = Mockito.mock(User.class);
+        Balance mockBalance = Mockito.mock(Balance.class);
+
+        Income payment = new Income(200.30, PaymenMethod.CREDIT_CARD, mockUser, "default");
+
+        when(userRepository.save(mockUser)).thenReturn(mockUser);
+        when(balanceRepository.findBySymbolIsTokenFalseAndUser(mockUser)).thenReturn(mockBalance);
+        when(balanceRepository.save(mockBalance)).thenReturn(mockBalance);
+
+        paymentService.transferPayment(payment, mockUser);
+
+        verify(userRepository, times(1)).save(mockUser);
+        verify(balanceRepository, times(1)).save(mockBalance);
+        verify(mockBalance, times(1)).setAmount(200.30);
         Assertions.assertNotNull(mockUser.getBalances());
-        Assertions.assertNotNull(mockUser.getBalances());
+        Assertions.assertNotNull(balanceRepository.findBySymbolIsTokenFalseAndUser(mockUser));
     }
 
     @Test
-    void creditCardPayment_InvalidCreditCard(){
-        User mockUser = new User();
-        Income payment = new Income();
-        Card creditCard = new Card();
-        when(userRepository.findByEmailIgnoreCase(any()))
-                .thenReturn(Optional.of(mockUser));
-        Assertions.assertThrows(CustomRuntimeException.class,
-                ()->paymentService.creditCardPayment(payment, creditCard));
+    void firstCreditCardPayment() {
+        User mockUser = Mockito.mock(User.class);
+
+        Income payment = new Income(200.30, PaymenMethod.CREDIT_CARD, mockUser, "default");
+        Symbol symbol = new Symbol("USD", false, "FIAT");
+
+        when(userRepository.save(mockUser)).thenReturn(mockUser);
+        when(balanceRepository.save(any(Balance.class))).thenReturn(null);
+        when(symbolRepository.findByIsTokenFalse()).thenReturn(symbol);
+
+        paymentService.transferPayment(payment, mockUser);
+
+        verify(userRepository, times(1)).save(mockUser);
+        verify(balanceRepository, times(1)).save(any(Balance.class));
+        verify(symbolRepository, times(1)).findByIsTokenFalse();
     }
-    }
+
+}
