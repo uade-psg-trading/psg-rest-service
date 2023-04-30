@@ -62,12 +62,14 @@ public class TransactionController {
         }
     }
 
-    @PostMapping("/buy")
-    public ResponseEntity<GenericDTO<Transaction>> createBuyTransaction(@Valid @RequestBody TransactionDTO transactionDTO,
-                                                                        @RequestHeader("Authorization") String jwt) {
+    @PostMapping("/{transactionType}")
+    public ResponseEntity<GenericDTO<Transaction>> createTransaction(@PathVariable String transactionType,
+                                                                     @Valid @RequestBody TransactionDTO transactionDTO,
+                                                                     @RequestHeader("Authorization") String jwt) {
         try {
             JWTObjectDTO jwtObjectDTO = jwtService.decodeJWT(jwt);
-            User user = userRepository.findById(jwtObjectDTO.getUserId()).orElseThrow(EntityNotFoundException::new);
+            User user = userRepository.findById(jwtObjectDTO.getUserId())
+                    .orElseThrow(EntityNotFoundException::new);
             String token = transactionDTO.getToken();
             Double quantity = transactionDTO.getQuantity();
             Symbol symbol = symbolRepository.findBySymbol(token);
@@ -80,61 +82,39 @@ public class TransactionController {
             if (balance == null) {
                 balance = new Balance(symbol, 0.0, user);
             }
-            if (fiatBalance.getAmount() < price * quantity) {
-                return ResponseEntity.status(400).body(GenericDTO.error("Insufficient money available. " +
-                        "You have " + fiatBalance.getAmount() + " available."));
+            Double newAmount;
+            Double newFiatBalance;
+            String action;
+            if ("buy".equalsIgnoreCase(transactionType)) {
+                if (fiatBalance.getAmount() < price * quantity) {
+                    return ResponseEntity.status(400).body(GenericDTO.error("Insufficient money available. " +
+                            "You have " + fiatBalance.getAmount() + " available."));
+                }
+                newAmount = balance.getAmount() + quantity;
+                newFiatBalance = fiatBalance.getAmount() - price * quantity;
+                action = "BUY";
+            } else if ("sell".equalsIgnoreCase(transactionType)) {
+                if (balance.getAmount() < quantity) {
+                    return ResponseEntity.status(400).body(GenericDTO.error("Insufficient amount of tokens available." +
+                            "You have " + balance.getAmount() + " " + token + " available."));
+                }
+                newAmount = balance.getAmount() - quantity;
+                newFiatBalance = fiatBalance.getAmount() + price * quantity;
+                action = "SELL";
+            } else {
+                return ResponseEntity.status(400).body(GenericDTO.error("Invalid transaction type."));
             }
-            Double newAmount = balance.getAmount() + quantity;
-            Double newFiatBalance = fiatBalance.getAmount() - price * quantity;
 
             balance.setAmount(newAmount);
             fiatBalance.setAmount(newFiatBalance);
             Transaction transaction = transactionRepository
-                    .save(new Transaction(symbol, quantity, price, balance.getAmount(), "BUY", user));
+                    .save(new Transaction(symbol, quantity, price, balance.getAmount(), action, user));
             balanceRepository.save(balance);
             balanceRepository.save(fiatBalance);
             return new ResponseEntity<>(GenericDTO.success(transaction), HttpStatus.CREATED);
         } catch (EntityNotFoundException exc) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found", exc);
         }
-
     }
 
-    @PostMapping("/sell")
-    public ResponseEntity<GenericDTO<Transaction>> createSellTransaction(@Valid  @RequestBody TransactionDTO transactionDTO,
-                                                                         @RequestHeader("Authorization") String jwt) {
-        try {
-            JWTObjectDTO jwtObjectDTO = jwtService.decodeJWT(jwt);
-            User user = userRepository.findById(jwtObjectDTO.getUserId()).orElseThrow(EntityNotFoundException::new);
-            String token = transactionDTO.getToken();
-            Double quantity = transactionDTO.getQuantity();
-            Symbol symbol = symbolRepository.findBySymbol(token);
-            if (symbol == null) {
-                return ResponseEntity.status(400).body(GenericDTO.error("Token not found."));
-            }
-            Balance balance = balanceRepository.findBySymbolAndUser(symbol, user);
-            Balance fiatBalance = balanceRepository.findBySymbolIsTokenFalseAndUser(user);
-            Double price = newStockService.getCoinPrice(token).getPrice();
-            if (balance == null) {
-                balance = new Balance(symbol, 0.0, user);
-            }
-            if (balance.getAmount() < quantity) {
-                return ResponseEntity.status(400).body(GenericDTO.error("Insufficient amount of tokens available." +
-                        "You have " + balance.getAmount() + " " + token + " available."));
-            }
-            Double newAmount = balance.getAmount() - quantity;
-            Double newFiatBalance = fiatBalance.getAmount() + price * quantity;
-
-            balance.setAmount(newAmount);
-            fiatBalance.setAmount(newFiatBalance);
-            Transaction transaction = transactionRepository
-                    .save(new Transaction(symbol, quantity, price, balance.getAmount(), "SELL", user));
-            balanceRepository.save(balance);
-            balanceRepository.save(fiatBalance);
-            return new ResponseEntity<>(GenericDTO.success(transaction), HttpStatus.CREATED);
-        } catch (EntityNotFoundException exc) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found", exc);
-        }
-
-    }
 }

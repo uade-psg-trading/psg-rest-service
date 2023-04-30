@@ -29,7 +29,7 @@ import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest
-public class TransactionTest {
+class TransactionTest {
     @MockBean
     private UserRepository userRepository;
     @MockBean
@@ -90,13 +90,14 @@ public class TransactionTest {
 
         // Get the mock objects and their behaviors
         Map<String, Object> mocks = getMocks("PSG", 1.0, 2.0, 10000.0, 99.2);
+        String transactionType = "BUY";
 
         // Extract the mock objects from the map
         Transaction mockTransaction = (Transaction) mocks.get("mockTransaction");
         TransactionDTO mockTransactionDTO = (TransactionDTO) mocks.get("mockTransactionDTO");
 
         // Call the function
-        ResponseEntity<GenericDTO<Transaction>> responseEntity = transactionController.createBuyTransaction(mockTransactionDTO, "Bearer token");
+        ResponseEntity<GenericDTO<Transaction>> responseEntity = transactionController.createTransaction(transactionType, mockTransactionDTO, "Bearer token");
 
         // Check that the response is successful
         assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
@@ -120,11 +121,12 @@ public class TransactionTest {
 
         // Get the mock objects and their behaviors
         Map<String, Object> mocks = getMocks("PSG", 10.0, 2.0, currentBalance, 99.2);
+        String transactionType = "BUY";
 
         TransactionDTO mockTransactionDTO = (TransactionDTO) mocks.get("mockTransactionDTO");
 
         // Call the function
-        ResponseEntity<GenericDTO<Transaction>> responseEntity = transactionController.createBuyTransaction(mockTransactionDTO, "Bearer token");
+        ResponseEntity<GenericDTO<Transaction>> responseEntity = transactionController.createTransaction(transactionType, mockTransactionDTO, "Bearer token");
 
         // Check that the response is successful
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());
@@ -146,13 +148,14 @@ public class TransactionTest {
 
         // Get the mock objects and their behaviors
         Map<String, Object> mocks = getMocks("PSG", 1.0, 2.0, 10000.0, 99.2);
+        String transactionType = "SELL";
 
         // Extract the mock objects from the map
         Transaction mockTransaction = (Transaction) mocks.get("mockTransaction");
         TransactionDTO mockTransactionDTO = (TransactionDTO) mocks.get("mockTransactionDTO");
 
         // Call the function
-        ResponseEntity<GenericDTO<Transaction>> responseEntity = transactionController.createSellTransaction(mockTransactionDTO, "Bearer token");
+        ResponseEntity<GenericDTO<Transaction>> responseEntity = transactionController.createTransaction(transactionType, mockTransactionDTO, "Bearer token");
 
         // Check that the response is successful
         assertEquals(HttpStatus.CREATED, responseEntity.getStatusCode());
@@ -177,11 +180,12 @@ public class TransactionTest {
 
         // Get the mock objects and their behaviors
         Map<String, Object> mocks = getMocks(token, 10.0, balance, 10.0, 99.2);
+        String transactionType = "SELL";
 
         TransactionDTO mockTransactionDTO = (TransactionDTO) mocks.get("mockTransactionDTO");
 
         // Call the function
-        ResponseEntity<GenericDTO<Transaction>> responseEntity = transactionController.createSellTransaction(mockTransactionDTO, "Bearer token");
+        ResponseEntity<GenericDTO<Transaction>> responseEntity = transactionController.createTransaction(transactionType, mockTransactionDTO, "Bearer token");
 
         // Check that the response is successful
         assertEquals(HttpStatus.BAD_REQUEST, responseEntity.getStatusCode());

@@ -2,7 +2,6 @@ package integracionapp.psgtrading.service;
 
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
-import integracionapp.psgtrading.configuration.JwtConfig;
 import integracionapp.psgtrading.dto.JWTObjectDTO;
 import integracionapp.psgtrading.exception.CustomRuntimeException;
 import integracionapp.psgtrading.exception.ErrorCode;
@@ -11,12 +10,10 @@ import integracionapp.psgtrading.model.provider.LoginProvider;
 import integracionapp.psgtrading.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.oauth2.jwt.*;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.time.Instant;
 import java.util.Optional;
 
 @Service

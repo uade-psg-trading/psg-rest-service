@@ -2,7 +2,6 @@ package integracionapp.psgtrading.configuration;
 
 import integracionapp.psgtrading.dto.GenericDTO;
 import integracionapp.psgtrading.exception.ErrorCode;
-import integracionapp.psgtrading.exception.GlobalErrorHandler;
 import io.swagger.v3.core.converter.AnnotatedType;
 import io.swagger.v3.core.converter.ModelConverters;
 import io.swagger.v3.oas.models.OpenAPI;

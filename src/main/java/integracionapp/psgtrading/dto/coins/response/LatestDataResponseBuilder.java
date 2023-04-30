@@ -29,7 +29,7 @@ public class LatestDataResponseBuilder {
     }
 
     private Coin getCoin() {
-        Coin coin = new Coin();
+        Coin coin ;
 
         switch (this.symbol){
             case "PSG": {
