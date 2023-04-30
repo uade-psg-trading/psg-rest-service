@@ -1,23 +1,16 @@
 package integracionapp.psgtrading.dto.coins.latest;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import integracionapp.psgtrading.dto.coins.Status;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
+import integracionapp.psgtrading.dto.coins.Coin;
+import integracionapp.psgtrading.dto.coins.Status;
+import lombok.Data;
+
+import java.util.Map;
 
 @Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class LatestDataResponse  implements Serializable {
-
-    @JsonProperty("data")
-    private LatestData data;
-    @JsonProperty("status")
+public class LatestDataResponse {
     private Status status;
+    private Map<String, Coin> data;
+
 
 }

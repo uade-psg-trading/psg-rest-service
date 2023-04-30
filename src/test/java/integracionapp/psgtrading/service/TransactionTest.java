@@ -4,11 +4,7 @@ import integracionapp.psgtrading.controller.TransactionController;
 import integracionapp.psgtrading.dto.GenericDTO;
 import integracionapp.psgtrading.dto.JWTObjectDTO;
 import integracionapp.psgtrading.dto.TransactionDTO;
-import integracionapp.psgtrading.dto.coins.response.CoinDTO;
-import integracionapp.psgtrading.model.Balance;
-import integracionapp.psgtrading.model.Symbol;
-import integracionapp.psgtrading.model.Transaction;
-import integracionapp.psgtrading.model.User;
+import integracionapp.psgtrading.model.*;
 import integracionapp.psgtrading.repository.BalanceRepository;
 import integracionapp.psgtrading.repository.SymbolRepository;
 import integracionapp.psgtrading.repository.TransactionRepository;
@@ -51,7 +47,7 @@ class TransactionTest {
         Transaction mockTransaction = Mockito.mock(Transaction.class);
         TransactionDTO mockTransactionDTO = Mockito.mock(TransactionDTO.class);
         JWTObjectDTO mockJwtObjectDTO = Mockito.mock(JWTObjectDTO.class);
-        CoinDTO coinDTO = Mockito.mock(CoinDTO.class);
+        TokenPrice tokenPrice = Mockito.mock(TokenPrice.class);
 
         // Set up mock object behavior
         when(jwtService.decodeJWT(anyString())).thenReturn(mockJwtObjectDTO);
@@ -59,8 +55,8 @@ class TransactionTest {
         when(symbolRepository.findBySymbol(anyString())).thenReturn(mockSymbol);
         when(balanceRepository.findBySymbolAndUser(any(Symbol.class), any(User.class))).thenReturn(mockBalance);
         when(balanceRepository.findBySymbolIsTokenFalseAndUser(any(User.class))).thenReturn(mockFiatBalance);
-        when(newStockService.getCoinPrice(anyString())).thenReturn(coinDTO);
-        when(coinDTO.getPrice()).thenReturn(coinPrice);
+        when(newStockService.getCoinPrice(anyString())).thenReturn(tokenPrice);
+        when(tokenPrice.getPrice()).thenReturn(coinPrice);
         when(mockTransactionDTO.getToken()).thenReturn(token);
         when(mockTransactionDTO.getQuantity()).thenReturn(quantity);
         when(mockBalance.getAmount()).thenReturn(balanceAmount);
@@ -78,7 +74,7 @@ class TransactionTest {
         mocks.put("mockTransaction", mockTransaction);
         mocks.put("mockTransactionDTO", mockTransactionDTO);
         mocks.put("mockJwtObjectDTO", mockJwtObjectDTO);
-        mocks.put("coinDTO", coinDTO);
+        mocks.put("tokenPrice", tokenPrice);
         return mocks;
     }
 
