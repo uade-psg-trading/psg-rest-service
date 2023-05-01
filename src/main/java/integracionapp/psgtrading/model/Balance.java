@@ -24,7 +24,6 @@ public class Balance {
     @Column(name = "balance_id")
     private long balance_id;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "symbol", nullable = false)
     private Symbol symbol;
@@ -33,6 +32,7 @@ public class Balance {
     @Column(name = "amount")
     private Double amount;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "user_id", nullable = false)
     private User user;

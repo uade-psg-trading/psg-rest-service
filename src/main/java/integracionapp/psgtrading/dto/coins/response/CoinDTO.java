@@ -1,15 +1,11 @@
 package integracionapp.psgtrading.dto.coins.response;
 
+import integracionapp.psgtrading.model.TokenPrice;
 import lombok.Data;
 
 @Data
 public class CoinDTO {
-
-    private Integer id;
+    private TokenPrice tokenPrice;
     private String symbol;
-    private String name;
-    private Double price;
-    private Double percent_change_24h;
-    private Double volume_change_24h;
 
 }

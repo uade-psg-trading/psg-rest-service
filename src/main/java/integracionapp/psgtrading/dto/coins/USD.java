@@ -1,32 +1,24 @@
 package integracionapp.psgtrading.dto.coins;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
-
-import java.io.Serializable;
 
 @Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class USD implements Serializable {
+public class USD  {
 
-    @JsonProperty("market_cap")
-    private Double market_cap;
-    @JsonProperty("price")
-    private Double price;
-    @JsonProperty("volume_change_24h")
-    private Double volume_change_24h;
-    @JsonProperty("circulating_supply")
-    private Double circulating_supply;
-    @JsonProperty("total_supply")
-    private Double total_supply;
-    @JsonProperty("timestamp")
-    private String timestamp;
-    @JsonProperty("percent_change_24h")
-    private Double percent_change_24h;
+    private double price;
+    private double volume_24h;
+    private double volume_change_24h;
+    private double percent_change_1h;
+    private double percent_change_24h;
+    private double percent_change_7d;
+    private double percent_change_30d;
+    private double percent_change_60d;
+    private double percent_change_90d;
+    private double market_cap;
+    private double market_cap_dominance;
+    private Double fully_diluted_market_cap;
+    private Double tvl;
+    private String last_updated;
+
 
 }
