@@ -22,6 +22,7 @@ public class AlertService {
     private TokenPriceRepository tokenPriceRepository;
 
     public void sendAlerts() {
+        EmailService emailService = new EmailService();
         List<User> users = userRepository.findAll();
 
         for (User user : users) {
@@ -31,10 +32,18 @@ public class AlertService {
                 TokenPrice price = tokenPriceRepository.findFirstBySymbolOrderByUpdateTimeDesc(alert.getSymbol());
                 if (alert.getOperator() == Alert.Operator.LOWER) {
                     if (price.getPrice() < alert.getAmount()) {
-                        // TODO send email
+                        emailService.sendEmail(user.getEmail(),
+                                "Nueva alerta para " + alert.getSymbol().getSymbol(),
+                                "El precio de " + alert.getSymbol().getSymbol() + "ha bajado por debajo de "
+                                        + alert.getAmount().toString() + ". Ahora es " + price.getPrice()
+                        );
                     }
                 } else if (price.getPrice() > alert.getAmount()) {
-                    // TODO also send email
+                    emailService.sendEmail(user.getEmail(),
+                            "Nueva alerta para " + alert.getSymbol().getSymbol(),
+                            "El precio de " + alert.getSymbol().getSymbol() + "ha superado el valor de "
+                                    + alert.getAmount().toString() + ". Ahora es " + price.getPrice()
+                    );
                 }
             }
         }
