@@ -27,7 +27,11 @@ public class UserService {
 
     public User saveUser(String email, String name, String lastName, Integer dni,
                          Location location, String password, String tenant) {
-        if(tenant == null) tenant="default";
+        if (tenant == null) {
+            // Cuando los usuarios no usan ni psg, lazio, entonces el tenant es default
+            tenant = "default";
+        }
+
         Optional<User> opt = userRepository.findByEmailIgnoreCaseAndTenantId(email, tenant);
         if (opt.isPresent()) {
             throw new CustomRuntimeException(ErrorCode.INVALID_STATE, "Email in use");
