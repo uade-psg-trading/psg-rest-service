@@ -30,7 +30,7 @@ public class Coin implements Serializable {
     @JsonProperty("self_reported_circulating_supply")
     private String self_reported_circulating_supply;
     @JsonProperty("platform")
-    private String platform;
+    private Platform platform;
     @JsonProperty("tags")
     private List<String> tags;
     @JsonProperty("date_added")
