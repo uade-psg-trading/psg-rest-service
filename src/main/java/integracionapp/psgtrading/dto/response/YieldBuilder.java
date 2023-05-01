@@ -1,7 +1,7 @@
 package integracionapp.psgtrading.dto.response;
 
-import integracionapp.psgtrading.dto.coins.response.CoinDTO;
 import integracionapp.psgtrading.model.Balance;
+import integracionapp.psgtrading.model.TokenPrice;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 
@@ -10,7 +10,7 @@ import lombok.Builder;
 public class YieldBuilder {
 
     private Balance balance;
-    private CoinDTO coin;
+    private TokenPrice coin;
 
     public Yield build(){
         Yield yield = new Yield();
@@ -18,9 +18,9 @@ public class YieldBuilder {
         yield.setPrice(this.coin.getPrice());
         yield.setAmount(this.balance.getAmount());
         yield.setTotal(this.coin.getPrice() * this.balance.getAmount());
-        yield.setPercent_change_24h(this.coin.getPercent_change_24h());
+        yield.setPercent_change_24h(this.coin.getPercentChange24h());
         yield.setSymbol(this.balance.getSymbol());
-        yield.setYield(this.coin.getVolume_change_24h());
+        yield.setYield(this.coin.getVolumeChange24h());
 
         return yield;
     }

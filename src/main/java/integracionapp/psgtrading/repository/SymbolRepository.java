@@ -12,4 +12,8 @@ public interface SymbolRepository extends JpaRepository<Symbol, Long> {
     Symbol findByIsTokenFalse();
 
     List<Symbol> findAll();
+
+    List<Symbol> findByIsTokenTrue();
+
+    boolean existsSymbolBySymbol(String token);
 }

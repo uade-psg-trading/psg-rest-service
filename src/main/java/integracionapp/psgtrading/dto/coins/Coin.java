@@ -1,55 +1,30 @@
 package integracionapp.psgtrading.dto.coins;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
 import java.util.List;
 
 @Data
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
-public class Coin implements Serializable {
+public class Coin {
 
-    @JsonProperty("symbol")
-    private String symbol;
-    @JsonProperty("circulating_supply")
-    private Integer circulating_supply;
-    @JsonProperty("last_updated")
-    private String last_updated;
-    @JsonProperty("is_active")
-    private Integer is_active;
-    @JsonProperty("total_supply")
-    private Integer total_supply;
-    @JsonProperty("cmc_rank")
-    private Integer cmc_rank;
-    @JsonProperty("self_reported_circulating_supply")
-    private String self_reported_circulating_supply;
-    @JsonProperty("platform")
-    private String platform;
-    @JsonProperty("tags")
-    private List<String> tags;
-    @JsonProperty("date_added")
-    private String date_added;
-    @JsonProperty("quote")
-    private Quote quote;
-    @JsonProperty("num_market_pairs")
-    private Integer num_market_pairs;
-    @JsonProperty("name")
+    private int id;
     private String name;
-    @JsonProperty("max_supply")
-    private Integer max_supply;
-    @JsonProperty("id")
-    private Integer id;
-    @JsonProperty("self_reported_market_cap")
-    private String self_reported_market_cap;
-    @JsonProperty("is_fiat")
-    private String is_fiat;
-    @JsonProperty("slug")
+    private String symbol;
     private String slug;
+    private int num_market_pairs;
+    private String date_added;
+    private List<String> tags;
+    private double max_supply;
+    private double circulating_supply;
+    private double total_supply;
+    private int is_active;
+    private boolean infinite_supply;
+    private int cmc_rank;
+    private int is_fiat;
+    private double self_reported_circulating_supply;
+    private double self_reported_market_cap;
+    private Double tvl_ratio;
+    private String last_updated;
+    private Quote quote;
 
 }
