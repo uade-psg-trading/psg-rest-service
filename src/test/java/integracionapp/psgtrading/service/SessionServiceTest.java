@@ -1,5 +1,6 @@
 package integracionapp.psgtrading.service;
 
+import integracionapp.psgtrading.dto.login.LoginResponseDTO;
 import integracionapp.psgtrading.exception.CustomRuntimeException;
 import integracionapp.psgtrading.model.Location;
 import integracionapp.psgtrading.model.User;
@@ -42,9 +43,9 @@ class SessionServiceTest {
         when(userRepository.findByEmailIgnoreCase(any(String.class)))
                 .thenReturn(Optional.of(mockUser));
 
-        String token = sessionService.login(email,"password");
+        LoginResponseDTO response = sessionService.login(email,"password");
 
-        Assertions.assertNotNull(token);
+        Assertions.assertNotNull(response);
     }
 
     @Test
