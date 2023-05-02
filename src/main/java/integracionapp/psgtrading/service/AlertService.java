@@ -21,9 +21,8 @@ public class AlertService {
     @Autowired
     private TokenPriceRepository tokenPriceRepository;
 
-    private final EmailService emailService = new EmailService();
-
     public void sendAlerts() {
+        EmailService emailService = new EmailService();
         List<User> users = userRepository.findAll();
 
         for (User user : users) {
