@@ -19,6 +19,8 @@ public class CoinService {
     private SymbolRepository symbolRepository;
     @Autowired
     private TokenPriceRepository tokenPriceRepository;
+    @Autowired
+    private AlertService alertService;
 
     @Scheduled(fixedDelay = 600000) // schedule to run every 10 minutes (in milliseconds)
     public void updatePrices() {
@@ -31,6 +33,7 @@ public class CoinService {
             prices.add(price);
         }
         tokenPriceRepository.saveAll(prices);
+        alertService.sendAlerts();
     }
 
 }

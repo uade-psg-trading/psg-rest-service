@@ -3,6 +3,7 @@ package integracionapp.psgtrading.service;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
 import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import integracionapp.psgtrading.dto.JWTObjectDTO;
+import integracionapp.psgtrading.dto.login.LoginResponseDTO;
 import integracionapp.psgtrading.exception.CustomRuntimeException;
 import integracionapp.psgtrading.exception.ErrorCode;
 import integracionapp.psgtrading.model.User;
@@ -25,7 +26,7 @@ public class SessionService {
     private final JwtService jwtService;
     private final GoogleIdTokenVerifier googleIdTokenVerifier;
 
-    public String login(String email, String password) {
+    public LoginResponseDTO login(String email, String password) {
         email = email.toLowerCase();
         User user = userRepository.findByEmailIgnoreCase(email)
                 .orElseThrow(() -> new CustomRuntimeException(ErrorCode.FORBIDDEN, "You do not have permissions for this request"));
@@ -34,8 +35,9 @@ public class SessionService {
             throw new CustomRuntimeException(ErrorCode.FORBIDDEN, "You do not have permissions for this request");
         }
 
-        return jwtService.generateJWT(new JWTObjectDTO(email, user.getId(), user.getTenantId()));
-
+        String jwt = jwtService.generateJWT(new JWTObjectDTO(email, user.getId(), user.getTenantId()));
+        String refreshToken = "";
+        return new LoginResponseDTO(jwt, refreshToken, user.getEmail(), user.getTenantId());
     }
 
     public LoginProvider loginThroughProvider(String idToken, String tenant) throws IOException, GeneralSecurityException {

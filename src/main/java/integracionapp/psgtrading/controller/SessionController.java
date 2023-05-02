@@ -22,9 +22,8 @@ public class SessionController {
 
     @PostMapping
     public ResponseEntity<GenericDTO<LoginResponseDTO>> login(@RequestBody LoginInfo loginInfo) {
-        String jwt = sessionService.login(loginInfo.getEmail(), loginInfo.getPassword());
-        String refreshToken = "";
-        return ResponseEntity.ok(GenericDTO.success(new LoginResponseDTO(jwt, refreshToken, loginInfo.getEmail())));
+        LoginResponseDTO response = sessionService.login(loginInfo.getEmail(), loginInfo.getPassword());
+        return ResponseEntity.ok(GenericDTO.success(response));
     }
 
     @PostMapping("/{provider}")
@@ -34,7 +33,7 @@ public class SessionController {
         if (provider.equalsIgnoreCase("google")) {
             String tenant = providerRequestDTO.getTenant() == null ? "psg" : providerRequestDTO.getTenant();
             LoginProvider loginProvider = sessionService.loginThroughProvider(providerRequestDTO.getToken(), tenant);
-            return ResponseEntity.ok(GenericDTO.success(new LoginResponseDTO(loginProvider.getJwt(), loginProvider.getRefreshToken(), loginProvider.getEmail())));
+            return ResponseEntity.ok(GenericDTO.success(new LoginResponseDTO(loginProvider.getJwt(), loginProvider.getRefreshToken(), loginProvider.getEmail(), tenant)));
         }
 
         return ResponseEntity.notFound().build();
