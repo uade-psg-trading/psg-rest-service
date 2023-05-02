@@ -20,9 +20,10 @@ public class AlertService {
     private AlertRepository alertRepository;
     @Autowired
     private TokenPriceRepository tokenPriceRepository;
+    @Autowired
+    private EmailService emailService;
 
     public void sendAlerts() {
-        EmailService emailService = new EmailService();
         List<User> users = userRepository.findAll();
 
         for (User user : users) {
@@ -30,20 +31,19 @@ public class AlertService {
 
             for (Alert alert : userAlerts) {
                 TokenPrice price = tokenPriceRepository.findFirstBySymbolOrderByUpdateTimeDesc(alert.getSymbol());
+                String symbol = alert.getSymbol().getSymbol();
+                String emailSubject = "Nueva alerta para " + symbol;
+                Double currentPrice = price.getPrice();
+                Double alertAmount = alert.getAmount();
+
                 if (alert.getOperator() == Alert.Operator.LOWER) {
                     if (price.getPrice() < alert.getAmount()) {
-                        emailService.sendEmail(user.getEmail(),
-                                "Nueva alerta para " + alert.getSymbol().getSymbol(),
-                                "El precio de " + alert.getSymbol().getSymbol() + "ha bajado por debajo de "
-                                        + alert.getAmount().toString() + ". Ahora es " + price.getPrice()
-                        );
+                        String emailMessage = "El precio de " + symbol + " ha bajado por debajo de " + alertAmount + ". Ahora es " + currentPrice;
+                        emailService.sendEmail(user.getEmail(), emailSubject, emailMessage);
                     }
                 } else if (price.getPrice() > alert.getAmount()) {
-                    emailService.sendEmail(user.getEmail(),
-                            "Nueva alerta para " + alert.getSymbol().getSymbol(),
-                            "El precio de " + alert.getSymbol().getSymbol() + "ha superado el valor de "
-                                    + alert.getAmount().toString() + ". Ahora es " + price.getPrice()
-                    );
+                    String emailMessage = "El precio de " + symbol + " ha superado el valor de " + alertAmount + ". Ahora es " + currentPrice;
+                    emailService.sendEmail(user.getEmail(), emailSubject, emailMessage);
                 }
             }
         }

@@ -6,11 +6,16 @@ import com.amazonaws.auth.EnvironmentVariableCredentialsProvider;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder;
 import com.amazonaws.services.simpleemail.model.*;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Service;
 
+@Service
 public class EmailService {
 
     private final AmazonSimpleEmailService client;
-    private final String fromAddress = "brea.emanuel@gmail.com"; // TODO use another verified email in AWS SES
+
+    @Value("${sender.email}")
+    private String fromAddress;
 
     public EmailService() {
         AWSCredentialsProvider credentialsProvider = new EnvironmentVariableCredentialsProvider();
@@ -18,7 +23,7 @@ public class EmailService {
     }
 
     public void sendEmail(String to, String subject, String body) {
-        try{
+        try {
             SendEmailRequest request = new SendEmailRequest()
                     .withDestination(new Destination().withToAddresses(to))
                     .withMessage(new Message()
@@ -29,8 +34,7 @@ public class EmailService {
 
             SendEmailResult result = client.sendEmail(request);
             System.out.println("Email sent: " + result.getMessageId());
-        }
-        catch (AmazonClientException e){
+        } catch (AmazonClientException e) {
             System.out.println("Error sending email: " + e);
         }
 
