@@ -49,6 +49,8 @@ class AlertServiceTest {
     private AlertRepository alertRepository;
     @MockBean
     private JwtService jwtService;
+    @MockBean
+    private EmailService emailService;
 
     @Test
     void testGettersAndSetters() {
