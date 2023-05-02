@@ -1,8 +1,7 @@
 package integracionapp.psgtrading.service;
 
 import com.amazonaws.AmazonClientException;
-import com.amazonaws.auth.AWSCredentialsProvider;
-import com.amazonaws.auth.EnvironmentVariableCredentialsProvider;
+import com.amazonaws.auth.InstanceProfileCredentialsProvider;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailService;
 import com.amazonaws.services.simpleemail.AmazonSimpleEmailServiceClientBuilder;
 import com.amazonaws.services.simpleemail.model.*;
@@ -16,8 +15,7 @@ public class EmailService {
     private String fromAddress;
 
     public EmailService() {
-        AWSCredentialsProvider credentialsProvider = new EnvironmentVariableCredentialsProvider();
-        this.client = AmazonSimpleEmailServiceClientBuilder.standard().withCredentials(credentialsProvider).build();
+        this.client = AmazonSimpleEmailServiceClientBuilder.standard().withCredentials(new InstanceProfileCredentialsProvider(false)).build();
     }
 
     public void sendEmail(String to, String subject, String body) {
