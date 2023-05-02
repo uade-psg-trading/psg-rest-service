@@ -20,8 +20,8 @@ public class AlertService {
     private AlertRepository alertRepository;
     @Autowired
     private TokenPriceRepository tokenPriceRepository;
-    @Autowired
-    private EmailService emailService;
+
+    private final EmailService emailService = new EmailService();
 
     public void sendAlerts() {
         List<User> users = userRepository.findAll();
