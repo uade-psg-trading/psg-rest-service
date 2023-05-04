@@ -1,6 +1,5 @@
 package integracionapp.psgtrading.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import integracionapp.psgtrading.dto.GenericDTO;
 import integracionapp.psgtrading.dto.JWTObjectDTO;
 import integracionapp.psgtrading.dto.UserDTO;
@@ -26,15 +25,13 @@ import org.springframework.web.server.ResponseStatusException;
 public class UserController {
 
     private final UserService userService;
-    private final ObjectMapper objectMapper;
     private final JwtService jwtService;
     private final UserRepository userRepository;
 
     @GetMapping
-    public GenericDTO<Page<UserDTO>> getAllUsers(Pageable pageable) {
-        Page<UserDTO> userDto = userService.findAll(pageable)
-                .map(this::getUserDTO);
-        return GenericDTO.success(userDto);
+    public GenericDTO<Page<User>> getAllUsers(Pageable pageable) {
+        Page<User> users = userService.findAll(pageable);
+        return GenericDTO.success(users);
     }
 
     @PostMapping
@@ -42,16 +39,15 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "409", description = "User already exists")
     })
-    public GenericDTO<UserDTO> createUser(@RequestBody @Valid UserDTO user) {
+    public GenericDTO<User> createUser(@RequestBody @Valid UserDTO user) {
         User u = userService.saveUser(user.getEmail(), user.getFirstName(),
                 user.getLastName(), user.getDni(), user.getLocation(),
                 user.getPassword(), user.getTenantId());
-        UserDTO userDto = getUserDTO(u);
-        return GenericDTO.success(userDto);
+        return GenericDTO.success(u);
     }
 
     @GetMapping("/me")
-    public GenericDTO<UserDTO> getUserById(@RequestHeader("Authorization") String jwt) {
+    public GenericDTO<User> getUserById(@RequestHeader("Authorization") String jwt) {
         JWTObjectDTO jwtObjectDTO = jwtService.decodeJWT(jwt);
         User user;
         try {
@@ -59,11 +55,11 @@ public class UserController {
         } catch (EntityNotFoundException exc) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found", exc);
         }
-        return GenericDTO.success(getUserDTO(user));
+        return GenericDTO.success(user);
     }
 
     @PutMapping("")
-    public GenericDTO<UserDTO> updateUser(@RequestBody UserDTO user, @RequestHeader("Authorization") String jwt) {
+    public GenericDTO<User> updateUser(@RequestBody UserDTO user, @RequestHeader("Authorization") String jwt) {
         JWTObjectDTO jwtObjectDTO = jwtService.decodeJWT(jwt);
         User existingUser;
         try {
@@ -75,12 +71,9 @@ public class UserController {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Emails do not match.");
         }
         User u = userService.updateUser(existingUser, user.getPassword(), user.getFirstName(), user.getLastName(),
-                user.getDni());
-        return GenericDTO.success(getUserDTO(u));
+                user.getDni(), user.getLocation());
+        return GenericDTO.success(u);
     }
 
-    private UserDTO getUserDTO(User u) {
-        return objectMapper.convertValue(u, UserDTO.class);
-    }
 
 }

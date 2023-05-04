@@ -3,6 +3,7 @@ package integracionapp.psgtrading.service;
 import integracionapp.psgtrading.dto.login.LoginResponseDTO;
 import integracionapp.psgtrading.exception.CustomRuntimeException;
 import integracionapp.psgtrading.model.Location;
+import integracionapp.psgtrading.model.Tenant;
 import integracionapp.psgtrading.model.User;
 import integracionapp.psgtrading.repository.UserRepository;
 import org.junit.jupiter.api.Assertions;
@@ -34,11 +35,12 @@ class SessionServiceTest {
         String firstName = "Jhon";
         String lastName = "Wick";
         Integer dni = 11111;
-        String tenant = "TENANT";
+        Tenant tenant = new Tenant("TENANT", "psg.deliver.ar");
         String pass = passwordEncoder.encode("password");
         Location location = new Location("Argentina","Buenos Aires"
                 ,"CABA","1188","Av siempre viva 123");
-        User mockUser = new User(firstName,lastName,email,pass,dni,location, tenant);
+        User mockUser = new User(firstName,lastName,email,pass,dni,location);
+        mockUser.setTenant(tenant);
 
         when(userRepository.findByEmailIgnoreCase(any(String.class)))
                 .thenReturn(Optional.of(mockUser));
@@ -46,6 +48,8 @@ class SessionServiceTest {
         LoginResponseDTO response = sessionService.login(email,"password");
 
         Assertions.assertNotNull(response);
+        Assertions.assertEquals(response.getTenant(), tenant.getTenantId());
+
     }
 
     @Test
@@ -64,7 +68,7 @@ class SessionServiceTest {
         String tenant = "TENANT";
         Location location = new Location("Argentina","Buenos Aires"
                 ,"CABA","1188","Av siempre viva 123");
-        User mockUser = new User(firstName,lastName,email,pass,dni,location, tenant);
+        User mockUser = new User(firstName,lastName,email,pass,dni,location);
 
         when(userRepository.findByEmailIgnoreCase(any(String.class)))
                 .thenReturn(Optional.of(mockUser));
