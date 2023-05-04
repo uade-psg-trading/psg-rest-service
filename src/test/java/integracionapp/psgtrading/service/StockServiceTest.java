@@ -1,6 +1,7 @@
 package integracionapp.psgtrading.service;
 
 import integracionapp.psgtrading.model.StockWrapper;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +19,7 @@ class StockServiceTest {
     @Autowired
     private StockService stockService;
     @Test
+    @Disabled("It is using yahoo, is old")
     void invoke_Stock() throws IOException {
         //find stock united utilities group
         final StockWrapper stock = stockService.findStock("PSG-USD");
@@ -34,6 +36,7 @@ class StockServiceTest {
     }
 
     @Test
+    @Disabled("It is using yahoo, is old")
     void invoke_Stocks() throws IOException, InterruptedException {
         final List<StockWrapper> stocks = stockService.findStocks(Arrays.asList("GOOG", "AMZN"));
         findPrices(stocks);

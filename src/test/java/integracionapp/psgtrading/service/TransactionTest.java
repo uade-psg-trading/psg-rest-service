@@ -5,10 +5,7 @@ import integracionapp.psgtrading.dto.GenericDTO;
 import integracionapp.psgtrading.dto.JWTObjectDTO;
 import integracionapp.psgtrading.dto.TransactionDTO;
 import integracionapp.psgtrading.model.*;
-import integracionapp.psgtrading.repository.BalanceRepository;
-import integracionapp.psgtrading.repository.SymbolRepository;
-import integracionapp.psgtrading.repository.TransactionRepository;
-import integracionapp.psgtrading.repository.UserRepository;
+import integracionapp.psgtrading.repository.*;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -38,6 +35,8 @@ class TransactionTest {
     private NewStockService newStockService;
     @MockBean
     private TransactionRepository transactionRepository;
+    @MockBean
+    private TokenPriceRepository tokenPriceRepository;
 
     private Map<String, Object> getMocks(String token, Double quantity, Double balanceAmount, Double fiatBalanceAmount, Double coinPrice) {
         User mockUser = Mockito.mock(User.class);
@@ -82,7 +81,7 @@ class TransactionTest {
     @Test
     void testCreateBuyTransaction() {
         TransactionController transactionController = new TransactionController(transactionRepository,
-                userRepository, jwtService, symbolRepository, balanceRepository, newStockService);
+                userRepository, jwtService, symbolRepository, balanceRepository, newStockService, tokenPriceRepository);
 
         // Get the mock objects and their behaviors
         Map<String, Object> mocks = getMocks("PSG", 1.0, 2.0, 10000.0, 99.2);
@@ -111,7 +110,7 @@ class TransactionTest {
     @Test
     void testNotEnoughMoneyTransaction() {
         TransactionController transactionController = new TransactionController(transactionRepository,
-                userRepository, jwtService, symbolRepository, balanceRepository, newStockService);
+                userRepository, jwtService, symbolRepository, balanceRepository, newStockService, tokenPriceRepository);
 
         Double currentBalance = 12.0;
 
@@ -140,7 +139,7 @@ class TransactionTest {
     @Test
     void testCreateSellTransaction() {
         TransactionController transactionController = new TransactionController(transactionRepository,
-                userRepository, jwtService, symbolRepository, balanceRepository, newStockService);
+                userRepository, jwtService, symbolRepository, balanceRepository, newStockService, tokenPriceRepository);
 
         // Get the mock objects and their behaviors
         Map<String, Object> mocks = getMocks("PSG", 1.0, 2.0, 10000.0, 99.2);
@@ -169,7 +168,7 @@ class TransactionTest {
     @Test
     void testNotEnoughTokensToSellTransaction() {
         TransactionController transactionController = new TransactionController(transactionRepository,
-                userRepository, jwtService, symbolRepository, balanceRepository, newStockService);
+                userRepository, jwtService, symbolRepository, balanceRepository, newStockService, tokenPriceRepository);
 
         String token = "PSG";
         Double balance = 2.0;

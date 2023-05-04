@@ -3,14 +3,8 @@ package integracionapp.psgtrading.controller;
 import integracionapp.psgtrading.dto.GenericDTO;
 import integracionapp.psgtrading.dto.JWTObjectDTO;
 import integracionapp.psgtrading.dto.TransactionDTO;
-import integracionapp.psgtrading.model.Balance;
-import integracionapp.psgtrading.model.Symbol;
-import integracionapp.psgtrading.model.Transaction;
-import integracionapp.psgtrading.model.User;
-import integracionapp.psgtrading.repository.BalanceRepository;
-import integracionapp.psgtrading.repository.SymbolRepository;
-import integracionapp.psgtrading.repository.TransactionRepository;
-import integracionapp.psgtrading.repository.UserRepository;
+import integracionapp.psgtrading.model.*;
+import integracionapp.psgtrading.repository.*;
 import integracionapp.psgtrading.service.JwtService;
 import integracionapp.psgtrading.service.NewStockService;
 import jakarta.persistence.EntityNotFoundException;
@@ -19,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.reactive.function.client.WebClientRequestException;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.ArrayList;
@@ -35,17 +30,20 @@ public class TransactionController {
 
     private final JwtService jwtService;
     private final NewStockService newStockService;
+    private final TokenPriceRepository tokenPriceRepository;
 
     @Autowired
     public TransactionController(TransactionRepository transactionRepository, UserRepository userRepository,
                                  JwtService jwtService, SymbolRepository symbolRepository,
-                                 BalanceRepository balanceRepository, NewStockService newStockService) {
+                                 BalanceRepository balanceRepository, NewStockService newStockService,
+                                 TokenPriceRepository tokenPriceRepository) {
         this.transactionRepository = transactionRepository;
         this.userRepository = userRepository;
         this.jwtService = jwtService;
         this.symbolRepository = symbolRepository;
         this.balanceRepository = balanceRepository;
         this.newStockService = newStockService;
+        this.tokenPriceRepository = tokenPriceRepository;
 
     }
 
@@ -78,12 +76,31 @@ public class TransactionController {
             }
             Balance balance = balanceRepository.findBySymbolAndUser(symbol, user);
             Balance fiatBalance = balanceRepository.findBySymbolIsTokenFalseAndUser(user);
-            Double price = newStockService.getCoinPrice(token).getPrice();
+
+            if(fiatBalance == null){
+                return ResponseEntity.status(400).body(GenericDTO.error("User has no fiat balance yet. " +
+                        "Try to ingress money first." + token));
+            }
+
+            Double price ;
+            Double newAmount;
+            Double newFiatBalance;
+
+            try{
+                price = newStockService.getCoinPrice(token).getPrice();
+            }
+            catch (WebClientRequestException e){
+                TokenPrice tokenPrice = tokenPriceRepository.findFirstBySymbolOrderByUpdateTimeDesc(symbol);
+                if(tokenPrice == null){
+                    return ResponseEntity.status(400).body(GenericDTO.error("No prices found yet for " + token));
+                }
+                price = tokenPrice.getPrice();
+            }
+
             if (balance == null) {
                 balance = new Balance(symbol, 0.0, user);
             }
-            Double newAmount;
-            Double newFiatBalance;
+
             String action;
             if ("buy".equalsIgnoreCase(transactionType)) {
                 if (fiatBalance.getAmount() < price * quantity) {
