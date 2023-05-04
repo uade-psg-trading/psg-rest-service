@@ -33,7 +33,7 @@ public class PaymentController {
         if(p.getPaymentMethod() != PaymenMethod.TRANSFER && p.getPaymentMethod() != PaymenMethod.CREDIT_CARD){
             return ResponseEntity.status(400).body(GenericDTO.error("Método de pago no válido"));
         }
-        Income incomePay = new Income(p.getAmount(),p.getPaymentMethod(), user, user.getTenantId());
+        Income incomePay = new Income(p.getAmount(),p.getPaymentMethod(), user, user.getTenant().getTenantId());
         paymentService.transferPayment(incomePay, user);
 
         return new ResponseEntity<>(GenericDTO.success("Payment processed correctly."), HttpStatus.CREATED);
