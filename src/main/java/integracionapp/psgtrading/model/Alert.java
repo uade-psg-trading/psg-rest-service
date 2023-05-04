@@ -42,6 +42,8 @@ public class Alert {
     @Enumerated(EnumType.STRING)
     private Operator operator;
 
+    @Column(name = "sent_time")
+    private LocalDateTime sentTime;
 
     @Column(name = "update_time")
     @UpdateTimestamp

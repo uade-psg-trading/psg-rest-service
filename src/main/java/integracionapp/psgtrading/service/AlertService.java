@@ -5,16 +5,15 @@ import integracionapp.psgtrading.model.TokenPrice;
 import integracionapp.psgtrading.model.User;
 import integracionapp.psgtrading.repository.AlertRepository;
 import integracionapp.psgtrading.repository.TokenPriceRepository;
-import integracionapp.psgtrading.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
 public class AlertService {
-    @Autowired
-    private UserRepository userRepository;
 
     @Autowired
     private AlertRepository alertRepository;
@@ -28,27 +27,36 @@ public class AlertService {
 
 
     public void sendAlerts() {
-        List<User> users = userRepository.findAll();
+        List<Alert> allActiveAlerts = alertRepository.findAll();
+        LocalDate currentDate = LocalDate.now();
 
-        for (User user : users) {
-            List<Alert> userAlerts = alertRepository.findByUser(user);
+        for (Alert alert : allActiveAlerts) {
+            LocalDateTime sentTime = alert.getSentTime();
+            if (sentTime != null && sentTime.toLocalDate().equals(currentDate)) {
+                continue;
+            }
+            User user = alert.getUser();
+            TokenPrice price = tokenPriceRepository.findFirstBySymbolOrderByUpdateTimeDesc(alert.getSymbol());
+            String symbol = alert.getSymbol().getSymbol();
+            String emailSubject = "Nueva alerta para " + symbol;
+            Double currentPrice = price.getPrice();
+            Double alertAmount = alert.getAmount();
+            boolean sendEmail = false;
+            String emailMessage = null;
 
-            for (Alert alert : userAlerts) {
-                TokenPrice price = tokenPriceRepository.findFirstBySymbolOrderByUpdateTimeDesc(alert.getSymbol());
-                String symbol = alert.getSymbol().getSymbol();
-                String emailSubject = "Nueva alerta para " + symbol;
-                Double currentPrice = price.getPrice();
-                Double alertAmount = alert.getAmount();
-
-                if (alert.getOperator() == Alert.Operator.LOWER) {
-                    if (price.getPrice() < alert.getAmount()) {
-                        String emailMessage = "El precio de " + symbol + " ha bajado por debajo de " + alertAmount + ". Ahora es " + currentPrice;
-                        emailService.sendEmail(user.getEmail(), emailSubject, emailMessage);
-                    }
-                } else if (price.getPrice() > alert.getAmount()) {
-                    String emailMessage = "El precio de " + symbol + " ha superado el valor de " + alertAmount + ". Ahora es " + currentPrice;
-                    emailService.sendEmail(user.getEmail(), emailSubject, emailMessage);
+            if (alert.getOperator() == Alert.Operator.LOWER) {
+                if (price.getPrice() < alert.getAmount()) {
+                    emailMessage = "El precio de " + symbol + " ha bajado por debajo de " + alertAmount + ". Ahora es " + currentPrice;
+                    sendEmail = true;
                 }
+            } else if (price.getPrice() > alert.getAmount()) {
+                emailMessage = "El precio de " + symbol + " ha superado el valor de " + alertAmount + ". Ahora es " + currentPrice;
+                sendEmail = true;
+            }
+            if (sendEmail) {
+                emailService.sendEmail(user.getEmail(), emailSubject, emailMessage);
+                alert.setSentTime(LocalDateTime.now());
+                alertRepository.save(alert);
             }
         }
     }

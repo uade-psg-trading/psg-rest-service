@@ -6,8 +6,10 @@ import integracionapp.psgtrading.dto.JWTObjectDTO;
 import integracionapp.psgtrading.dto.login.LoginResponseDTO;
 import integracionapp.psgtrading.exception.CustomRuntimeException;
 import integracionapp.psgtrading.exception.ErrorCode;
+import integracionapp.psgtrading.model.Tenant;
 import integracionapp.psgtrading.model.User;
 import integracionapp.psgtrading.model.provider.LoginProvider;
+import integracionapp.psgtrading.repository.TenantRepository;
 import integracionapp.psgtrading.repository.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -25,8 +27,12 @@ public class SessionService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final GoogleIdTokenVerifier googleIdTokenVerifier;
+    private final TenantRepository tenantRepository;
 
     public LoginResponseDTO login(String email, String password) {
+        if( email == null){
+            throw new CustomRuntimeException(ErrorCode.INVALID_PARAMETER, "You must provide a valid email.");
+        }
         email = email.toLowerCase();
         User user = userRepository.findByEmailIgnoreCase(email)
                 .orElseThrow(() -> new CustomRuntimeException(ErrorCode.FORBIDDEN, "You do not have permissions for this request"));
@@ -35,9 +41,9 @@ public class SessionService {
             throw new CustomRuntimeException(ErrorCode.FORBIDDEN, "You do not have permissions for this request");
         }
 
-        String jwt = jwtService.generateJWT(new JWTObjectDTO(email, user.getId(), user.getTenantId()));
+        String jwt = jwtService.generateJWT(new JWTObjectDTO(email, user.getId(), user.getTenant().getTenantId()));
         String refreshToken = "";
-        return new LoginResponseDTO(jwt, refreshToken, user.getEmail(), user.getTenantId());
+        return new LoginResponseDTO(jwt, refreshToken, user.getEmail(), user.getTenant().getTenantId());
     }
 
     public LoginProvider loginThroughProvider(String idToken, String tenant) throws IOException, GeneralSecurityException {
@@ -52,6 +58,11 @@ public class SessionService {
             throw new CustomRuntimeException(ErrorCode.FORBIDDEN, "El token enviado no es valido");
         }
 
+        Tenant tenantId = tenantRepository.findByTenantId(tenant);
+        if( tenantId == null){
+            throw new CustomRuntimeException(ErrorCode.INVALID_PARAMETER, "You must provide a valid tenant.");
+        }
+
         Optional<User> user = userRepository.findByEmailIgnoreCase(email);
         String jwt;
         JWTObjectDTO jwtObjectDTO;
@@ -59,10 +70,10 @@ public class SessionService {
             String name = (String) payload.get("given_name");
             String lastName = (String) payload.get("family_name");
             User newUser = userService.saveUser(email, name, lastName, null, null, payload.getSubject(), tenant);
-            jwtObjectDTO = new JWTObjectDTO(email, newUser.getId(), newUser.getTenantId());
+            jwtObjectDTO = new JWTObjectDTO(email, newUser.getId(), tenant);
         } else {
             User currentUser = user.get();
-            jwtObjectDTO = new JWTObjectDTO(email, currentUser.getId(), currentUser.getTenantId());
+            jwtObjectDTO = new JWTObjectDTO(email, currentUser.getId(), tenant);
         }
 
         jwt = jwtService.generateJWT(jwtObjectDTO);
