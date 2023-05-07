@@ -38,7 +38,7 @@ public class CoinController {
         CoinDTO coinDTO = new CoinDTO();
         coinDTO.setTokenPrice(price);
         coinDTO.setSymbol(symbol1.getSymbol());
-        coinDTO.setSymbolName(symbol1.getName());
+        coinDTO.setName(symbol1.getName());
         return new ResponseEntity<>(GenericDTO.success(coinDTO), HttpStatus.OK);
 
     }
@@ -52,7 +52,7 @@ public class CoinController {
             CoinDTO coinDTO = new CoinDTO();
             coinDTO.setTokenPrice(price);
             coinDTO.setSymbol(symbol.getSymbol());
-            coinDTO.setSymbolName(symbol.getName());
+            coinDTO.setName(symbol.getName());
             prices.add(coinDTO);
         }
         return new ResponseEntity<>(GenericDTO.success(prices), HttpStatus.OK);
