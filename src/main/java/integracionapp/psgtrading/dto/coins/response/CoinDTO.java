@@ -7,5 +7,6 @@ import lombok.Data;
 public class CoinDTO {
     private TokenPrice tokenPrice;
     private String symbol;
+    private String symbolName;
 
 }

@@ -28,7 +28,8 @@ public class CoinController {
 
     @GetMapping("/price/{symbol}")
     public ResponseEntity<GenericDTO<CoinDTO>> getCoinPrice(@PathVariable("symbol") String symbol) {
-        if(! symbolRepository.existsSymbolBySymbol(symbol)){
+        Symbol symbol1 = symbolRepository.findBySymbol(symbol);
+        if (symbol1 == null){
             return ResponseEntity.status(400).body(GenericDTO.error("Token not found."));
         }
 
@@ -36,7 +37,8 @@ public class CoinController {
         TokenPrice price = newStockService.getCoinPrice(symbol);
         CoinDTO coinDTO = new CoinDTO();
         coinDTO.setTokenPrice(price);
-        coinDTO.setSymbol(symbol);
+        coinDTO.setSymbol(symbol1.getSymbol());
+        coinDTO.setSymbolName(symbol1.getName());
         return new ResponseEntity<>(GenericDTO.success(coinDTO), HttpStatus.OK);
 
     }
@@ -50,6 +52,7 @@ public class CoinController {
             CoinDTO coinDTO = new CoinDTO();
             coinDTO.setTokenPrice(price);
             coinDTO.setSymbol(symbol.getSymbol());
+            coinDTO.setSymbolName(symbol.getName());
             prices.add(coinDTO);
         }
         return new ResponseEntity<>(GenericDTO.success(prices), HttpStatus.OK);
