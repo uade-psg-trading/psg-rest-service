@@ -5,7 +5,7 @@ import integracionapp.psgtrading.dto.coins.response.CoinDTO;
 import integracionapp.psgtrading.model.Symbol;
 import integracionapp.psgtrading.model.TokenPrice;
 import integracionapp.psgtrading.repository.SymbolRepository;
-import integracionapp.psgtrading.service.NewStockService;
+import integracionapp.psgtrading.repository.TokenPriceRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,22 +23,21 @@ import java.util.List;
 public class CoinController {
 
 
-    private final NewStockService newStockService;
     private final SymbolRepository symbolRepository;
+    private final TokenPriceRepository tokenPriceRepository;
 
     @GetMapping("/price/{symbol}")
     public ResponseEntity<GenericDTO<CoinDTO>> getCoinPrice(@PathVariable("symbol") String symbol) {
         Symbol symbol1 = symbolRepository.findBySymbol(symbol);
-        if (symbol1 == null){
+        if (symbol1 == null) {
             return ResponseEntity.status(400).body(GenericDTO.error("Token not found."));
         }
 
-
-        TokenPrice price = newStockService.getCoinPrice(symbol);
+        TokenPrice price = tokenPriceRepository.findFirstBySymbolOrderByUpdateTimeDesc(symbol1);
         CoinDTO coinDTO = new CoinDTO();
         coinDTO.setTokenPrice(price);
         coinDTO.setSymbol(symbol1.getSymbol());
-        coinDTO.setSymbolName(symbol1.getName());
+        coinDTO.setName(symbol1.getName());
         return new ResponseEntity<>(GenericDTO.success(coinDTO), HttpStatus.OK);
 
     }
@@ -47,12 +46,12 @@ public class CoinController {
     public ResponseEntity<GenericDTO<List<CoinDTO>>> getCoinsPrices() {
         List<Symbol> tokens = symbolRepository.findByIsTokenTrue();
         List<CoinDTO> prices = new ArrayList<>();
-        for(Symbol symbol: tokens ){
-            TokenPrice price = newStockService.getCoinPrice(symbol.getSymbol());
+        for (Symbol symbol : tokens) {
+            TokenPrice price = tokenPriceRepository.findFirstBySymbolOrderByUpdateTimeDesc(symbol);
             CoinDTO coinDTO = new CoinDTO();
             coinDTO.setTokenPrice(price);
             coinDTO.setSymbol(symbol.getSymbol());
-            coinDTO.setSymbolName(symbol.getName());
+            coinDTO.setName(symbol.getName());
             prices.add(coinDTO);
         }
         return new ResponseEntity<>(GenericDTO.success(prices), HttpStatus.OK);
