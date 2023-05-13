@@ -1,30 +1,25 @@
 package integracionapp.psgtrading.service;
 
 import integracionapp.psgtrading.model.Alert;
+import integracionapp.psgtrading.model.Symbol;
 import integracionapp.psgtrading.model.TokenPrice;
 import integracionapp.psgtrading.model.User;
 import integracionapp.psgtrading.repository.AlertRepository;
 import integracionapp.psgtrading.repository.TokenPriceRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 @Service
+@AllArgsConstructor
 public class AlertService {
-
-    @Autowired
-    private AlertRepository alertRepository;
-
-    @Autowired
-    private TokenPriceRepository tokenPriceRepository;
-
-
-    @Autowired
-    private EmailService emailService;
-
+    private final AlertRepository alertRepository;
+    private final TokenPriceRepository tokenPriceRepository;
+    private final EmailService emailService;
 
     public void sendAlerts() {
         List<Alert> allActiveAlerts = alertRepository.findAll();
@@ -59,5 +54,9 @@ public class AlertService {
                 alertRepository.save(alert);
             }
         }
+    }
+    public Optional<Alert> getCoinAlert(Symbol symbol){
+        return alertRepository
+                .findBySymbol(symbol);
     }
 }

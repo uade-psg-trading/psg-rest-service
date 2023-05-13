@@ -17,15 +17,20 @@ public class BalanceService {
 
     private final BalanceRepository balanceRepository;
     private final NewStockService newStockService;
+    private final AlertService alertService;
 
     public List<Yield> getYieldsByUser(User user){
 
-        List<Balance> balances = this.balanceRepository.findByUser(user);
+        List<Balance> balances = balanceRepository.findByUser(user);
 
-        return balances.stream().filter(b -> b.getSymbol().isToken()).map(
-                b -> new YieldBuilder(b, this.newStockService.getCoinPrice(b.getSymbol().getSymbol()))
-                        .build()
-        ).toList();
+        return balances.stream()
+                .filter(balance -> balance.getSymbol().isToken())
+                .map(balance -> new YieldBuilder(
+                        balance,
+                        newStockService.getCoinPrice(balance.getSymbol().getSymbol()),
+                        alertService.getCoinAlert(balance.getSymbol()).isPresent()
+                ).build())
+                .toList();
     }
 
 }
