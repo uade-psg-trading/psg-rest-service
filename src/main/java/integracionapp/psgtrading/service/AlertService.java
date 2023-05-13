@@ -55,8 +55,8 @@ public class AlertService {
             }
         }
     }
-    public Optional<Alert> getCoinAlert(Symbol symbol){
+    public Optional<Alert> getCoinAlert(Symbol symbol, User user){
         return alertRepository
-                .findBySymbol(symbol);
+                .findBySymbolAndUser(symbol, user);
     }
 }
