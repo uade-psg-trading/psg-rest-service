@@ -16,5 +16,6 @@ public class Yield {
     private Double amount;
     private Double yield;
     private Double total;
+    private Boolean isAlerted;
 
 }
