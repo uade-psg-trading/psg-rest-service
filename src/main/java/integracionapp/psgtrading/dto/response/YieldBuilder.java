@@ -11,6 +11,7 @@ public class YieldBuilder {
 
     private Balance balance;
     private TokenPrice coin;
+    private Boolean isAlerted;
 
     public Yield build(){
         Yield yield = new Yield();
@@ -21,6 +22,7 @@ public class YieldBuilder {
         yield.setPercent_change_24h(this.coin.getPercentChange24h());
         yield.setSymbol(this.balance.getSymbol());
         yield.setYield(this.coin.getVolumeChange24h());
+        yield.setIsAlerted(this.isAlerted);
 
         return yield;
     }
