@@ -28,7 +28,7 @@ public class BalanceService {
                 .map(balance -> new YieldBuilder(
                         balance,
                         newStockService.getCoinPrice(balance.getSymbol().getSymbol()),
-                        alertService.getCoinAlert(balance.getSymbol(), user).isPresent()
+                        !alertService.getCoinAlert(balance.getSymbol(), user).isEmpty()
                 ).build())
                 .toList();
     }
