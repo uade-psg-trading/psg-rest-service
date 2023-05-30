@@ -12,27 +12,31 @@ import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 import java.lang.reflect.Type;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.TimeoutException;
 
 @Configuration
 public class WebSocketClient {
 
     @Bean
-    public StompSession getWebSocketClient() throws ExecutionException, InterruptedException, TimeoutException {
-        org.springframework.web.socket.client.WebSocketClient client = new StandardWebSocketClient();
-        WebSocketStompClient stompClient = new WebSocketStompClient(client);
-        stompClient.setMessageConverter(new MappingJackson2MessageConverter());
-        StompSessionHandler sessionHandler = new CoreMessageHandler();
+    public StompSession getWebSocketClient() {
+        // TODO: Borrar el try catch, hacer throws.
+        // Otra opcion es agarrar y fijarse si falla conexion y retornar null.
+        try {
+            org.springframework.web.socket.client.WebSocketClient client = new StandardWebSocketClient();
+            WebSocketStompClient stompClient = new WebSocketStompClient(client);
+            stompClient.setMessageConverter(new MappingJackson2MessageConverter());
+            StompSessionHandler sessionHandler = new CoreMessageHandler();
 
-        CompletableFuture<StompSession> completableFuture = stompClient.connectAsync("URL", sessionHandler);
-        StompSession session = completableFuture.get(3, TimeUnit.SECONDS);
-        if (!session.isConnected()) {
-            System.out.println("Websocket wasn't connected");
+            CompletableFuture<StompSession> completableFuture = stompClient.connectAsync("URL", sessionHandler);
+            StompSession session = completableFuture.get(3, TimeUnit.SECONDS);
+            if (!session.isConnected()) {
+                System.out.println("Websocket wasn't connected");
+            }
+
+            return session;
+        } catch (Exception ex) {
+            return null;
         }
-
-        return session;
     }
 
     public class CoreMessageHandler implements StompSessionHandler {
