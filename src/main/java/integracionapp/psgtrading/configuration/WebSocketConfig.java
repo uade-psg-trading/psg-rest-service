@@ -24,26 +24,18 @@ public class WebSocketConfig {
     @Value("${core.queue.url}")
     private String url;
     @Bean
-    public StompSession coreWebSocketClient() {
-        // TODO: Borrar el try catch, hacer throws.
-        // Otra opcion es agarrar y fijarse si falla conexion y retornar null.
-        try {
+    public StompSession coreWebSocketClient() throws Exception {
+        WebSocketClient client = new StandardWebSocketClient();
+        WebSocketStompClient stompClient = new WebSocketStompClient(client);
+        stompClient.setMessageConverter(new MappingJackson2MessageConverter());
+        StompSessionHandler sessionHandler = new CoreMessageHandler();
 
-            WebSocketClient client = new StandardWebSocketClient();
-            WebSocketStompClient stompClient = new WebSocketStompClient(client);
-            stompClient.setMessageConverter(new MappingJackson2MessageConverter());
-            StompSessionHandler sessionHandler = new CoreMessageHandler();
-
-            CompletableFuture<StompSession> completableFuture = stompClient.connectAsync(url, sessionHandler);
-            StompSession session = completableFuture.get(3, TimeUnit.SECONDS);
-            if (!session.isConnected()) {
-                System.out.println("Websocket wasn't connected");
-            }
-
-            return session;
-        } catch (Exception ex) {
+        CompletableFuture<StompSession> completableFuture = stompClient.connectAsync(url, sessionHandler);
+        StompSession session = completableFuture.get(3, TimeUnit.SECONDS);
+        if (!session.isConnected()) {
             return null;
         }
+        return session;
     }
 
     public class CoreMessageHandler implements StompSessionHandler {
