@@ -109,6 +109,14 @@
 			<artifactId>aws-java-sdk-ses</artifactId>
 			<version>1.12.450</version>
 		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-websocket</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-messaging</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
