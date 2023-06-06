@@ -1,6 +1,5 @@
 package integracionapp.psgtrading.controller;
 
-import com.amazonaws.Response;
 import integracionapp.psgtrading.dto.GenericDTO;
 import integracionapp.psgtrading.service.CoreService;
 import lombok.AllArgsConstructor;

@@ -1,10 +1,13 @@
 package integracionapp.psgtrading.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import integracionapp.psgtrading.dto.GenericDTO;
 import integracionapp.psgtrading.dto.JWTObjectDTO;
 import integracionapp.psgtrading.dto.TransactionDTO;
+import integracionapp.psgtrading.dto.publisher.TransactionEventData;
 import integracionapp.psgtrading.model.*;
 import integracionapp.psgtrading.repository.*;
+import integracionapp.psgtrading.service.CoreService;
 import integracionapp.psgtrading.service.JwtService;
 import integracionapp.psgtrading.service.NewStockService;
 import jakarta.persistence.EntityNotFoundException;
@@ -31,12 +34,13 @@ public class TransactionController {
     private final JwtService jwtService;
     private final NewStockService newStockService;
     private final TokenPriceRepository tokenPriceRepository;
+    private final CoreService coreService;
 
     @Autowired
     public TransactionController(TransactionRepository transactionRepository, UserRepository userRepository,
                                  JwtService jwtService, SymbolRepository symbolRepository,
                                  BalanceRepository balanceRepository, NewStockService newStockService,
-                                 TokenPriceRepository tokenPriceRepository) {
+                                 TokenPriceRepository tokenPriceRepository, CoreService coreService) {
         this.transactionRepository = transactionRepository;
         this.userRepository = userRepository;
         this.jwtService = jwtService;
@@ -44,7 +48,7 @@ public class TransactionController {
         this.balanceRepository = balanceRepository;
         this.newStockService = newStockService;
         this.tokenPriceRepository = tokenPriceRepository;
-
+        this.coreService = coreService;
     }
 
     @GetMapping("")
@@ -128,9 +132,20 @@ public class TransactionController {
                     .save(new Transaction(symbol, quantity, price, balance.getAmount(), action, user));
             balanceRepository.save(balance);
             balanceRepository.save(fiatBalance);
+            coreService.sendMessage(
+                    TransactionEventData.builder()
+                            .quantity(quantity)
+                            .balance(balance.getAmount())
+                            .symbol(symbol.getSymbol())
+                            .price(price)
+                            .email(user.getEmail())
+                            .dni(user.getDni())
+                            .build(), action);
             return new ResponseEntity<>(GenericDTO.success(transaction), HttpStatus.CREATED);
         } catch (EntityNotFoundException exc) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found", exc);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
         }
     }
 
