@@ -8,6 +8,6 @@ import lombok.Data;
 @Builder
 @AllArgsConstructor
 public class TransactionEventPayload {
-    public String operation;
-    public TransactionEventData data;
+    private String operation;
+    private TransactionEventData data;
 }

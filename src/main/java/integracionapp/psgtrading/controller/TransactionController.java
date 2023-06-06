@@ -144,8 +144,8 @@ public class TransactionController {
             return new ResponseEntity<>(GenericDTO.success(transaction), HttpStatus.CREATED);
         } catch (EntityNotFoundException exc) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found", exc);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
+        } catch (JsonProcessingException exc) {
+            throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "There was an error", exc);
         }
     }
 

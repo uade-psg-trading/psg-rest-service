@@ -11,7 +11,7 @@ import java.util.Date;
 @Builder
 @AllArgsConstructor
 public class TransactionEvent {
-    public TransactionEventPayload payload;
-    public String from;
-    public LocalDateTime timestamp;
+    private TransactionEventPayload payload;
+    private String from;
+    private LocalDateTime timestamp;
 }
