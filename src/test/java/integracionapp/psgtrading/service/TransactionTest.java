@@ -34,6 +34,8 @@ class TransactionTest {
     @MockBean
     private NewStockService newStockService;
     @MockBean
+    private CoreService coreService;
+    @MockBean
     private TransactionRepository transactionRepository;
     @MockBean
     private TokenPriceRepository tokenPriceRepository;
@@ -81,7 +83,7 @@ class TransactionTest {
     @Test
     void testCreateBuyTransaction() {
         TransactionController transactionController = new TransactionController(transactionRepository,
-                userRepository, jwtService, symbolRepository, balanceRepository, newStockService, tokenPriceRepository);
+                userRepository, jwtService, symbolRepository, balanceRepository, newStockService, tokenPriceRepository, coreService);
 
         // Get the mock objects and their behaviors
         Map<String, Object> mocks = getMocks("PSG", 1.0, 2.0, 10000.0, 99.2);
@@ -110,7 +112,7 @@ class TransactionTest {
     @Test
     void testNotEnoughMoneyTransaction() {
         TransactionController transactionController = new TransactionController(transactionRepository,
-                userRepository, jwtService, symbolRepository, balanceRepository, newStockService, tokenPriceRepository);
+                userRepository, jwtService, symbolRepository, balanceRepository, newStockService, tokenPriceRepository, coreService);
 
         Double currentBalance = 12.0;
 
@@ -139,7 +141,7 @@ class TransactionTest {
     @Test
     void testCreateSellTransaction() {
         TransactionController transactionController = new TransactionController(transactionRepository,
-                userRepository, jwtService, symbolRepository, balanceRepository, newStockService, tokenPriceRepository);
+                userRepository, jwtService, symbolRepository, balanceRepository, newStockService, tokenPriceRepository, coreService);
 
         // Get the mock objects and their behaviors
         Map<String, Object> mocks = getMocks("PSG", 1.0, 2.0, 10000.0, 99.2);
@@ -168,7 +170,7 @@ class TransactionTest {
     @Test
     void testNotEnoughTokensToSellTransaction() {
         TransactionController transactionController = new TransactionController(transactionRepository,
-                userRepository, jwtService, symbolRepository, balanceRepository, newStockService, tokenPriceRepository);
+                userRepository, jwtService, symbolRepository, balanceRepository, newStockService, tokenPriceRepository, coreService);
 
         String token = "PSG";
         Double balance = 2.0;
