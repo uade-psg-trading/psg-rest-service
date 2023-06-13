@@ -23,44 +23,57 @@ public class WebSocketConfig {
 
     @Value("${core.queue.url}")
     private String url;
+
+    private static final String USER = "/topic/user";
     @Bean
-    public StompSession coreWebSocketClient() throws Exception {
+    public WebSocketStompClient coreWebSocketClient() throws Exception {
         WebSocketClient client = new StandardWebSocketClient();
         WebSocketStompClient stompClient = new WebSocketStompClient(client);
         stompClient.setMessageConverter(new MappingJackson2MessageConverter());
+        return stompClient;
+    }
+
+    @Bean
+    public StompSession getWebSocketSession() throws Exception {
+        WebSocketStompClient stompClient = coreWebSocketClient();
         StompSessionHandler sessionHandler = new CoreMessageHandler();
 
         CompletableFuture<StompSession> completableFuture = stompClient.connectAsync(url, sessionHandler);
         StompSession session = completableFuture.get(3, TimeUnit.SECONDS);
+        System.out.println(session.isConnected());
         if (!session.isConnected()) {
             return null;
         }
+
+        StompSession.Subscription subscription = session.subscribe(USER, sessionHandler);
+        System.out.println("SubsId: " + subscription.getSubscriptionId() + " receipt " + subscription.getReceiptId());
         return session;
     }
 
     public class CoreMessageHandler implements StompSessionHandler {
         @Override
         public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
-
+            System.out.println("WEBSOCKET CONNECTED");
         }
 
         @Override
         public void handleException(StompSession session, StompCommand command, StompHeaders headers, byte[] payload, Throwable exception) {
-
+            System.out.println("WEBSOCKET ERROR");
         }
 
         @Override
         public void handleTransportError(StompSession session, Throwable exception) {
-
+            System.out.println("TRANSPORT ERROR");
         }
 
         @Override
         public Type getPayloadType(StompHeaders headers) {
-            return null;
+            return String.class;
         }
 
         @Override
         public void handleFrame(StompHeaders headers, Object payload) {
+            System.out.println("WEBSOCKET PAYLOAD " + payload.toString());
 
         }
     }
