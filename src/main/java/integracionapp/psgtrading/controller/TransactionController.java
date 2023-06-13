@@ -7,7 +7,7 @@ import integracionapp.psgtrading.dto.TransactionDTO;
 import integracionapp.psgtrading.dto.publisher.TransactionEventData;
 import integracionapp.psgtrading.model.*;
 import integracionapp.psgtrading.repository.*;
-import integracionapp.psgtrading.service.CoreService;
+import integracionapp.psgtrading.service.CorePublisherService;
 import integracionapp.psgtrading.service.JwtService;
 import integracionapp.psgtrading.service.NewStockService;
 import jakarta.persistence.EntityNotFoundException;
@@ -34,13 +34,13 @@ public class TransactionController {
     private final JwtService jwtService;
     private final NewStockService newStockService;
     private final TokenPriceRepository tokenPriceRepository;
-    private final CoreService coreService;
+    private final CorePublisherService corePublisherService;
 
     @Autowired
     public TransactionController(TransactionRepository transactionRepository, UserRepository userRepository,
                                  JwtService jwtService, SymbolRepository symbolRepository,
                                  BalanceRepository balanceRepository, NewStockService newStockService,
-                                 TokenPriceRepository tokenPriceRepository, CoreService coreService) {
+                                 TokenPriceRepository tokenPriceRepository, CorePublisherService corePublisherService) {
         this.transactionRepository = transactionRepository;
         this.userRepository = userRepository;
         this.jwtService = jwtService;
@@ -48,7 +48,7 @@ public class TransactionController {
         this.balanceRepository = balanceRepository;
         this.newStockService = newStockService;
         this.tokenPriceRepository = tokenPriceRepository;
-        this.coreService = coreService;
+        this.corePublisherService = corePublisherService;
     }
 
     @GetMapping("")
@@ -132,7 +132,7 @@ public class TransactionController {
                     .save(new Transaction(symbol, quantity, price, balance.getAmount(), action, user));
             balanceRepository.save(balance);
             balanceRepository.save(fiatBalance);
-            coreService.sendMessage(
+            corePublisherService.sendMessage(
                     TransactionEventData.builder()
                             .quantity(quantity)
                             .balance(balance.getAmount())
