@@ -1,5 +1,7 @@
 package integracionapp.psgtrading.configuration;
 
+import integracionapp.psgtrading.dto.publisher.IncomingMessage;
+import integracionapp.psgtrading.service.CoreSubscriberService;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,7 +16,6 @@ import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
 
 import java.lang.reflect.Type;
-import java.net.URI;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.TimeUnit;
 
@@ -23,6 +24,14 @@ public class WebSocketConfig {
 
     @Value("${core.queue.url}")
     private String url;
+
+    private final CoreSubscriberService coreSubscriberService;
+
+    public WebSocketConfig(CoreSubscriberService coreSubscriberService) {
+        this.coreSubscriberService = coreSubscriberService;
+    }
+
+
     @Bean
     public StompSession coreWebSocketClient() throws Exception {
         WebSocketClient client = new StandardWebSocketClient();
@@ -35,6 +44,7 @@ public class WebSocketConfig {
         if (!session.isConnected()) {
             return null;
         }
+        session.subscribe("/topic/trading", sessionHandler);
         return session;
     }
 
@@ -56,12 +66,13 @@ public class WebSocketConfig {
 
         @Override
         public Type getPayloadType(StompHeaders headers) {
-            return null;
+            return IncomingMessage.class;
         }
 
         @Override
         public void handleFrame(StompHeaders headers, Object payload) {
-
+            IncomingMessage message = (IncomingMessage) payload;
+            coreSubscriberService.readMessage(message);
         }
     }
 }

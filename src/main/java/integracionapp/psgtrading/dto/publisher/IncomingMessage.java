@@ -1,17 +1,16 @@
 package integracionapp.psgtrading.dto.publisher;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
-
 @Data
-@Builder
+@NoArgsConstructor
 @AllArgsConstructor
-public class TransactionEvent {
-    private TransactionEventPayload payload;
+public class IncomingMessage {
+
+    private String content;
+
     private String from;
-    private LocalDateTime timestamp;
 }
