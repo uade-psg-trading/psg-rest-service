@@ -13,15 +13,11 @@ import java.time.LocalDateTime;
 
 @Service
 @AllArgsConstructor
-public class CoreService {
+public class CorePublisherService {
     private static final String ORIGIN = "/app/send/trading";
     private StompSession coreWebSocketClient;
 
     private final ObjectMapper objectMapper;
-
-    public void sendMessage(String message){
-        coreWebSocketClient.send(ORIGIN, message);
-    }
 
     public void sendMessage(TransactionEventData data, String action) throws JsonProcessingException {
         var payload = TransactionEventPayload.builder()
