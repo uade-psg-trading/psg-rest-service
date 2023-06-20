@@ -60,7 +60,7 @@ public class BalanceController {
             User user = userRepository.findById(jwtObjectDTO.getUserId()).orElseThrow(EntityNotFoundException::new);
             Balance fiatBalance = balanceRepository.findBySymbolIsTokenFalseAndUser(user);
             if (fiatBalance == null) {
-                return ResponseEntity.status(400).body(GenericDTO.error("User does not have a fiat balance yet."));
+                return ResponseEntity.status(200).body(GenericDTO.success(null));
             }
             return new ResponseEntity<>(GenericDTO.success(fiatBalance), HttpStatus.OK);
         } catch (EntityNotFoundException exc) {

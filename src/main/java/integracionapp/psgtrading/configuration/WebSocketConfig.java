@@ -3,7 +3,6 @@ package integracionapp.psgtrading.configuration;
 import integracionapp.psgtrading.dto.publisher.IncomingMessage;
 import integracionapp.psgtrading.service.CoreSubscriberService;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.converter.MappingJackson2MessageConverter;
 import org.springframework.messaging.simp.stomp.StompCommand;
@@ -24,6 +23,7 @@ public class WebSocketConfig {
 
     @Value("${core.queue.url}")
     private String url;
+    private StompSession currentSession;
 
     private final CoreSubscriberService coreSubscriberService;
 
@@ -31,21 +31,23 @@ public class WebSocketConfig {
         this.coreSubscriberService = coreSubscriberService;
     }
 
+    public StompSession connectWebSocket() throws Exception {
+        if (currentSession != null && currentSession.isConnected()) {
+            return currentSession;
+        }
 
-    @Bean
-    public StompSession coreWebSocketClient() throws Exception {
         WebSocketClient client = new StandardWebSocketClient();
         WebSocketStompClient stompClient = new WebSocketStompClient(client);
         stompClient.setMessageConverter(new MappingJackson2MessageConverter());
         StompSessionHandler sessionHandler = new CoreMessageHandler();
 
         CompletableFuture<StompSession> completableFuture = stompClient.connectAsync(url, sessionHandler);
-        StompSession session = completableFuture.get(3, TimeUnit.SECONDS);
-        if (!session.isConnected()) {
+        currentSession = completableFuture.get(3, TimeUnit.SECONDS);
+        if (!currentSession.isConnected()) {
             return null;
         }
-        session.subscribe("/topic/trading", sessionHandler);
-        return session;
+        currentSession.subscribe("/topic/trading", sessionHandler);
+        return currentSession;
     }
 
     public class CoreMessageHandler implements StompSessionHandler {
