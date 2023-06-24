@@ -135,7 +135,7 @@ public class TransactionController {
                     .save(new Transaction(symbol, quantity, price, balance.getAmount(), action, user));
             balanceRepository.save(balance);
             balanceRepository.save(fiatBalance);
-            if(symbol.getSymbol().equalsIgnoreCase("PSG")){
+            if(token.equalsIgnoreCase("PSG")){
                 corePublisherService.sendMessage(
                         TransactionEventData.builder()
                                 .quantity(quantity)
