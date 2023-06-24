@@ -135,15 +135,17 @@ public class TransactionController {
                     .save(new Transaction(symbol, quantity, price, balance.getAmount(), action, user));
             balanceRepository.save(balance);
             balanceRepository.save(fiatBalance);
-            corePublisherService.sendMessage(
-                    TransactionEventData.builder()
-                            .quantity(quantity)
-                            .balance(balance.getAmount())
-                            .symbol(symbol.getSymbol())
-                            .price(price)
-                            .email(user.getEmail())
-                            .dni(user.getDni())
-                            .build(), action);
+            if(symbol.getSymbol().equalsIgnoreCase("PSG")){
+                corePublisherService.sendMessage(
+                        TransactionEventData.builder()
+                                .quantity(quantity)
+                                .balance(balance.getAmount())
+                                .symbol(symbol.getSymbol())
+                                .price(price)
+                                .email(user.getEmail())
+                                .dni(user.getDni())
+                                .build(), action);
+            }
             logger.info("Transaction complete: {} {} {} tokens at {} for user {}.", action, quantity,
                     symbol.getSymbol(), price, user.getEmail());
             return new ResponseEntity<>(GenericDTO.success(transaction), HttpStatus.CREATED);
