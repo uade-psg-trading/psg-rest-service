@@ -18,6 +18,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.reactive.function.client.WebClientRequestException;
 import org.springframework.web.server.ResponseStatusException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +37,7 @@ public class TransactionController {
     private final NewStockService newStockService;
     private final TokenPriceRepository tokenPriceRepository;
     private final CorePublisherService corePublisherService;
+    private static final Logger logger = LoggerFactory.getLogger(TransactionController.class);
 
     @Autowired
     public TransactionController(TransactionRepository transactionRepository, UserRepository userRepository,
@@ -141,6 +144,8 @@ public class TransactionController {
                             .email(user.getEmail())
                             .dni(user.getDni())
                             .build(), action);
+            logger.info("Transaction complete: {} {} {} tokens at {} for user {}.", action, quantity,
+                    symbol.getSymbol(), price, user.getEmail());
             return new ResponseEntity<>(GenericDTO.success(transaction), HttpStatus.CREATED);
         } catch (EntityNotFoundException exc) {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "User not found", exc);
