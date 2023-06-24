@@ -9,6 +9,8 @@ import integracionapp.psgtrading.dto.publisher.TransactionEventPayload;
 import lombok.AllArgsConstructor;
 import org.springframework.messaging.simp.stomp.StompSession;
 import org.springframework.stereotype.Service;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.time.LocalDateTime;
 
@@ -20,11 +22,14 @@ public class CorePublisherService {
 
     private final ObjectMapper objectMapper;
 
+    private static final Logger logger = LoggerFactory.getLogger(CorePublisherService.class);
+
     public void sendMessage(TransactionEventData data, String action) throws JsonProcessingException {
         StompSession session;
         try {
             session = webSocketConfig.connectWebSocket();
         } catch (Exception e) {
+            logger.error("Unable to connect to core");
             throw new RuntimeException(e);
         }
 
@@ -37,7 +42,8 @@ public class CorePublisherService {
                 .from("TRADING")
                 .timestamp(LocalDateTime.now())
                 .build();
-
-        session.send(ORIGIN, objectMapper.writeValueAsString(transactionEvent));
+        String message = objectMapper.writeValueAsString(transactionEvent);
+        session.send(ORIGIN, message);
+        logger.info("Sent message to core: {}", message);
     }
 }
