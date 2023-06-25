@@ -3,7 +3,6 @@ package integracionapp.psgtrading.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import integracionapp.psgtrading.dto.publisher.IncomingMessage;
-import integracionapp.psgtrading.dto.publisher.TransactionEvent;
 import integracionapp.psgtrading.dto.publisher.UserEvent;
 import integracionapp.psgtrading.model.User;
 import lombok.AllArgsConstructor;
@@ -25,19 +24,23 @@ public class CoreSubscriberService {
 
             Optional<User> user = userService.findByEmail(userEvent.getPayload().getData().getEmail());
             if (user.isPresent()) {
-                final Integer removeAmount = userEvent.getPayload().getData().getVoteQuantity();
+                final Double removeAmount = userEvent.getPayload().getData().getVoteQuantity();
                 final String psgSymbol = "PSG";
                 User currentUser = user.get();
                 currentUser.getBalances().stream().filter(balance -> balance.getSymbol().getSymbol().equalsIgnoreCase(psgSymbol)).findFirst().ifPresent(balance -> {
-                    Double newAmount = (double) balance.getAmount() - removeAmount;
+                    Double newAmount = balance.getAmount() - removeAmount;
                     if (newAmount < 0) {
                         throw new RuntimeException("Not enough balance, current balance " + balance.getAmount() + " remove amount " + removeAmount + " new amount " + newAmount);
                     }
 
+                    System.out.println("New amount " + newAmount);
                     currentUser.getBalances().remove(balance);
+                    System.out.println("Balance updated " + currentUser.getBalances().size());
                     balance.setAmount(newAmount);
                     currentUser.getBalances().add(balance);
+                    System.out.println("Balance updated " + currentUser.getBalances().size());
                     userService.save(currentUser);
+                    System.out.println("Guardado");
                 });
             }
         } catch (JsonProcessingException e) {
