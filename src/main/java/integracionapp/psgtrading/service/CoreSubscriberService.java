@@ -28,8 +28,7 @@ public class CoreSubscriberService {
                 final Integer removeAmount = userEvent.getPayload().getData().getVoteQuantity();
                 final String psgSymbol = "PSG";
                 User currentUser = user.get();
-
-                currentUser.getBalances().stream().filter(balance -> balance.getSymbol().equals(psgSymbol)).findFirst().ifPresent(balance -> {
+                currentUser.getBalances().stream().filter(balance -> balance.getSymbol().getSymbol().equalsIgnoreCase(psgSymbol)).findFirst().ifPresent(balance -> {
                     Double newAmount = (double) balance.getAmount() - removeAmount;
                     if (newAmount < 0) {
                         throw new RuntimeException("Not enough balance, current balance " + balance.getAmount() + " remove amount " + removeAmount + " new amount " + newAmount);
