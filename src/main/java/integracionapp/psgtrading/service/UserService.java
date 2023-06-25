@@ -24,6 +24,14 @@ public class UserService {
     private final PasswordEncoder passwordEncoder;
     private final TenantRepository tenantRepository;
 
+    public Optional<User> findByEmail(String email) {
+        return userRepository.findByEmailIgnoreCase(email);
+    }
+
+    public void save(User user) {
+        userRepository.save(user);
+    }
+
     public Page<User> findAll(Pageable pageable) {
         return userRepository.findAll(pageable);
     }
