@@ -46,7 +46,8 @@ public class WebSocketConfig {
         if (!currentSession.isConnected()) {
             return null;
         }
-        currentSession.subscribe("/topic/trading", sessionHandler);
+
+        currentSession.subscribe("/topic/users", sessionHandler);
         return currentSession;
     }
 
