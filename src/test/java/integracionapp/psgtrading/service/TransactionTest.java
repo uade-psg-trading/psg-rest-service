@@ -1,5 +1,6 @@
 package integracionapp.psgtrading.service;
 
+import integracionapp.psgtrading.configuration.WebSocketConfig;
 import integracionapp.psgtrading.controller.TransactionController;
 import integracionapp.psgtrading.dto.GenericDTO;
 import integracionapp.psgtrading.dto.JWTObjectDTO;
@@ -27,6 +28,8 @@ class TransactionTest {
     private UserRepository userRepository;
     @MockBean
     private BalanceRepository balanceRepository;
+    @MockBean
+    private WebSocketConfig webSocketConfig;
     @MockBean
     private SymbolRepository symbolRepository;
     @MockBean

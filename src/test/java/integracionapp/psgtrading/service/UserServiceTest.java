@@ -1,5 +1,6 @@
 package integracionapp.psgtrading.service;
 
+import integracionapp.psgtrading.configuration.WebSocketConfig;
 import integracionapp.psgtrading.exception.CustomRuntimeException;
 import integracionapp.psgtrading.model.Location;
 import integracionapp.psgtrading.model.User;
@@ -23,7 +24,8 @@ import static org.mockito.Mockito.*;
     private UserService userService;
     @MockBean
     private UserRepository userRepository;
-
+    @MockBean
+    private WebSocketConfig webSocketConfig;
     @Test
     void create_OK() {
         String email = "jhon@email.com";
