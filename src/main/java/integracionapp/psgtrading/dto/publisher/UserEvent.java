@@ -20,7 +20,7 @@ public class UserEvent {
         @AllArgsConstructor
         public class UserData {
             public String email;
-            public Integer VoteQuantity;
+            public Double VoteQuantity;
         }
     }
 }
