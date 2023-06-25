@@ -1,5 +1,6 @@
 package integracionapp.psgtrading.service;
 
+import integracionapp.psgtrading.configuration.WebSocketConfig;
 import integracionapp.psgtrading.controller.AlertController;
 import integracionapp.psgtrading.dto.AlertDTO;
 import integracionapp.psgtrading.dto.GenericDTO;
@@ -41,6 +42,8 @@ class AlertServiceTest {
     @Mock
     private User user;
 
+    @MockBean
+    private WebSocketConfig webSocketConfig;
     @MockBean
     private UserRepository userRepository;
     @MockBean

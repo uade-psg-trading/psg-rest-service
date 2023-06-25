@@ -1,5 +1,6 @@
 package integracionapp.psgtrading.service;
 
+import integracionapp.psgtrading.configuration.WebSocketConfig;
 import integracionapp.psgtrading.dto.PaymenMethod;
 import integracionapp.psgtrading.model.*;
 import integracionapp.psgtrading.repository.BalanceRepository;
@@ -18,6 +19,8 @@ import static org.mockito.Mockito.*;
 class PaymentServiceTest {
     @Autowired
     private PaymentService paymentService;
+    @MockBean
+    private WebSocketConfig webSocketConfig;
     @MockBean
     private UserRepository userRepository;
     @MockBean

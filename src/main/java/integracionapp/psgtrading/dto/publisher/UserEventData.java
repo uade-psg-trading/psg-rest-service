@@ -9,6 +9,10 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserEvent {
-    public UserEventPayload payload;
+public class UserEventData {
+    public String SurveyId;
+    public String Email;
+    public Double VoteQuantity;
+    public String Question;
+    public String[] Answer;
 }

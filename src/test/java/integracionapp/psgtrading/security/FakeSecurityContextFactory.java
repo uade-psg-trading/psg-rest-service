@@ -1,7 +1,9 @@
 package integracionapp.psgtrading.security;
 
 import integracionapp.psgtrading.configuration.JwtConfig;
+import integracionapp.psgtrading.configuration.WebSocketConfig;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.jwt.*;
@@ -14,6 +16,8 @@ public class FakeSecurityContextFactory implements WithSecurityContextFactory<Fa
 
     @Autowired
     private JwtEncoder jwtEncoder;
+    @MockBean
+    private WebSocketConfig webSocketConfig;
 
     @Override
     public SecurityContext createSecurityContext(FakeSecurityContext annotation) {
