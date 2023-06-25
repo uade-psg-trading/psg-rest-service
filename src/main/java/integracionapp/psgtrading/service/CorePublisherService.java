@@ -27,7 +27,7 @@ public class CorePublisherService {
     public void sendMessage(TransactionEventData data, String action) throws JsonProcessingException {
         StompSession session;
         try {
-            session = webSocketConfig.connectWebSocket();
+            session = webSocketConfig.connectToTrading();
         } catch (Exception e) {
             logger.error("Unable to connect to core");
             throw new RuntimeException(e);

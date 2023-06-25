@@ -9,6 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class UserEvent {
-    public UserEventPayload payload;
+public class UserEventPayload {
+    public String operation;
+    public UserEventData data;
 }
