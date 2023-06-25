@@ -4,6 +4,7 @@ package integracionapp.psgtrading.service;
 import integracionapp.psgtrading.dto.response.Yield;
 import integracionapp.psgtrading.dto.response.YieldBuilder;
 import integracionapp.psgtrading.model.Balance;
+import integracionapp.psgtrading.model.Symbol;
 import integracionapp.psgtrading.model.User;
 import integracionapp.psgtrading.repository.BalanceRepository;
 import lombok.AllArgsConstructor;
@@ -18,6 +19,14 @@ public class BalanceService {
     private final BalanceRepository balanceRepository;
     private final NewStockService newStockService;
     private final AlertService alertService;
+
+    public Balance getBalanceByUserEmailAndSymbol(User user, Symbol symbol) {
+        return balanceRepository.findBySymbolAndUser(symbol, user);
+    }
+
+    public Balance save(Balance balance) {
+        return balanceRepository.save(balance);
+    }
 
     public List<Yield> getYieldsByUser(User user){
 

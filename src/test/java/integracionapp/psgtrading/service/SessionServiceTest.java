@@ -1,5 +1,6 @@
 package integracionapp.psgtrading.service;
 
+import integracionapp.psgtrading.configuration.WebSocketConfig;
 import integracionapp.psgtrading.dto.login.LoginResponseDTO;
 import integracionapp.psgtrading.exception.CustomRuntimeException;
 import integracionapp.psgtrading.model.Location;
@@ -23,6 +24,8 @@ class SessionServiceTest {
     private SessionService sessionService;
     @MockBean
     private UserRepository userRepository;
+    @MockBean
+    private WebSocketConfig webSocketConfig;
     @MockBean
     private UserService userService;
 

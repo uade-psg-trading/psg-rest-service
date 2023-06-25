@@ -13,6 +13,7 @@ public interface BalanceRepository extends JpaRepository<Balance, Long> {
 
     Balance findBySymbolAndUser(Symbol symbol, User user);
 
+
     Balance findBySymbolIsTokenFalseAndUser(User user);
 
 }

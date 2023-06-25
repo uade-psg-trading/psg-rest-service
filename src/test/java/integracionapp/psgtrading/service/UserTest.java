@@ -1,11 +1,13 @@
 package integracionapp.psgtrading.service;
 
+import integracionapp.psgtrading.configuration.WebSocketConfig;
 import integracionapp.psgtrading.model.*;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -18,6 +20,8 @@ class UserTest {
 
     @Mock
     private Tenant mockTenant;
+    @MockBean
+    private WebSocketConfig webSocketConfig;
 
     @Mock
     private Symbol mockSymbol;

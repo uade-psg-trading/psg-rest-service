@@ -1,10 +1,12 @@
 package integracionapp.psgtrading.service;
 
+import integracionapp.psgtrading.configuration.WebSocketConfig;
 import integracionapp.psgtrading.model.StockWrapper;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import yahoofinance.Stock;
 
 import java.io.IOException;
@@ -18,6 +20,9 @@ class StockServiceTest {
 
     @Autowired
     private StockService stockService;
+
+    @MockBean
+    private WebSocketConfig webSocketConfig;
     @Test
     @Disabled("It is using yahoo, is old")
     void invoke_Stock() throws IOException {
