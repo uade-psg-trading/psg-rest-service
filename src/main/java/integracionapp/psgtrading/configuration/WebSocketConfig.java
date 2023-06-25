@@ -79,7 +79,7 @@ public class WebSocketConfig {
             try {
                 listenToUsers();
             } catch (Exception e) {
-                e.printStackTrace();
+
             }
         }
     }
